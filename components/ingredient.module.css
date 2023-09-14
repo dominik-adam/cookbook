@@ -1,0 +1,30 @@
+.ingredient {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    margin-bottom: 20px;
+}
+
+.ingredientImage {
+    border-radius: 100%;
+}
+
+.crossedOut {
+    text-decoration: line-through 3px;
+}
+
+.ingredientInfo span {
+    width: 100%;
+    display: inline-block;
+}
+
+.ingredientName {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    font-weight: 700;
+}
+
+.ingredientAmount {
+
+}
