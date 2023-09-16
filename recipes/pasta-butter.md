@@ -8,6 +8,7 @@ ingredients: [
     "pecorino cheese | 20 | g",
     "salt |  | "
 ]
+serves: 2
 images: [
     "pasta-butter.png"
 ]

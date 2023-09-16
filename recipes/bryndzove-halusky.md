@@ -3,6 +3,7 @@ title: 'Bryndzove halusky'
 ingredients: [
 
 ]
+serves: 2
 images: [
     "bryndzove-halusky.jpg"
 ]

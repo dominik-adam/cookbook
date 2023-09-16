@@ -40,7 +40,7 @@ export default function Recipe({ recipeData }) {
           <div className={styles.container}>
 
             <div className={styles.ingredients}>
-              <Ingredients ingredients={recipeData.ingredients}/>
+              <Ingredients ingredients={recipeData.ingredients} initServes={recipeData.serves}/>
             </div>
             
             <div className={styles.instructions}>

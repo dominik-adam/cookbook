@@ -3,6 +3,7 @@ title: 'Chicken tortilla'
 ingredients: [
 
 ]
+serves: 2
 images: [
     "chicken-tortilla.jpg"
 ]

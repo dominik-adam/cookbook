@@ -2,25 +2,26 @@
 title: 'Mexican Beef and Jalapeño Quesadillas'
 ingredients: [
     "onion | 1 | diced",
-    "garlic | 1 | clove, peeled and crushed",
-    "minced beef | 250 | g",
-    "paprika | 1 | ts",
-    "ground cumin | 1 | ts",
-    "chopped tomatoes | 0.5 | 400g tin",
-    "kidney beans | 0.5 | 400g tin, drained and rinsed",
-    "mozzarella | 50 | g grated",
-    "cheddar | 50 | g grated",
+    "garlic | 2 | clove, peeled and crushed",
+    "minced beef | 500 | g",
+    "paprika | 2 | ts",
+    "ground cumin | 2 | ts",
+    "chopped tomatoes | 1 | 400g tin",
+    "kidney beans | 1 | 400g tin, drained and rinsed",
+    "mozzarella | 100 | g grated",
+    "cheddar | 100 | g grated",
     "spring onion | 2 | trimmed and sliced",
-    "pickled jalapeno | 40 | g",
-    "tortilla | 2 | ",
-    "sour cream | 2 | tbs",
-    "tomatoes | 2 | diced",
-    "red onion | 0.5 | peeled and finely diced",
+    "pickled jalapeno | 80 | g",
+    "tortilla | 4 | ",
+    "sour cream | 4 | tbs",
+    "tomatoes | 4 | smaller, diced",
+    "red onion | 1 | peeled and finely diced",
     "coriander | 1 | large handful, roughly chopped",
-    "juice of lime | 0.5 | ",
+    "juice of lime | 1 | ",
     "black pepper |  | freshly ground",
     "salt |  | "
 ]
+serves: 4
 images: [
     "quesadillas.png"
 ]

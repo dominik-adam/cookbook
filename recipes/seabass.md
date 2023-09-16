@@ -17,6 +17,7 @@ ingredients: [
     "lemon zest and juice | 1 | lemon",
     "cous cous | 100 | g",
 ]
+serves: 2
 images: [
     "seabass.jpg"
 ]

@@ -20,6 +20,7 @@ ingredients: [
     "black pepper |  | freshly ground",
     "salt |  | "
 ]
+serves: 2
 images: [
     "burger.png"
 ]

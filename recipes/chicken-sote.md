@@ -3,6 +3,7 @@ title: 'Chicken sote'
 ingredients: [
 
 ]
+serves: 2
 images: [
     "chicken-sote.jpg"
 ]

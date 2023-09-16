@@ -3,6 +3,7 @@ title: 'Baked chicken'
 ingredients: [
 
 ]
+serves: 2
 images: [
     "baked-chicken.jpg"
 ]

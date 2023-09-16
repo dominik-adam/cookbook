@@ -16,6 +16,7 @@ ingredients: [
     "black pepper |  | freshly ground",
     "salt |  | "
 ]
+serves: 2
 images: [
     "rib-eye.png"
 ]

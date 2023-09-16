@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import styles from './ingredient.module.css';
-import react from 'react';
 
-export default function Ingredient({ ingredient, amount, unit, image }) {
+export default function Ingredient({ ingredient, amount, unit, image, multiplier, initState, handleToggle }) {
 
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(initState);
 
   const toggleCheck = () => {
+    handleToggle(ingredient, !isChecked);
     setIsChecked(!isChecked);
   }
 
@@ -16,7 +16,7 @@ export default function Ingredient({ ingredient, amount, unit, image }) {
       <Image
         className={styles.ingredientImage}
         src={isChecked ? '/ingredients/checked.png' : image}
-        style={{objectFit: "cover"}}
+        style={{objectFit: "cover", cursor: "pointer"}}
         height={80}
         width={80}
         alt={ingredient}
@@ -28,7 +28,7 @@ export default function Ingredient({ ingredient, amount, unit, image }) {
         </span>
         {(amount || unit) && (
           <span className={`${styles.ingredientAmount} ${isChecked ? styles.crossedOut : null}`}>
-            {amount} {unit}
+            {amount && multiplier ? amount * multiplier : ""} {unit}
           </span>
         )}
       </div>

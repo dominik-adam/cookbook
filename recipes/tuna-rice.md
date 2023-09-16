@@ -5,6 +5,7 @@ ingredients: [
     "rice | 140 | ml",
     "corn | 1 | can"
 ]
+serves: 2
 images: [
     "tuna-rice.jpg"
 ]

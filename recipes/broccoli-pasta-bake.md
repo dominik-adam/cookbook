@@ -3,6 +3,7 @@ title: 'Broccoli pasta bake'
 ingredients: [
 
 ]
+serves: 2
 images: [
     "broccoli-pasta-bake.jpg"
 ]

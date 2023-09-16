@@ -12,6 +12,7 @@ export function getIngredientImages() {
             .replace(/\.jpg$/, '')
             .replace(/\.jpeg$/, '')
             .replace('_', ' ')
+            .toLowerCase()
         obj[key] = '/ingredients/' + fileName;
         return obj;
     }, {default: '/ingredients/default.jpg'});

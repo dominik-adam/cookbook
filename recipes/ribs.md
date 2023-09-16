@@ -3,22 +3,22 @@ title: 'Ribs'
 ingredients: [
     "ribs | 600 | g",
     "ketchup | 2 | cups",
-    "brown sugar | 1/2 | cups",
-    "molasses | 1/4 | cups",
-    "apple cider vinegar | 1/2 | cups",
+    "brown sugar | 0.5 | cups",
+    "molasses | 0.25 | cups",
+    "apple cider vinegar | 0.5 | cups",
     "worcestershire sauce | 1 | ts",
     "salt | 1 | tbs",
     "pepper | 2 | ts",
     "smoked paprika | 2 | ts",
-    "brown sugar | 1/2 | cups",
+    "brown sugar | 0.5 | cups",
     "salt | 3 | tbs",
     "black pepper | 2 | ts",
-    "cumin | 3/2 | tbs",
-    "onion powder | 3/2 | tbs",
-    "paprika | 3/2 | tbs",
-    "cayenne | 3/2 | tbs",
+    "cumin | 1.5 | tbs",
+    "onion powder | 1.5 | tbs",
+    "paprika | 1.5 | tbs",
+    "cayenne | 1.5 | tbs",
     "ground mustard | 2 | ts",
-    "garlic powder | 3/2 | tbs",
+    "garlic powder | 1.5 | tbs",
     "corn | 2 | precooked",
     "cabbage | 0.5 | small",
     "carrot | 1 | large",
@@ -32,6 +32,7 @@ ingredients: [
     "black pepper |  | freshly ground",
     "salt |  | "
 ]
+serves: 2
 images: [
     "ribs.jpg"
 ]

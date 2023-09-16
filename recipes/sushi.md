@@ -12,6 +12,7 @@ ingredients: [
     "rice vinegar |  | ",
     "bamboo mat |  | ",
 ]
+serves: 2
 images: [
     "sushi.jpg"
 ]

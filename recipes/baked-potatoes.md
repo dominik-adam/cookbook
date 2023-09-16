@@ -3,6 +3,7 @@ title: 'Baked potatoes'
 ingredients: [
 
 ]
+serves: 2
 images: [
     "baked-potatoes.jpg"
 ]

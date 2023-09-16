@@ -8,6 +8,7 @@ ingredients: [
     "freshly ground black pepper",
     "3 cloves garlic"
 ]
+serves: 2
 images: [
     "carbonara.jpg"
 ]

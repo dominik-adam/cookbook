@@ -15,6 +15,7 @@ ingredients: [
     "spring onions | 3 | ",
     "salt |  | ",
 ]
+serves: 2
 images: [
     "honey-chicken.jpg"
 ]

@@ -9,6 +9,7 @@ ingredients: [
     "breadcrumbs | 50 | g",
     "powder sugar | 50 | g",
 ]
+serves: 2
 images: [
     "pirohy.jpg"
 ]

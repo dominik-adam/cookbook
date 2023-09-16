@@ -3,6 +3,7 @@ title: 'Duck breast'
 ingredients: [
 
 ]
+serves: 2
 images: [
     "duck-breast.jpg"
 ]

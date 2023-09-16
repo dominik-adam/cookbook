@@ -11,6 +11,7 @@ ingredients: [
     "basil | 1 | handful",
     "parmigiano | 30 | g",
 ]
+serves: 2
 images: [
     "spinach-pasta.webp"
 ]

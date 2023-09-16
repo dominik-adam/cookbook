@@ -7,6 +7,7 @@ ingredients: [
     "breadcrumbs |  | ",
     "powder sugar |  | ",
 ]
+serves: 2
 images: [
     "sulance.webp"
 ]

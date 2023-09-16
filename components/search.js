@@ -11,7 +11,7 @@ export default function SearchBar() {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchTerm !== undefined) {
-        router.push(`?s=${encodeURIComponent(searchTerm)}`);
+        router.replace(`?s=${encodeURIComponent(searchTerm)}`, undefined, { scroll: false });
       }
     }, 300)
 

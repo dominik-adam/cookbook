@@ -3,6 +3,7 @@ title: 'Duck thigh'
 ingredients: [
 
 ]
+serves: 2
 images: [
     "duck-thigh.webp"
 ]
