@@ -1,5 +1,8 @@
 ---
 title: 'Duck thigh'
+tags: [
+    
+]
 ingredients: [
 
 ]

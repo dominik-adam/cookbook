@@ -1,5 +1,8 @@
 ---
 title: 'Duck breast'
+tags: [
+    
+]
 ingredients: [
 
 ]

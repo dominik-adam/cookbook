@@ -1,5 +1,8 @@
 ---
 title: 'Chicken breasts with deglazed sauce'
+tags: [
+    
+]
 ingredients: [
     "chicken breasts | 2 | , smaller",
     "shallot | 1 | ",

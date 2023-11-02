@@ -1,9 +1,12 @@
 ---
 title: 'Fried rice'
+tags: [
+    
+]
 ingredients: [
     "rice | 140 | ml",
     "bacon | 100 | g",
-    "white onion | 1 | diced",
+    "onion | 1 | diced",
     "garlic | 2 | cloves",
     "carrot | 1 | diced",
     "peas | 0.5 | cup",

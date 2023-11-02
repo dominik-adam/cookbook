@@ -1,5 +1,8 @@
 ---
 title: 'Chicken rice noodles'
+tags: [
+    
+]
 ingredients: [
     "rice noodles | 200 | g",
     "chicken breast | 1 | ",

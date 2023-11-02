@@ -1,5 +1,8 @@
 ---
 title: 'Rib-eye Steaks with Peppercorn Sauce'
+tags: [
+    
+]
 ingredients: [
     "rib-eye steaks | 2 | x 250g",
     "thyme | 4 | sprigs",
@@ -8,9 +11,9 @@ ingredients: [
     "green peppercorns | 2 | tbs",
     "garlic | 1 | cloves, peeled and finely chopped",
     "cognac | 50 | ml",
-    "Dijon mustard | 1 | tsp",
+    "dijon mustard | 1 | tsp",
     "beef stock | 200 | ml",
-    "Worcestershire sauce | 2 | dashes",
+    "worcestershire sauce | 2 | dashes",
     "double cream | 150 | ml",
     "olive oil | 2 | tbs",
     "black pepper |  | freshly ground",

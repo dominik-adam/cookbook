@@ -1,5 +1,8 @@
 ---
 title: 'Pan-fried Salmon with Pink Grapefruit Hollandaise'
+tags: [
+    
+]
 ingredients: [
     "salmon | 2 | * 200 g fillets, skin on",
     "asparagus | 200 | g",

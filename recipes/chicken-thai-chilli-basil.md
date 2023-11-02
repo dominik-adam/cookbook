@@ -1,5 +1,8 @@
 ---
 title: 'Thai Chilli and Basil Chicken'
+tags: [
+    
+]
 ingredients: [
     "rice | 175 | g, jasmine",
     "water | 300 | ml",

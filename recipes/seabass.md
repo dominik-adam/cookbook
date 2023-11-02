@@ -1,5 +1,8 @@
 ---
 title: 'Seabass'
+tags: [
+    
+]
 ingredients: [
     "sea bass | 2 | filets",
     "eggplant | 1 | small and young",

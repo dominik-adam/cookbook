@@ -1,7 +1,10 @@
 ---
 title: 'Pork Schnitzel with Celeriac Remoulade'
+tags: [
+    
+]
 ingredients: [
-    "pork chop | 2 | * 220 g boneless",
+    "pork chops | 2 | * 220 g boneless",
     "plain flour | 50 | g",
     "egg | 1 | ",
     "breadcrumbs | 80 | g fresh",

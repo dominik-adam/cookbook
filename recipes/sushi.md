@@ -1,5 +1,8 @@
 ---
 title: 'sushi'
+tags: [
+    
+]
 ingredients: [
     "sushi rice | 250 | g",
     "philadelphia | 0.5 | ",

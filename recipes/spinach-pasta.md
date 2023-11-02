@@ -1,5 +1,8 @@
 ---
 title: 'Spinach pasta'
+tags: [
+    
+]
 ingredients: [
     "penne | 250 | g",
     "garlic | 2 | cloves",

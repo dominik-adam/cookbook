@@ -1,5 +1,8 @@
 ---
 title: 'Double Lemon Chicken'
+tags: [
+    
+]
 ingredients: [
     "chicken thighs | 4 | bone in, skin on",
     "garlic | 3 | cloves, peeled and crushed",

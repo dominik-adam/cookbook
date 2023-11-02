@@ -1,5 +1,8 @@
 ---
 title: 'Carbonara'
+tags: [
+    
+]
 ingredients: [
     "250 g spaghetti",
     "100 g bacon",

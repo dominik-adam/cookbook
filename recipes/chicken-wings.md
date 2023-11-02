@@ -1,5 +1,8 @@
 ---
 title: 'Chicken wings'
+tags: [
+    
+]
 ingredients: [
 
 ]

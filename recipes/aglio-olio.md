@@ -1,5 +1,8 @@
 ---
 title: 'Aglio olio'
+tags: [
+    'pasta'
+]
 ingredients: [
     "spaghetti | 250 | g",
     "garlic | 3 | cloves",

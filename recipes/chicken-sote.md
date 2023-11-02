@@ -1,5 +1,8 @@
 ---
 title: 'Chicken sote'
+tags: [
+    
+]
 ingredients: [
 
 ]

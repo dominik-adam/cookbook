@@ -1,5 +1,8 @@
 ---
 title: 'Teriyaki chicken'
+tags: [
+    
+]
 ingredients: [
     "chicken thighs | 2 | boneless",
     "soy sauce | 50 | ml",

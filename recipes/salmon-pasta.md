@@ -1,5 +1,8 @@
 ---
 title: 'Salmon pasta with asparagus'
+tags: [
+    
+]
 ingredients: [
     "asparagus | 0.5 | bunch",
     "tagliatelle | 250 | g",

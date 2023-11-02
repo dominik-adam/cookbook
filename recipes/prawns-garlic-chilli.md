@@ -1,10 +1,13 @@
 ---
 title: 'Garlic and Chilli Prawns'
+tags: [
+    
+]
 ingredients: [
     "garlic | 6 | cloves",
     "chilli | 1 | red, finely chopped",
     "chilli flakes | 1 | pinch",
-    "prawns | 600 | g, raw tiger",
+    "tiger prawns | 600 | g",
     "manzanilla sherry | 80 | ml",
     "tomato puree | 1 | ts",
     "cherry tomatoes | 200 | g, quartered",

@@ -1,7 +1,11 @@
 ---
 title: 'Tomato, Mascarpone and Pancetta Rigatoni'
+tags: [
+    
+]
 ingredients: [
     "rigatoni | 200 | g",
+    "bacon | 125 | diced",
     "onion | 0.5 | large, finely diced",
     "garlic | 2 | cloves, peeled and finely chopped",
     "italian seasoning | 1 | tbs",

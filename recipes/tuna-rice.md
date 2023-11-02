@@ -1,5 +1,8 @@
 ---
 title: 'Tuna rice'
+tags: [
+    
+]
 ingredients: [
     "tuna with olive oil | 1 | can",
     "rice | 140 | ml",

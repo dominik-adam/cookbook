@@ -1,5 +1,8 @@
 ---
 title: 'Farfalle with Brown Butter, Peas and Sage'
+tags: [
+    
+]
 ingredients: [
     "farfalle | 200 | g",
     "fresh peas | 125 | g",

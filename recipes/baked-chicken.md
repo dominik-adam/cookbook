@@ -1,5 +1,8 @@
 ---
 title: 'Baked chicken'
+tags: [
+    
+]
 ingredients: [
 
 ]

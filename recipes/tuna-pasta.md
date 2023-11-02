@@ -1,5 +1,8 @@
 ---
 title: 'Tuna pasta'
+tags: [
+    
+]
 ingredients: [
     "fusilli | 250 | g",
     "insalatissime | 2 | cans",

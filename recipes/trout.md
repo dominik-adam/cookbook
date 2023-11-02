@@ -1,5 +1,8 @@
 ---
 title: 'trout'
+tags: [
+    
+]
 ingredients: [
     "trout | 2 | gutted",
     "lemon | 1 | sliced",

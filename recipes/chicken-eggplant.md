@@ -1,5 +1,8 @@
 ---
 title: 'Tomato eggplant chicken'
+tags: [
+    
+]
 ingredients: [
     "chicken breasts | 300 | g",
     "eggplant | 100 | g",

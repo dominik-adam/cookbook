@@ -1,5 +1,8 @@
 ---
 title: 'Lasagna'
+tags: [
+    
+]
 ingredients: [
     "lasagna pasta | 500 | g",
     "ground beef | 1 | kg",

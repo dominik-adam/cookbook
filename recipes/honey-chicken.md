@@ -1,5 +1,8 @@
 ---
 title: 'Honey chicken'
+tags: [
+    
+]
 ingredients: [
     "chicken thighs | 200 | g",
     "soy sauce | 100 | ml",
