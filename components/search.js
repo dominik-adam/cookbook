@@ -30,7 +30,7 @@ export default function SearchBar() {
         <span>
           <Image
             className={styles.searchIcon}
-            src={`/images/searchIcon.png`}
+            src={`/images/searchIcon.jpg`}
             alt='search icon'
             width={50}
             height={50}

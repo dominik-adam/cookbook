@@ -20,7 +20,7 @@ ingredients: [
 ]
 serves: 2
 images: [
-    "chicken-double-lemon.png"
+    "chicken-double-lemon.jpg"
 ]
 link: ""
 video: ""

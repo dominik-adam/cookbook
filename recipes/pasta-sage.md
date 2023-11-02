@@ -15,7 +15,7 @@ ingredients: [
 ]
 serves: 2
 images: [
-    "pasta-sage.png"
+    "pasta-sage.jpg"
 ]
 link: ""
 video: ""

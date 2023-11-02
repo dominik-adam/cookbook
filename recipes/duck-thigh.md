@@ -8,7 +8,7 @@ ingredients: [
 ]
 serves: 2
 images: [
-    "duck-thigh.webp"
+    "duck-thigh.jpg"
 ]
 link: ""
 video: ""

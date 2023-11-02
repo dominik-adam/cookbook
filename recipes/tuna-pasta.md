@@ -9,7 +9,7 @@ ingredients: [
 ]
 serves: 2
 images: [
-    "tuna-pasta.webp"
+    "tuna-pasta.jpg"
 ]
 link: ""
 video: ""

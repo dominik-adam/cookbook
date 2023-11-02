@@ -23,7 +23,7 @@ ingredients: [
 ]
 serves: 2
 images: [
-    "pork-chops.png"
+    "pork-chops.jpg"
 ]
 link: ""
 video: ""

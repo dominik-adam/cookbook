@@ -27,7 +27,7 @@ ingredients: [
 ]
 serves: 2
 images: [
-    "chicken-thai-chilli-basil.png"
+    "chicken-thai-chilli-basil.jpg"
 ]
 link: ""
 video: ""

@@ -19,7 +19,7 @@ ingredients: [
 ]
 serves: 2
 images: [
-    "prawns-garlic-chilli.png"
+    "prawns-garlic-chilli.jpg"
 ]
 link: ""
 video: ""

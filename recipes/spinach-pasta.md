@@ -16,7 +16,7 @@ ingredients: [
 ]
 serves: 2
 images: [
-    "spinach-pasta.webp"
+    "spinach-pasta.jpg"
 ]
 link: "https://prohomecooks.com/blogs/recipes/15-common-mistakes-beginners-make-when-cooking-pasta?_pos=4&_sid=419932086&_ss=r"
 video: "pThu4C_hiWg"

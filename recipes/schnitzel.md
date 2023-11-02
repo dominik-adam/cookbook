@@ -23,7 +23,7 @@ ingredients: [
 ]
 serves: 2
 images: [
-    "schnitzel.png"
+    "schnitzel.jpg"
 ]
 link: ""
 video: ""

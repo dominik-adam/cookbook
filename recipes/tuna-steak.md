@@ -21,7 +21,7 @@ ingredients: [
 ]
 serves: 2
 images: [
-    "tuna-steak.png"
+    "tuna-steak.jpg"
 ]
 link: ""
 video: ""

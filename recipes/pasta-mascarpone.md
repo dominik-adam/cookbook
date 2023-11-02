@@ -21,7 +21,7 @@ ingredients: [
 ]
 serves: 2
 images: [
-    "pasta-mascarpone.png"
+    "pasta-mascarpone.jpg"
 ]
 link: ""
 video: ""

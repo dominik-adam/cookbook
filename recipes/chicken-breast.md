@@ -17,7 +17,7 @@ ingredients: [
 ]
 serves: 2
 images: [
-    "chicken-breast.png"
+    "chicken-breast.jpg"
 ]
 link: ""
 video: "NTBRThwL-2c"

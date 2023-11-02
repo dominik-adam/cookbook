@@ -15,7 +15,7 @@ export default function Ingredient({ ingredient, amount, unit, image, multiplier
     <div className={styles.ingredient}>
       <Image
         className={styles.ingredientImage}
-        src={isChecked ? '/ingredients/checked.png' : image}
+        src={isChecked ? '/ingredients/checked.jpg' : image}
         style={{objectFit: "cover", cursor: "pointer"}}
         height={80}
         width={80}

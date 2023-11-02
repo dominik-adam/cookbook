@@ -21,7 +21,7 @@ ingredients: [
 ]
 serves: 2
 images: [
-    "rib-eye.png"
+    "rib-eye.jpg"
 ]
 link: ""
 video: ""

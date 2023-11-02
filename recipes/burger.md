@@ -25,7 +25,7 @@ ingredients: [
 ]
 serves: 2
 images: [
-    "burger.png"
+    "burger.jpg"
 ]
 link: ""
 video: ""

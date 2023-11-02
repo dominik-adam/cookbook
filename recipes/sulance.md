@@ -12,7 +12,7 @@ ingredients: [
 ]
 serves: 2
 images: [
-    "sulance.webp"
+    "sulance.jpg"
 ]
 link: ""
 video: ""

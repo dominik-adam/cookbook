@@ -13,7 +13,7 @@ ingredients: [
 ]
 serves: 2
 images: [
-    "pasta-butter.png"
+    "pasta-butter.jpg"
 ]
 link: ""
 video: ""

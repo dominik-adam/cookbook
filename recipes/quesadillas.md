@@ -26,7 +26,7 @@ ingredients: [
 ]
 serves: 4
 images: [
-    "quesadillas.png"
+    "quesadillas.jpg"
 ]
 link: ""
 video: ""
