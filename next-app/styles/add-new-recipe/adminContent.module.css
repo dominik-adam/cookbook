@@ -1,0 +1,72 @@
+.wrapper {
+    display: flex;
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.inputLabel {
+    font-weight: 700;
+    padding-bottom: 5px;
+}
+
+/* Instructions */
+
+.recipeInstructionsInput {
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 7px;
+    border: 3px solid rgb(179, 228, 228);
+    resize: none;
+}
+
+.recipeInstructionsInput:focus-visible {
+    border: 3px solid rgb(179, 228, 228);
+    outline: none;
+}
+
+.recipeInstructionsWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+/* Video */
+
+.recipeVideoInput {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 7px;
+    border: 3px solid rgb(179, 228, 228);
+}
+
+.recipeVideoInput:focus-visible {
+    border: 3px solid rgb(179, 228, 228);
+    outline: none;
+}
+
+.recipeVideoWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+/* Link */
+
+.recipeLinkInput {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 7px;
+    border: 3px solid rgb(179, 228, 228);
+}
+
+.recipeLinkInput:focus-visible {
+    border: 3px solid rgb(179, 228, 228);
+    outline: none;
+}
+
+.recipeLinkWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}

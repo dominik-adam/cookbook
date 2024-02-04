@@ -1,0 +1,39 @@
+.searchWrapper {
+    display: flex;
+    background-color: rgb(179, 228, 228);
+    padding: 20px 35px;
+    border-radius: 5px;
+}
+
+.searchBar {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    flex: 1;
+
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.searchInput {
+    border: none;
+    background-color: transparent;
+    font-size: 30px;
+    font-weight: 600;
+    flex: 1;
+}
+
+.searchInput::placeholder {
+    color: rgb(0, 0, 0);
+}
+
+.searchInput:focus-visible {
+    outline: none;
+}
+
+.searchIcon {
+    max-width: 35px;
+    width: auto;
+    height: auto;
+}

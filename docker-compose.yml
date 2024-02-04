@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  next-app:
+    container_name: next-app
+    build:
+      context: ./next-app
+      dockerfile: dev.Dockerfile
+      target: dev
+    environment:
+      - ENV_VARIABLE=${ENV_VARIABLE}
+      - NEXT_PUBLIC_ENV_VARIABLE=${NEXT_PUBLIC_ENV_VARIABLE}
+      - WATCHPACK_POLLING=true
+      - NODE_ENV=development
+    env_file:
+      - .env
+    volumes:
+      - ./next-app/app:/app/app
+      - ./next-app/public:/app/public
+      - ./next-app/recipes:/app/recipes
+      - ./next-app/styles:/app/styles
+      - ./next-app/utils:/app/utils
+      - ./next-app/components:/app/components
+      - ./next-app/prisma:/app/prisma
+      - ./next-app/pages:/app/pages
+    restart: always
+    command: npm run dev
+    ports:
+      - 3000:3000
+      - 5555:5555
+    depends_on:
+      - postgres
+    networks:
+      - backend
+
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=S3cret
+      - POSTGRES_USER=citizix_user
+      - POSTGRES_DB=citizix_db
+    networks:
+      - backend
+
+networks:
+  backend:

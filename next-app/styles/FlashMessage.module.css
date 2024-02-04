@@ -1,0 +1,66 @@
+.flashMessage {
+  padding: 10px 50px;
+  margin-bottom: 10px;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 5px;
+  bottom: -50px;
+  opacity: 0;
+  animation: slideIn 0.5s ease forwards;
+}
+
+.inactive {
+  animation: slideOut 0.5s ease forwards;
+}
+
+.success {
+  background-color: #5cb85c;
+  color: white;
+}
+
+.error {
+  background-color: #d9534f;
+  color: white;
+}
+
+.warning {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+@keyframes slideIn {
+  0% {
+    bottom: -50px;
+    opacity: 0;
+    transform: translateX(-50%) scale(0.8); /* Start slightly smaller */
+  }
+  50% {
+    bottom: 20px;
+    opacity: 1;
+    transform: translateX(-50%) scale(1.05); /* Enlarge slightly */
+  }
+  100% {
+    bottom: 20px;
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    bottom: 20px;
+    opacity: 1;
+    transform: translateX(-50%) scale(1); /* Start at normal size */
+  }
+  50% {
+    bottom: 20px;
+    opacity: 1;
+    transform: translateX(-50%) scale(1.05); /* Enlarge slightly */
+  }
+  100% {
+    bottom: -50px;
+    opacity: 0;
+    transform: translateX(-50%) scale(0.8); /* End slightly smaller */
+  }
+}

@@ -1,0 +1,24 @@
+/* Button */
+
+.submitButton {
+    font-weight: 700;
+    padding: 15px 20px;
+    border-radius: 7px;
+    
+    background-color: rgb(13, 165, 20);
+    border: none;
+    color: white;
+
+    cursor: pointer;
+}
+
+.submitButton:disabled {
+    background-color: rgb(32, 41, 41);
+    border: none;
+}
+
+.submitButtonWrapper {
+    position: fixed;
+    bottom: 70px;
+    right: 100px;
+}

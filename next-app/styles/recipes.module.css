@@ -1,0 +1,52 @@
+.parent {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-auto-rows: minmax(0, 1fr);
+    grid-gap: 10px;
+}
+
+.tile {
+    position: relative;
+    cursor: pointer;
+
+    width: 100%;
+    padding-top: 70%;
+
+    background-color: #f2f2f2;
+    border-radius: 5px;
+}
+
+.tileTitle {
+    z-index: 2;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+
+    padding: 15px 20px;
+    
+    color: white;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    font-weight: 700;
+}
+
+.tileImage {
+    border-radius: 5px;
+}
+
+.tileOverlay {
+    z-index: 1;
+    border-radius: 5px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
+}
+
+@media only screen and (max-width: 600px) {
+    .parent {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

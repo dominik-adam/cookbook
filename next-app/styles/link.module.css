@@ -1,0 +1,12 @@
+.wrapper {
+    background-color: rgb(61, 61, 61);
+    border-radius: 5px;
+    padding: 5px 10px;
+    text-align: center;
+}
+
+.text {
+    color: white;
+    text-decoration: underline;
+    font-weight: 600;
+}
