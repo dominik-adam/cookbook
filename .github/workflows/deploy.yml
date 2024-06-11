@@ -31,9 +31,16 @@ jobs:
         run: |
           rsync -avz --exclude=node_modules --exclude=.git --exclude=dev.Dockerfile --exclude=prod.Dockerfile ./next-app/ $VPS_USER@$VPS_IP:$APP_DIR
           ssh $VPS_USER@$VPS_IP << 'EOF'
+            set -e
+            echo "Files in APP_DIR:"
+            ls -la $APP_DIR
             cd $APP_DIR
+            echo "Running npm install in $(pwd)"
             npm install
+            echo "Running prisma migrate deploy in $(pwd)"
             npx prisma migrate deploy
+            echo "Running npm run build in $(pwd)"
             npm run build
+            echo "Restarting application with pm2"
             pm2 restart cookbook
           EOF
