@@ -1,0 +1,47 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        working-directory: ./next-app
+        run: npm install
+
+      - name: Build the application
+        working-directory: ./next-app
+        run: npm run build
+
+      - name: Deploy to VPS
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_IP: ${{ secrets.VPS_IP }}
+          APP_DIR: ${{ secrets.APP_DIR }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $VPS_IP >> ~/.ssh/known_hosts
+          rsync -avz --exclude=node_modules --exclude=.git --exclude=dev.Dockerfile --exclude=prod.Dockerfile ./next-app/ $VPS_USER@$VPS_IP:$APP_DIR
+          ssh $VPS_USER@$VPS_IP << 'EOF'
+            cd $APP_DIR
+            npm install
+            npx prisma migrate deploy
+            npm run build
+            pm2 restart cookbook
+          EOF
