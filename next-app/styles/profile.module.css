@@ -1,0 +1,43 @@
+.profileWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.profilePicture {
+  border-radius: 50%;
+}
+
+.profileName {
+  margin-top: 20px;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.profileEmail {
+  margin-top: 0px;
+}
+
+.profileExpiration {
+  margin-top: 10px;
+}
+
+.profileLogInButton, .profileLogOutButton {
+  margin-top: 20px;
+  font-weight: 700;
+  padding: 15px 20px;
+  border-radius: 7px;
+  background-color: rgb(36, 92, 92);
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+.notSignedIn {
+  font-size: 20px;
+}

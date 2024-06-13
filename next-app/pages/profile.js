@@ -2,22 +2,56 @@ import Head from 'next/head';
 import Layout, { siteTitle } from '../components/layout';
 import { useSession } from "next-auth/react"
 import { signIn, signOut } from "next-auth/react"
+import styles from '@/styles/profile.module.css';
+import Image from 'next/image';
+
+function formatDateToHumanReadable(isoString) {
+  const date = new Date(isoString);
+  const options = { 
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', 
+    hour: 'numeric', minute: 'numeric', second: 'numeric',
+    timeZoneName: 'short' 
+  };
+  return date.toLocaleDateString('en-US', options);
+}
 
 function UserInfo({session, status}) {
   if (status !== "authenticated") {
-    return (
-      <p>Not signed in</p>
-    );
+    return <>
+      <div className={styles.notSignedIn}>Not signed in</div>
+      <button 
+        onClick={() => signIn('google')}
+        className={`${styles.profileLogInButton}`}
+      >
+        Log in
+      </button>
+    </>;
   }
 
-  return (
-    <div className="warning">
-      <p>Name: {session.user.name}</p>
-      <p>Email: {session.user.email}</p>
-      <p>Image: {session.user.image}</p>
-      <p>Expires: {session.expires}</p>
+  return <>
+    <Image
+      className={styles.profilePicture}
+      src={session.user.image}
+      height={200}
+      width={200}
+      alt="Profile picture"
+    />
+    <div className={styles.profileName}>
+      {session.user.name}
     </div>
-  );
+    <div className={styles.profileEmail}>
+      {session.user.email}
+    </div>
+    <div className={styles.profileExpiration}>
+      Session expires at: <b>{formatDateToHumanReadable(session.expires)}</b>
+    </div>
+    <button 
+      onClick={() => signOut('google')}
+      className={`${styles.profileLogOutButton}`}
+    >
+      Log out
+    </button>
+  </>;
 }
 
 export default function Profile() {
@@ -27,9 +61,9 @@ export default function Profile() {
       <Head>
         <title>{siteTitle}</title>
       </Head>
-      <UserInfo session={session} status={status}/>
-      <button onClick={() => signIn('google')}>Log in</button>
-      <button onClick={() => signOut('google')}>Log out</button>
+      <div className={styles.profileWrapper}>
+        <UserInfo session={session} status={status}/>
+      </div>
     </Layout>
   );
 }
