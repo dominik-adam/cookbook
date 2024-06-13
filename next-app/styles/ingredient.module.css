@@ -89,3 +89,54 @@
 .modalWindowBody {
     padding: 20px 50px;
 }
+
+.addToBagWrapper {
+    margin-left: auto;
+}
+
+.addToBagButton {
+    background-color: black;
+    border: 2px solid black;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    font-size: 30px;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.addToBagButtonWrapper:hover .addToBagPopup {
+    visibility: visible;
+    opacity: 1;
+}
+
+.addToBagButtonWrapper {
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 100%;
+}
+
+.addToBagButton.animated {
+    animation: brightenAndDarken 2.3s forwards;
+}
+
+@keyframes brightenAndDarken {
+    0% {
+      background-color: black;
+      color: white
+    }
+    5% {
+      background-color: white;
+      color: black
+    }
+    100% {
+      background-color: black;
+      color: white;
+    }
+  }

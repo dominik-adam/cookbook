@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import styles from '@/styles/ingredient.module.css';
+import { useFlashMessage } from '@/components/flashMessage/FlashMessageContext';
 
 export default function Ingredient({ 
   ingredient, 
@@ -11,15 +12,22 @@ export default function Ingredient({
   initState = false, 
   handleToggle = (a, b) => {}
 }) {
+  const { showMessage } = useFlashMessage();
 
   const { id: ingredientId, name: ingredientName, image: ingredientImage } = ingredient;
   const { name: unitName, plural: unitPluralName } = unit;
 
   const [isChecked, setIsChecked] = useState(initState);
+  const [wasAdded, setWasAdded] = useState(false);
 
   const toggleCheck = () => {
     handleToggle(ingredientId, !isChecked);
     setIsChecked(!isChecked);
+  }
+
+  const addToBag = () => {
+    setWasAdded(true);
+    showMessage(`${ingredientName} was added to the bag`, 'success');
   }
 
   return (
@@ -42,6 +50,19 @@ export default function Ingredient({
             {amount && multiplier ? amount * multiplier : ""} {amount && amount > 1 ? unitPluralName : unitName} {instruction}
           </span>
         )}
+      </div>
+      <div className={styles.addToBagWrapper}>
+        <div className={styles.addToBagButtonWrapper}>
+          <button 
+            className={`${styles.addToBagButton} ${wasAdded ? styles.animated : null}`} 
+            onClick={addToBag}
+            onAnimationEnd={() => setWasAdded(false)}
+            // onMouseEnter={() => showMessage(`Add ${ingredientName} to the bag`, 'warning')}
+            // onMouseLeave={() => clearMessage()}
+          >
+            +
+          </button>
+        </div>
       </div>
     </div>
   );
