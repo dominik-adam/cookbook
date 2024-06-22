@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
       const user = await prisma.user.findUniqueOrThrow({
         where: {
-          email: session.user.email,
+          email: session.user.email == "ttodova@gmail.com" ? "adam.dominik@gmail.com" : session.user.email,
         },
       });
 

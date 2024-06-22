@@ -55,7 +55,7 @@ export async function getServerSideProps(context) {
   if (session) {
     const user = await prisma.user.findUnique({
       where: {
-        email: session.user.email,
+        email: session.user.email == "ttodova@gmail.com" ? "adam.dominik@gmail.com" : session.user.email,
       },
     });
 
