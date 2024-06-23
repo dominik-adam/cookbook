@@ -28,7 +28,7 @@ export async function POST(req) {
 
     const bagIngredient = await prisma.bagIngredient.findUnique({
       where: {
-        id: {
+        bagIngredientId: {
           userId: user.id,
           ingredientId: ingredientId,
           unitId: unitId
@@ -47,7 +47,7 @@ export async function POST(req) {
   
         await prisma.bagIngredient.update({
           where: {
-            id: {
+            bagIngredientId: {
               userId: user.id,
               ingredientId: ingredientId,
               unitId: unitId

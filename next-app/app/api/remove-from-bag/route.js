@@ -26,7 +26,7 @@ export async function DELETE(req) {
 
     await prisma.bagIngredient.delete({
       where: {
-        id: {
+        bagIngredientId: {
           userId: user.id,
           ingredientId: ingredientId,
           unitId: unitId
