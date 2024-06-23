@@ -15,12 +15,6 @@
     margin: 3rem 0 0;
 }
 
-.menu {
-    width: 100px;
-    position: fixed;
-    height: 100%;
-}
-
 .notMenu {
     margin-left: 100px;
 }
@@ -29,5 +23,9 @@
     .container {
         display: table;
         margin: 2rem auto 6rem;
+    }
+
+    .notMenu {
+        margin-left: 0;
     }
 }

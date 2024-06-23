@@ -1,6 +1,9 @@
 .menu {
     background-color: rgb(41, 41, 41);
     padding: 4rem 20px;
+    width: 100px;
+    position: fixed;
+    height: 100%;
 }
 
 .menuButton {
@@ -18,3 +21,16 @@
 
 .menuButtonImage {
 }
+
+@media only screen and (max-width: 600px) {
+    .menu {
+        height: auto;
+        width: 100%;
+        padding: 20px 0 10px 0;
+        bottom: 0;
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+    }
+  }

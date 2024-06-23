@@ -16,7 +16,19 @@ export default function Layout({ children, pageTitle }) {
         <meta name="og:title" content={siteTitle} />
       </Head>
       <div className={styles.wrapper}>
-        <div className={`${styles.menu} ${menuStyles.menu}`}>
+        <div className={styles.notMenu}>
+          <div className={styles.container}>
+            <header className={styles.header}>
+              {pageTitle && (
+                <>
+                  <h1 className={`${utilStyles.heading2Xl} ${utilStyles.marginBottom30}`}>{name}</h1>
+                </>
+              )}
+            </header>
+            <main>{children}</main>
+          </div>
+        </div>
+        <div className={`${menuStyles.menu}`}>
           <MenuButton 
             title={"Profile"} 
             url={"/profile"} 
@@ -32,18 +44,6 @@ export default function Layout({ children, pageTitle }) {
             url={"/bag"} 
             image={"/icons/shopping-bag.png"}
           />
-        </div>
-        <div className={styles.notMenu}>
-          <div className={styles.container}>
-            <header className={styles.header}>
-              {pageTitle && (
-                <>
-                  <h1 className={`${utilStyles.heading2Xl} ${utilStyles.marginBottom30}`}>{name}</h1>
-                </>
-              )}
-            </header>
-            <main>{children}</main>
-          </div>
         </div>
       </div>
     </div>
