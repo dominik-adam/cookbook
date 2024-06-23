@@ -58,7 +58,7 @@ export default function MeasurementAndInstructions({
             <input
               type="number"
               className={styles.amountInput}
-              onChange={(event) => setAmount(parseInt(event.target.value))}
+              onChange={(event) => setAmount(parseFloat(event.target.value))}
               placeholder="Enter a number"
             />
           </div>

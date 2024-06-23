@@ -45,7 +45,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  shoppingBag ShoppingBag?
+  bagIngredients BagIngredient[]
   recipeIngredientState RecipeIngredientState[]
   accounts      Account[]
   sessions      Session[]
@@ -87,7 +87,7 @@ model RecipeIngredient {
   recipeId String
   ingredientId String
   unitId String
-  amount Int?
+  amount Float?
   instruction String?
   recipe Recipe @relation(fields: [recipeId], references: [id])
   ingredient Ingredient @relation(fields: [ingredientId], references: [id])
@@ -126,21 +126,15 @@ model RecipeIngredientState {
   @@unique(fields: [recipeId, userId], name: "id")
 }
 
-model ShoppingBag {
-  id String @id @default(cuid())
-  userId String @unique
-  user User @relation(fields: [userId], references: [id])
-  ingredients BagIngredient[]
-}
-
 model BagIngredient {
-  id String @id @default(cuid())
-  shoppingBagId String
+  userId String
   ingredientId String
   unitId String
-  amount Int
-  instruction String
-  shoppingBag ShoppingBag @relation(fields: [shoppingBagId], references: [id])
+  amount Float?
+  note String?
+  user User @relation(fields: [userId], references: [id])
   ingredient Ingredient @relation(fields: [ingredientId], references: [id])
   unit MeasurementUnit @relation(fields: [unitId], references: [id])
+
+  @@unique(fields: [userId, ingredientId, unitId], name: "id")
 }

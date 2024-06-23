@@ -16,12 +16,13 @@ import { PrismaClient } from "@prisma/client"
 import { useRouter } from 'next/router';
 import { isAdmin } from '@/utils/auth.js';
 
-const prisma = new PrismaClient()
 
 export async function getServerSideProps(context) {
   const { params, req, res } = context;
   const { slug } = params;
-
+  
+  const prisma = new PrismaClient()
+  
   const recipe = await prisma.recipe.findUnique({
     where: {
       slug: slug,
@@ -97,8 +98,6 @@ export default function Recipe({ recipe, sliderState, ingredientState, isAdmin }
   const editRecipe = () => {
     router.push(`/recipes/add-new/${recipe.slug}`);
   };
-
-  console.log(recipe.ingredients);
 
   return (
     <Layout pageTitle={recipe.title}>

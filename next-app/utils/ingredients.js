@@ -27,3 +27,24 @@ export async function updateRecipeState(updatedState) {
     body: JSON.stringify(updatedState),
   });
 };
+
+export async function addIngredientToBag(ingredient) {
+  const response = await fetch('/api/add-to-bag', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(ingredient),
+  });
+  return response;
+};
+
+export async function removeBagIngredient(ingredientId, unitId) {
+  const response = await fetch('/api/remove-from-bag?ingredientId=' + ingredientId + '&unitId=' + unitId, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+  return response;
+};

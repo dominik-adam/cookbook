@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import styles from '@/styles/ingredient.module.css';
 import { useFlashMessage } from '@/components/flashMessage/FlashMessageContext';
+import { addIngredientToBag } from '@/utils/ingredients';
 
 export default function Ingredient({ 
   ingredient, 
@@ -15,7 +16,7 @@ export default function Ingredient({
   const { showMessage } = useFlashMessage();
 
   const { id: ingredientId, name: ingredientName, image: ingredientImage } = ingredient;
-  const { name: unitName, plural: unitPluralName } = unit;
+  const { id: unitId, name: unitName, plural: unitPluralName } = unit;
 
   const [isChecked, setIsChecked] = useState(initState);
   const [wasAdded, setWasAdded] = useState(false);
@@ -25,9 +26,14 @@ export default function Ingredient({
     setIsChecked(!isChecked);
   }
 
-  const addToBag = () => {
+  const addToBag = async () => {
     setWasAdded(true);
-    showMessage(`${ingredientName} was added to the bag`, 'success');
+    const response = await addIngredientToBag({ingredientId, unitId, amount});
+    if (response.ok) {
+      showMessage(`${ingredientName} was added to the bag`, 'success');
+    } else {
+      showMessage(`${ingredientName} could not be added to the bag`, 'error');
+    }
   }
 
   return (
