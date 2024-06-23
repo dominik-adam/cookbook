@@ -4,6 +4,7 @@
     width: 100px;
     position: fixed;
     height: 100%;
+    top: 0;
 }
 
 .menuButton {
@@ -27,6 +28,7 @@
         height: auto;
         width: 100%;
         padding: 20px 0 10px 0;
+        top: unset;
         bottom: 0;
         position: fixed;
         display: flex;
