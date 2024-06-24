@@ -1,49 +1,64 @@
 import Image from 'next/image';
-import { useState } from 'react';
-import styles from '@/styles/ingredient.module.css';
+import { useState, useEffect } from 'react';
+import styles from '@/styles/adminIngredientsModal.module.css';
 import SelectIngredient from './add-new-recipe/modal/selectIngredient';
 import AddNewIngredient from './add-new-recipe/modal/addNewIngredient';
 import MeasurementAndInstructions from './add-new-recipe/modal/measurementAndInstructions';
 import { useFlashMessage } from '@/components/flashMessage/FlashMessageContext';
+import { ModalState } from '@/components/admin/add-new-recipe/modal/modalState'
 
-export default function AddIngredient({ serves, addIngredient }) {
+export default function AdminIngredientModal({ 
+	modalState,
+	modalIngredient,
+	setModalState,
+	setModalIngredient,
+	serves, 
+	addIngredient,
+	updateIngredient
+}) {
 
 	const { showMessage } = useFlashMessage();
 
-	const [isOpen, setIsOpen] = useState(false);
 	const [modalTitle, setModalTitle] = useState("Select ingredient")
-	
+
 	const [ingredient, setIngredient] = useState(undefined);
 	const [unit, setUnit] = useState(undefined);
 	const [amount, setAmount] = useState(undefined);
 	const [instruction, setInstruction] = useState("");
 
-	const openModal = () => {
-    setIsOpen(true);
-	}
+	const isOpen = modalState !== ModalState.CLOSED;
 
 	const closeModal = () => {
-		setIsOpen(false);
-		setModalTitle("Select ingredient");
-		setIngredient(undefined);
-		setUnit(undefined);
-		setAmount(undefined);
-		setInstruction(undefined);
+		setModalState(ModalState.CLOSED)
+    setModalIngredient(undefined)
+		setModalTitle("");
 	}
 
 	const selectIngredient = (ingredient) => {
 		setIngredient(ingredient);
 		setModalTitle("Measurement and Instructions");
+		setModalState(ModalState.MEASUREMENT_AND_INSTRUCTIONS);
 	}
 
 	const createNewIngredient = () => {
 		setModalTitle("Create new ingredient");
+		setModalState(ModalState.CREATE);
   }
 
   const backToIngredientSelection = () => {
     setModalTitle("Select ingredient");
+		setModalState(ModalState.SELECT);
     fetchIngredients(searchTerm);
   }
+
+	const updateIngredientWrapper = () => {
+		if (!unit) {
+			showMessage("Unit must be entered", "error");
+			return;
+		}
+		updateIngredient(ingredient, amount, unit, instruction);
+		closeModal();
+	}
 
   const addIngredientWrapper = () => {
 		if (!unit) {
@@ -59,25 +74,17 @@ export default function AddIngredient({ serves, addIngredient }) {
     closeModal();
   }
 
+	useEffect(() => {
+    if (modalIngredient) {
+      setIngredient(modalIngredient.ingredient);
+      setAmount(modalIngredient.amount);
+      setUnit(modalIngredient.unit);
+      setInstruction(modalIngredient.instruction);
+    }
+  }, [modalIngredient]);
+
   return (
 		<>
-			<div 
-				className={styles.addIngredient}
-				onClick={openModal}
-			>
-				<Image
-					className={styles.ingredientImage}
-					src={'/icons/plus.jpg'}
-					style={{objectFit: "cover", cursor: "pointer"}}
-					height={80}
-					width={80}
-				/>
-				<div className={styles.ingredientInfo}>
-					<span className={`${styles.ingredientName}`}>
-						Add ingredient
-					</span>
-				</div>
-			</div>
 			{isOpen && <div className={`${styles.modalWindow} ${isOpen ? styles.modalWindowOpened : null}`}>
 				<div className={styles.modalWindowContent}>
 					<div className={styles.modalWindowHeader}>
@@ -94,21 +101,26 @@ export default function AddIngredient({ serves, addIngredient }) {
 						/>
 					</div>
 					<div className={styles.modalWindowBody}>
-						{modalTitle === "Select ingredient" ?
+						{modalState == ModalState.SELECT ?
 							<SelectIngredient
                 selectIngredient={selectIngredient}
                 createNewIngredient={createNewIngredient}
-              /> : modalTitle === "Create new ingredient" ?
+              /> : modalState == ModalState.CREATE ?
 							<AddNewIngredient
                 backToIngredientSelection={backToIngredientSelection}
-              /> : modalTitle === "Measurement and Instructions" ?
+              /> : modalState == ModalState.MEASUREMENT_AND_INSTRUCTIONS || modalState == ModalState.UPDATE ?
 							<MeasurementAndInstructions
                 ingredient={ingredient}
+								amount={amount}
+								unit={unit}
+								instruction={instruction}
                 serves={serves}
                 setUnit={setUnit}
                 setAmount={setAmount}
                 setInstructions={setInstruction}
                 addIngredient={addIngredientWrapper}
+								isUpdate={modalState == ModalState.UPDATE}
+								updateIngredient={updateIngredientWrapper}
               /> :
 							<>
 								Nothing but ( . )( . )

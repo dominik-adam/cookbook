@@ -4,11 +4,16 @@ import { useState, useEffect } from 'react';
 
 export default function MeasurementAndInstructions({
   ingredient,
+  amount,
+  unit,
+  instruction,
   serves,
   setUnit,
   setAmount,
   setInstructions,
-  addIngredient
+  addIngredient,
+  isUpdate,
+  updateIngredient
 }) {
 
   const [units, setUnits] = useState([]);
@@ -36,8 +41,8 @@ export default function MeasurementAndInstructions({
         <div className={styles.ingredientImageWrapper}>
           <Image
             className={styles.ingredientImage}
-            src={ingredient.image}
-            alt={ingredient.title}
+            src={ingredient ? ingredient.image : ""}
+            alt={ingredient ? ingredient.title : ""}
             sizes="(max-width: 600px) 50vw, 20vw"
             style={{objectFit: "cover"}}
             quality={50}
@@ -46,7 +51,7 @@ export default function MeasurementAndInstructions({
           />
           <div className={styles.ingredientName}>
             <span>
-              {ingredient.name}
+              {ingredient ? ingredient.name : ""}
             </span>
           </div>
         </div>
@@ -58,6 +63,7 @@ export default function MeasurementAndInstructions({
             <input
               type="number"
               className={styles.amountInput}
+              value={isUpdate ? amount : undefined}
               onChange={(event) => setAmount(parseFloat(event.target.value))}
               placeholder="Enter a number"
             />
@@ -68,6 +74,7 @@ export default function MeasurementAndInstructions({
             </label>
             <select 
               className={styles.unitSelect}
+              value={unit ? unit.id : undefined}
               onChange={(event) => setUnit(units.find(unit => unit.id === event.target.value))}
             >
               <option value="">Select a measurement unit</option>
@@ -88,6 +95,7 @@ export default function MeasurementAndInstructions({
             <input
               className={styles.instructionInput}
               type="text"
+              value={isUpdate ? instruction : undefined}
               onChange={(event) => setInstructions(event.target.value)}
               placeholder="Enter an instruction"
             />
@@ -95,12 +103,21 @@ export default function MeasurementAndInstructions({
         </div>
       </div>
       <div className={styles.submitButtonWrapper}>
+        {isUpdate ?
+          <button 
+          className={styles.submitButton}
+          onClick={updateIngredient}
+        >
+          Update Ingredient
+        </button> 
+        :
         <button 
           className={styles.submitButton}
           onClick={addIngredient}
         >
           Add Ingredient
         </button>
+        }
       </div>
     </>
   );

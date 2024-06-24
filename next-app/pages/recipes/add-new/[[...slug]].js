@@ -89,6 +89,12 @@ export default function AddRecipe({ recipe }) {
     setIngredients([...ingredients, ingredient]);
   }
 
+  const updateIngredient = (index, ingredient) => {
+    const updatedIngredients = [...ingredients];
+    updatedIngredients[index] = ingredient;
+    setIngredients(updatedIngredients);
+  }
+
   const deleteIngredient = (index) => {
     const updatedIngredients = [...ingredients];
     updatedIngredients.splice(index, 1);
@@ -160,6 +166,7 @@ export default function AddRecipe({ recipe }) {
               setServes={setServes}
               ingredients={ingredients}
               addIngredient={addIngredient}
+              updateIngredient={updateIngredient}
               deleteIngredient={deleteIngredient}
             />
           </div>
