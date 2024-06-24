@@ -41,7 +41,10 @@ export default function AdminIngredient({
         height={80}
         width={80}
         alt={ingredientName}
-        onClick={handleDelete}
+        onClick={(event) => {
+          event.stopPropagation();
+          handleDelete(event);
+        }}
         onMouseEnter={toggleDeleteHover}
         onMouseLeave={toggleDeleteHover}
       />
