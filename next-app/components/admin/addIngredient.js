@@ -4,8 +4,11 @@ import styles from '@/styles/ingredient.module.css';
 import SelectIngredient from './add-new-recipe/modal/selectIngredient';
 import AddNewIngredient from './add-new-recipe/modal/addNewIngredient';
 import MeasurementAndInstructions from './add-new-recipe/modal/measurementAndInstructions';
+import { useFlashMessage } from '@/components/flashMessage/FlashMessageContext';
 
 export default function AddIngredient({ serves, addIngredient }) {
+
+	const { showMessage } = useFlashMessage();
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [modalTitle, setModalTitle] = useState("Select ingredient")
@@ -43,6 +46,10 @@ export default function AddIngredient({ serves, addIngredient }) {
   }
 
   const addIngredientWrapper = () => {
+		if (!unit) {
+			showMessage("Unit must be entered", "error");
+			return;
+		}
     addIngredient({
       ingredient,
       amount,
