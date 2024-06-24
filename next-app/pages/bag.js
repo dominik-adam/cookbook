@@ -43,13 +43,17 @@ export async function getServerSideProps(context) {
       }
     }
   }
+
+  return {
+    props: {}
+  }
 }
 
 export default function ShoppingBag({bagIngredients: initBagIngredients}) {
 
   const { showMessage } = useFlashMessage();
 
-  const [bagIngredients, setBagIngredients] = useState(initBagIngredients);
+  const [bagIngredients, setBagIngredients] = useState(initBagIngredients ?? []);
 
   const removeIngredient = (key) => async (ingredientId, ingredientName, unitId) => {
     const response = await removeBagIngredient(ingredientId, unitId);
