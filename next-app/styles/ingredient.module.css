@@ -48,6 +48,10 @@
     margin-bottom: 20px;
 }
 
+.addToBagWrapper {
+    margin-left: auto;
+}
+
 .addToBagButton {
     background-color: black;
     border: 2px solid black;
