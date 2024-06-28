@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   const session = await getServerSession(options);
+  const prisma = new PrismaClient();
 
   try {
     if (!session) {
@@ -18,7 +19,6 @@ export async function POST(req) {
     } = await req.json();
     // TODO add validation
     
-    const prisma = new PrismaClient();
 
     const user = await prisma.user.findUniqueOrThrow({
       where: {
@@ -77,5 +77,7 @@ export async function POST(req) {
   } catch (error) {
     // TODO add general error message, specific is for debugging only 
     return NextResponse.json({ error: error.message }, { status: 500});
+  } finally {
+    await prisma.$disconnect();
   }
 }

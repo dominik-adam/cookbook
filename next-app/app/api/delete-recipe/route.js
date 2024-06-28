@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(req) {
   const session = await getServerSession(options);
+  const prisma = new PrismaClient();
 
   try {
     if (!session) {
@@ -15,7 +16,6 @@ export async function DELETE(req) {
     const recipeId = searchParams.get('recipeId');
     // TODO add validation
 
-    const prisma = new PrismaClient();
 
     await prisma.recipe.delete({
       where: {
@@ -26,5 +26,7 @@ export async function DELETE(req) {
     return NextResponse.json({});
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500});
+  } finally {
+    await prisma.$disconnect();
   }
 }

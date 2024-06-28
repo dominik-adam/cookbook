@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(req) {
   const session = await getServerSession(options);
+  const prisma = new PrismaClient();
 
   try {
     if (!session) {
@@ -16,7 +17,6 @@ export async function DELETE(req) {
     const unitId = searchParams.get('unitId');
     // TODO add validation
 
-    const prisma = new PrismaClient();
 
     const user = await prisma.user.findUniqueOrThrow({
       where: {
@@ -37,5 +37,7 @@ export async function DELETE(req) {
     return NextResponse.json({});
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500});
+  } finally {
+    await prisma.$disconnect();
   }
 }

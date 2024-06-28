@@ -10,32 +10,35 @@ export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, options)
   const prisma = new PrismaClient();
 
-  const recipes = await prisma.recipe.findMany({
-    where: {
-      title: {
-        contains: context.query.s,
-        mode: 'insensitive'
+  try {
+    const recipes = await prisma.recipe.findMany({
+      where: {
+        title: {
+          contains: context.query.s,
+          mode: 'insensitive'
+        }
+      },
+      orderBy: {
+        title: 'asc'
       }
-    },
-    orderBy: {
-      title: 'asc'
+    });
+  
+    if (session && isAdmin(session.user.email)) {
+      const addNew = {
+        slug: "add-new",
+        title: "Add new recipe",
+        thumbnail: "/images/add-new.jpg"
+      }
+      recipes.unshift(addNew)
     }
-  });
-
-  if (session && isAdmin(session.user.email)) {
-    const addNew = {
-      slug: "add-new",
-      title: "Add new recipe",
-      thumbnail: "/images/add-new.jpg"
-    }
-    recipes.unshift(addNew)
+    return {
+      props: {
+        initRecipes: recipes,
+      },
+    };
+  } finally {
+    await prisma.$disconnect();
   }
-
-  return {
-    props: {
-      initRecipes: recipes,
-    },
-  };
 }
 
 export default function Home({initRecipes}) {

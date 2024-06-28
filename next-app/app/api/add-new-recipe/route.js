@@ -7,6 +7,7 @@ import cuid from 'cuid';
 
 export async function POST(req) {
   const session = await getServerSession(options)
+  const prisma = new PrismaClient();
 
   try {
     if (!session || !isAdmin(session.user.email)) {
@@ -28,7 +29,6 @@ export async function POST(req) {
     } = await req.json();
     // TODO add validation
 
-    const prisma = new PrismaClient();
 
     var recipe;
     
@@ -104,5 +104,7 @@ export async function POST(req) {
   } catch (error) {
     // TODO add general error message, specific is for debugging only 
     return NextResponse.json({ error: error.message }, { status: 500});
+  } finally {
+    await prisma.$disconnect();
   }
 }

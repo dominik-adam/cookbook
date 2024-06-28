@@ -16,15 +16,16 @@ import AdminInfo from '@/components/admin/add-new-recipe/adminInfo';
 import { useFlashMessage } from '@/components/flashMessage/FlashMessageContext';
 import { isAdmin } from '@/utils/auth.js';
 
-const prisma = new PrismaClient()
 
 export async function getServerSideProps(context) {
   const { params, req, res } = context;
   const { slug } = params;
-
+  
   const session = await getServerSession(req, res, options)
+  const prisma = new PrismaClient()
 
   if (!session || !isAdmin(session.user.email)) {
+    await prisma.$disconnect();
     return {
       redirect: {
         destination: '/',
@@ -34,6 +35,7 @@ export async function getServerSideProps(context) {
   }
 
   if (!slug) {
+    await prisma.$disconnect();
     return {
       props: {},
     };
@@ -55,6 +57,8 @@ export async function getServerSideProps(context) {
       },
     },
   });
+
+  await prisma.$disconnect();
 
   if (!recipe) {
     return {

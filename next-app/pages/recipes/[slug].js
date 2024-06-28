@@ -22,65 +22,69 @@ export async function getServerSideProps(context) {
   const { slug } = params;
   
   const prisma = new PrismaClient()
-  
-  const recipe = await prisma.recipe.findUnique({
-    where: {
-      slug: slug,
-    },
-    include: {
-      ingredients: {
-        include: {
-          ingredient: true,
-          unit: true,
-        },
-        orderBy: {
-          id: 'asc'
-        }
-      },
-    },
-  });
 
-  const processedContent = await remark()
-    .use(html)
-    .process(recipe.instructions);
-  recipe.instructions = processedContent.toString();
-
-  if (!recipe) {
-    return {
-      notFound: true,
-    };
-  }
-
-  const session = await getServerSession(req, res, options);
-
-  if (session) {
-    const user = await prisma.user.findUnique({
+  try {
+    const recipe = await prisma.recipe.findUnique({
       where: {
-        email: session.user.email == "ttodova@gmail.com" ? "adam.dominik@gmail.com" : session.user.email,
+        slug: slug,
+      },
+      include: {
+        ingredients: {
+          include: {
+            ingredient: true,
+            unit: true,
+          },
+          orderBy: {
+            id: 'asc'
+          }
+        },
       },
     });
-
-    if (user) {
-      const initIngredientState = await prisma.recipeIngredientState.findUnique({
+  
+    const processedContent = await remark()
+      .use(html)
+      .process(recipe.instructions);
+    recipe.instructions = processedContent.toString();
+  
+    if (!recipe) {
+      return {
+        notFound: true,
+      };
+    }
+  
+    const session = await getServerSession(req, res, options);
+  
+    if (session) {
+      const user = await prisma.user.findUnique({
         where: {
-          id: {
-            userId: user.id,
-            recipeId: recipe.id,
-          },
+          email: session.user.email == "ttodova@gmail.com" ? "adam.dominik@gmail.com" : session.user.email,
         },
       });
-
-      if (initIngredientState) {
-        return {
-          props: {
-            recipe,
-            sliderState: initIngredientState.serves,
-            ingredientState: initIngredientState.state,
-            isAdmin: isAdmin(session.user.email)
+  
+      if (user) {
+        const initIngredientState = await prisma.recipeIngredientState.findUnique({
+          where: {
+            id: {
+              userId: user.id,
+              recipeId: recipe.id,
+            },
           },
-        };
+        });
+  
+        if (initIngredientState) {
+          return {
+            props: {
+              recipe,
+              sliderState: initIngredientState.serves,
+              ingredientState: initIngredientState.state,
+              isAdmin: isAdmin(session.user.email)
+            },
+          };
+        }
       }
     }
+  } finally {
+    await prisma.$disconnect();
   }
 
   return {

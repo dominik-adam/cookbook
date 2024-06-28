@@ -6,12 +6,12 @@ import { isAdmin } from '@/utils/auth.js';
 
 export async function GET(req) {
   const session = await getServerSession(options);
+  const prisma = new PrismaClient();
 
   try {
     const searchParams = req.nextUrl.searchParams
     const s = searchParams.get('s')
 
-    const prisma = new PrismaClient();
     const recipes = await prisma.recipe.findMany({
       where: {
         title: {
@@ -36,5 +36,7 @@ export async function GET(req) {
     return NextResponse.json({ recipes });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500});
+  } finally {
+    await prisma.$disconnect();
   }
 }

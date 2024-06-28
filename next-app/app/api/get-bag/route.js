@@ -5,13 +5,13 @@ import { NextResponse } from "next/server";
 
 export async function GET(req) {
   const session = await getServerSession(options);
+  const prisma = new PrismaClient();
 
   try {
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401});
     }
 
-    const prisma = new PrismaClient();
 
     const user = await prisma.user.findUniqueOrThrow({
       where: {
@@ -28,5 +28,7 @@ export async function GET(req) {
     return NextResponse.json({ bagIngredients });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500});
+  } finally {
+    await prisma.$disconnect();
   }
 }

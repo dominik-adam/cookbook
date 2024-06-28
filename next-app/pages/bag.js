@@ -13,34 +13,38 @@ export async function getServerSideProps(context) {
   const { params, req, res } = context;
 
   const session = await getServerSession(req, res, options);
+  const prisma = new PrismaClient();
 
   if (session) {
-    const prisma = new PrismaClient();
 
-    const user = await prisma.user.findUnique({
-      where: {
-        email: session.user.email == "ttodova@gmail.com" ? "adam.dominik@gmail.com" : session.user.email,
-      },
-    });
-
-    if (user) {
-      const bagIngredients = await prisma.bagIngredient.findMany({
+    try {    
+      const user = await prisma.user.findUnique({
         where: {
-          userId: user.id,
-        },
-        include: {
-          ingredient: true,
-          unit: true
+          email: session.user.email == "ttodova@gmail.com" ? "adam.dominik@gmail.com" : session.user.email,
         },
       });
-
-      if (bagIngredients != null) {
-        return {
-          props: {
-            bagIngredients
+  
+      if (user) {
+        const bagIngredients = await prisma.bagIngredient.findMany({
+          where: {
+            userId: user.id,
+          },
+          include: {
+            ingredient: true,
+            unit: true
+          },
+        });
+  
+        if (bagIngredients != null) {
+          return {
+            props: {
+              bagIngredients
+            }
           }
         }
       }
+    } finally {
+      await prisma.$disconnect();
     }
   }
 
