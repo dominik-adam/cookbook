@@ -143,6 +143,33 @@ export default function AddRecipe({ recipe }) {
     }
   };
 
+  const deleteRecipte = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('/api/delete-recipe?recipeId=' + recipe.id, {
+        method: 'DELETE',
+        headers: {
+        'Content-Type': 'application/json',
+        }
+      });
+
+      if (response.ok) {
+        if (recipe?.id) {
+          showMessage('Recipe updated successfully', 'success');
+        } else {
+          showMessage('Recipe created successfully', 'success');
+        }
+        router.push('/');
+      } else {
+        const { error } = await response.json();
+        showMessage(`Error: ${error}`, 'error');
+      }
+    } catch (error) {
+      showMessage('Error sending request', 'error');
+    }
+  }
+
   return (
     <Layout pageTitle={"Add new recipe"}>
       <Head>
@@ -190,6 +217,12 @@ export default function AddRecipe({ recipe }) {
           // disabled={!newIngredientName || !newIngredientImage}
         >
           Save Recipe
+        </button>
+        <button 
+          className={adminStyles.deleteButton}
+          onClick={deleteRecipte}
+        >
+          Delete Recipe
         </button>
       </div>
     </Layout>

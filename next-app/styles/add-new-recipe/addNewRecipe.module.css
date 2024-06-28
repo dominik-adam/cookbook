@@ -12,7 +12,19 @@
     cursor: pointer;
 }
 
-.submitButton:disabled {
+.deleteButton {
+    font-weight: 700;
+    padding: 15px 20px;
+    border-radius: 7px;
+    
+    background-color: rgb(165, 13, 13);
+    border: none;
+    color: white;
+
+    cursor: pointer;
+}
+
+.submitButton:disabled, .deleteButton:disabled {
     background-color: rgb(32, 41, 41);
     border: none;
 }
@@ -21,4 +33,6 @@
     position: fixed;
     bottom: 70px;
     right: 100px;
+    display: flex;
+    gap: 10px;
 }

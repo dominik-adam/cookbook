@@ -4,7 +4,8 @@ When deploying to production, set the NEXTAUTH_URL environment variable to the c
 NEXTAUTH_URL=https://example.com
 
 npx prisma migrate dev --name init
-npx migrate dev
+npx prisma generate
+
 npx prisma studio
 
 # VS CODE BUILD

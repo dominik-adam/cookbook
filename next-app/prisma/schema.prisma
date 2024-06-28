@@ -65,7 +65,7 @@ model Recipe {
   title String
   serves Int
   thumbnail String?
-  instructions String
+  instructions String?
   video String?
   link String?
   gallery Image[]
@@ -89,7 +89,7 @@ model RecipeIngredient {
   unitId String
   amount Float?
   instruction String?
-  recipe Recipe @relation(fields: [recipeId], references: [id])
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   ingredient Ingredient @relation(fields: [ingredientId], references: [id])
   unit MeasurementUnit @relation(fields: [unitId], references: [id])
 }
@@ -119,7 +119,7 @@ model RecipeIngredientState {
   recipeId String
   userId String
   user User @relation(fields: [userId], references: [id])
-  recipe Recipe @relation(fields: [recipeId], references: [id])
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   serves Int?
   state String?
 
