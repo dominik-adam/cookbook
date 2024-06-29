@@ -56,6 +56,7 @@ export default function BagIngredient({
         alt={ingredientName}
         onClick={(event) => {
           event.stopPropagation();
+          setIsEdit(false);
           handleRemove(ingredientId, ingredientName, unitId)
         }}
         onMouseEnter={toggleHover}

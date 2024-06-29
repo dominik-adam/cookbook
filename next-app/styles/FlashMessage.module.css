@@ -64,3 +64,54 @@
     transform: translateX(-50%) scale(0.8); /* End slightly smaller */
   }
 }
+
+
+@media only screen and (max-width: 600px) {
+  .flashMessage {
+    top: -50px;
+    bottom: unset;
+    animation: slideInFromTop 0.5s ease forwards;
+    width: 70%;
+    text-align: center;
+    padding: 10px 20px;
+  }
+  .inactive {
+    animation: slideOutToTop 0.5s ease forwards;
+  }
+  
+@keyframes slideInFromTop {
+  0% {
+    top: -50px;
+    opacity: 0;
+    transform: translateX(-50%) scale(0.8); /* Start slightly smaller */
+  }
+  50% {
+    top: 20px;
+    opacity: 1;
+    transform: translateX(-50%) scale(1.05); /* Enlarge slightly */
+  }
+  100% {
+    top: 20px;
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+@keyframes slideOutToTop {
+  0% {
+    top: 20px;
+    opacity: 1;
+    transform: translateX(-50%) scale(1); /* Start at normal size */
+  }
+  50% {
+    top: 20px;
+    opacity: 1;
+    transform: translateX(-50%) scale(1.05); /* Enlarge slightly */
+  }
+  100% {
+    top: -50px;
+    opacity: 0;
+    transform: translateX(-50%) scale(0.8); /* End slightly smaller */
+  }
+}
+}

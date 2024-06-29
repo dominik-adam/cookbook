@@ -150,3 +150,36 @@
     justify-content: end;
     margin-top: 20px;
 }
+
+@media only screen and (max-width: 600px) {
+    .bagIngredients {
+        flex-direction: column;
+        margin-top: 20px;
+    }
+
+    .ingredient {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+
+    .ingredientName {
+        font-size: 1rem;
+        line-height: 1;
+        font-weight: 700;
+    }
+
+    .amountInput, .noteInput {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+    
+    .inputLabel {
+        font-size: 0.8rem;
+        padding-bottom: 2px;
+    }
+
+    .saveButton, .cancelButton {
+        padding: 5px 20px;
+    }
+}
