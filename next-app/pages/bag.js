@@ -3,6 +3,7 @@ import Layout, { siteTitle } from '../components/layout';
 import { getServerSession } from "next-auth/next";
 import { options } from 'app/api/auth/[...nextauth]/options'
 import { PrismaClient } from "@prisma/client"
+import styles from '@/styles/bagIngredients.module.css';
 
 import BagIngredient from '@/components/bag/bagIngredient';
 import { useState } from 'react';
@@ -76,7 +77,7 @@ export default function ShoppingBag({bagIngredients: initBagIngredients}) {
       <Head>
         <title>{siteTitle}</title>
       </Head>
-      <ul>
+      <div className={styles.bagIngredients}>
         {bagIngredients.map(( bagIngredient, i ) => (
           <BagIngredient 
             key={i}
@@ -84,7 +85,7 @@ export default function ShoppingBag({bagIngredients: initBagIngredients}) {
             handleRemove={removeIngredient(i)}
           />
         ))}   
-      </ul>
+      </div>
     </Layout>
   );
 }

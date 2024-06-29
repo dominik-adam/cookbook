@@ -39,6 +39,17 @@ export async function addIngredientToBag(ingredient) {
   return response;
 };
 
+export async function updateBagIngredient(ingredient) {
+  const response = await fetch('/api/update-bag-ingredient', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(ingredient),
+  });
+  return response;
+};
+
 export async function removeBagIngredient(ingredientId, unitId) {
   const response = await fetch('/api/remove-from-bag?ingredientId=' + ingredientId + '&unitId=' + unitId, {
     method: 'DELETE',

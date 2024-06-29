@@ -1,0 +1,152 @@
+.container {
+    padding: 0;
+}
+
+.bagIngredients {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 0 20px;
+}
+
+.ingredient {
+    flex: 0 0 calc(33.33% - 20px);
+    box-sizing: border-box; 
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-radius: 20px;
+    transition: background-color 0.2s;
+    margin-bottom: 20px;
+    padding: 30px 20px;
+    background-color: rgb(179, 228, 228);
+    color: black;
+    width: 30%;
+}
+
+.ingredient:hover {
+    background-color: rgb(61, 61, 61);
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.2s;
+}
+
+.editOn {
+    background-color: rgb(61, 61, 61);
+    color: white;
+}
+
+.editInfo {
+    flex: 1 1 100%;
+}
+
+.ingredientCanUpdate {
+    transition: background-color 0.2s;
+    background-color: white;
+    cursor: pointer;
+}
+
+.ingredientImage {
+    border-radius: 100%;
+}
+
+.crossedOut {
+    text-decoration: line-through 3px;
+}
+
+.ingredientInfo span {
+    width: 100%;
+    display: inline-block;
+}
+
+.ingredientName {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    font-weight: 700;
+}
+
+/* Edit bag ingredient */
+
+.amountInput {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 7px;
+    border: 3px solid rgb(179, 228, 228);
+    width: 100%;
+}
+
+.noteInput {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 7px;
+    border: 3px solid rgb(179, 228, 228);
+    width: 100%;
+}
+
+.amountInput:focus-visible, 
+.noteInput:focus-visible {
+    border: 3px solid rgb(179, 228, 228);
+    outline: none;
+}
+
+.inputLabel {
+    font-weight: 700;
+    padding-bottom: 5px;
+}
+
+.amountWrapper,
+.noteWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+}
+
+.amountAndUnitWrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.unitWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    font-weight: 700;
+}
+
+.saveButton {
+    font-weight: 700;
+    padding: 15px 20px;
+    border-radius: 7px;
+    
+    background-color: rgb(13, 165, 20);
+    border: none;
+    color: white;
+
+    cursor: pointer;
+}
+
+.cancelButton {
+    font-weight: 700;
+    padding: 15px 20px;
+    border-radius: 7px;
+    
+    background-color: rgb(165, 13, 13);
+    border: none;
+    color: white;
+
+    cursor: pointer;
+}
+
+.saveButton:disabled, .cancelButton:disabled {
+    background-color: rgb(32, 41, 41);
+    border: none;
+}
+
+.buttonWrapper {
+    display: flex;
+    gap: 10px;
+    justify-content: end;
+    margin-top: 20px;
+}
