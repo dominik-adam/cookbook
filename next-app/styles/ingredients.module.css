@@ -5,7 +5,6 @@
 .ingredients {
     padding: 20px 0;
     background-color: rgb(179, 228, 228);
-    border-radius: 0 0 20px 20px;
 }
 
 .ingredients ul {
@@ -36,24 +35,55 @@
     /* opacity: 0.7; */
     /* -webkit-transition: .2s; */
     /* transition: opacity .2s; */
-  }
-  
-  .slider:hover {
-    opacity: 1;
-  }
-  
-  .slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 25px;
-    height: 25px;
-    background: rgb(179, 228, 228);
-    cursor: pointer;
-  }
-  
-  .slider::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
-    background: rgb(179, 228, 228);
-    cursor: pointer;
-  }
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: rgb(179, 228, 228);
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: rgb(179, 228, 228);
+  cursor: pointer;
+}
+
+.actions {
+  border-radius: 0 0 20px 20px;
+  background-color: black;
+  color: white;
+}
+
+.addToBagButton, .clearButton {
+  padding: 20px 40px;
+  background-color: black;
+  color: white;
+  font-weight: 700;
+  font-size: 22px;
+  width: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.addToBagButton:hover, .clearButton:hover {
+  background-color: white;
+  color: black;
+  transition: background-color 0.2s;
+}
+
+.addToBagButton {
+  border-radius: 0 0 20px 0;
+}
+
+.clearButton {
+  border-radius: 0 0 0 20px;
+}

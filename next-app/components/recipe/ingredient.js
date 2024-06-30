@@ -10,7 +10,7 @@ export default function Ingredient({
   unit, 
   instruction, 
   multiplier = 1, 
-  initState = false, 
+  isChecked, 
   handleToggle = (a, b) => {}
 }) {
   const { showMessage } = useFlashMessage();
@@ -18,13 +18,7 @@ export default function Ingredient({
   const { id: ingredientId, name: ingredientName, image: ingredientImage } = ingredient;
   const { id: unitId, name: unitName, plural: unitPluralName } = unit;
 
-  const [isChecked, setIsChecked] = useState(initState);
   const [wasAdded, setWasAdded] = useState(false);
-
-  const toggleCheck = () => {
-    handleToggle(ingredientId, !isChecked);
-    setIsChecked(!isChecked);
-  }
 
   const addToBag = async () => {
     setWasAdded(true);
@@ -45,7 +39,7 @@ export default function Ingredient({
         height={80}
         width={80}
         alt={ingredientName}
-        onClick={toggleCheck}
+        onClick={() => handleToggle(ingredientId, !isChecked)}
       />
       <div className={styles.ingredientInfo}>
         <span className={`${styles.ingredientName} ${isChecked ? styles.crossedOut : null}`}>

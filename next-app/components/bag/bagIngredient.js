@@ -95,15 +95,6 @@ export default function BagIngredient({
           </div>
           <div className={styles.buttonWrapper}>
             <button
-              className={styles.saveButton}
-              onClick={(event) => {
-                event.stopPropagation();
-                editBagIngredient()
-              }}
-            >
-              Save
-            </button>
-            <button
               className={styles.cancelButton}
               onClick={(event) => {
                 event.stopPropagation();
@@ -111,6 +102,15 @@ export default function BagIngredient({
               }}
             >
               Cancel
+            </button>
+            <button
+              className={styles.saveButton}
+              onClick={(event) => {
+                event.stopPropagation();
+                editBagIngredient()
+              }}
+            >
+              Save
             </button>
           </div>
         </div> 

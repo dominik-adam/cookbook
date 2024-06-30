@@ -83,16 +83,15 @@ export async function getServerSideProps(context) {
         }
       }
     }
+    return {
+      props: {
+        recipe,
+        sliderState: recipe.serves
+      },
+    };
   } finally {
     await prisma.$disconnect();
   }
-
-  return {
-    props: {
-      recipe,
-      sliderState: recipe.serves
-    },
-  };
 }
 
 export default function Recipe({ recipe, sliderState, ingredientState, isAdmin }) {

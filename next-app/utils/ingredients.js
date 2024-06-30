@@ -26,6 +26,18 @@ export async function updateRecipeState(updatedState) {
     },
     body: JSON.stringify(updatedState),
   });
+  return response;
+};
+
+export async function clearRecipeState(clearedState) {
+  const response = await fetch('/api/clear-recipe-state', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(clearedState),
+  });
+  return response;
 };
 
 export async function addIngredientToBag(ingredient) {
@@ -35,6 +47,17 @@ export async function addIngredientToBag(ingredient) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(ingredient),
+  });
+  return response;
+};
+
+export async function addIngredientsToBag(ingredients) {
+  const response = await fetch('/api/add-to-bag-many', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(ingredients),
   });
   return response;
 };

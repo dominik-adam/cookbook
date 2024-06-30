@@ -1,9 +1,12 @@
 import styles from '@/styles/ingredients.module.css';
 import Ingredient from './ingredient';
 import { useState, useEffect } from 'react';
-import { updateRecipeState } from '@/utils/ingredients';
+import { updateRecipeState, clearRecipeState, addIngredientsToBag } from '@/utils/ingredients';
+import { useFlashMessage } from '@/components/flashMessage/FlashMessageContext';
 
 export default function Ingredients({ recipeId, serves, ingredients, initSliderState, initIngredientState }) {
+
+  const { showMessage } = useFlashMessage();
 
   const [slider, setSlider] = useState(initSliderState);
   const [ingredientState, setIngredientState] = useState(initIngredientState ?? Array(ingredients.length).fill('0').join(''));
@@ -26,6 +29,29 @@ export default function Ingredients({ recipeId, serves, ingredients, initSliderS
         newState: newKeystate
       }
     });
+  }
+
+  const handleClear = async () => {
+    const clearState = Array(ingredients.length).fill('0').join('');
+    setIngredientState(clearState);
+    const response = await clearRecipeState({ recipeId, clearState });
+    if (response.ok) {
+      showMessage('Recipe state cleared successfuly', 'success');
+    } else {
+      const { error } = await response.json();
+      showMessage(`Error clearing recipe state: ${error}`, 'error');
+    }
+  }
+
+  const addAllIngredientsToBag = async () => {
+    const filteredIngredients = ingredients.filter((ingredient, index) => ingredientState[index] === '0');
+    const response = await addIngredientsToBag({ ingredients: filteredIngredients });
+    if (response.ok) {
+      showMessage('Recipe added to the bag successfuly', 'success');
+    } else {
+      const { error } = await response.json();
+      showMessage(`Error adding recipe to the bag: ${error}`, 'error');
+    }
   }
 
   useEffect(() => {
@@ -58,11 +84,25 @@ export default function Ingredients({ recipeId, serves, ingredients, initSliderS
               {...ingredient} 
               multiplier={slider / serves} 
               key={ingredient.id}
-              initState={ingredientState[i] == '1'}
+              isChecked={ingredientState[i] == '1'}
               handleToggle={handleIngredientToggle}
             />
           ))}   
         </ul>
+      </div>
+      <div className={styles.actions}>
+        <button
+          className={styles.clearButton}
+          onClick={handleClear}
+        >
+          Clear
+        </button>
+        <button
+          className={styles.addToBagButton}
+          onClick={addAllIngredientsToBag}
+        >
+          Add to bag
+        </button>
       </div>
     </div>
   );
