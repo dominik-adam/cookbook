@@ -22,7 +22,7 @@ export default function Ingredient({
 
   const addToBag = async () => {
     setWasAdded(true);
-    const response = await addIngredientToBag({ingredientId, unitId, amount});
+    const response = await addIngredientToBag({ingredientId, unitId, amount: amount * multiplier });
     if (response.ok) {
       showMessage(`${ingredientName} was added to the bag`, 'success');
     } else {

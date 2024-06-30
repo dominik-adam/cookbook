@@ -33,10 +33,9 @@ export default function Ingredients({ recipeId, serves, ingredients, initSliderS
 
   const handleClear = async () => {
     const clearState = Array(ingredients.length).fill('0').join('');
-    setIngredientState(clearState);
     const response = await clearRecipeState({ recipeId, clearState });
     if (response.ok) {
-      showMessage('Recipe state cleared successfuly', 'success');
+      setIngredientState(clearState);
     } else {
       const { error } = await response.json();
       showMessage(`Error clearing recipe state: ${error}`, 'error');
@@ -45,7 +44,7 @@ export default function Ingredients({ recipeId, serves, ingredients, initSliderS
 
   const addAllIngredientsToBag = async () => {
     const filteredIngredients = ingredients.filter((ingredient, index) => ingredientState[index] === '0');
-    const response = await addIngredientsToBag({ ingredients: filteredIngredients });
+    const response = await addIngredientsToBag({ ingredients: filteredIngredients, multiplier: slider / serves });
     if (response.ok) {
       showMessage('Recipe added to the bag successfuly', 'success');
     } else {
@@ -77,19 +76,6 @@ export default function Ingredients({ recipeId, serves, ingredients, initSliderS
           onChange={e => handleSliderChange(e.target.value)}    
         />
       </div>
-      <div className={styles.ingredients}>
-        <ul>
-          {ingredients.map(( ingredient, i ) => (
-            <Ingredient 
-              {...ingredient} 
-              multiplier={slider / serves} 
-              key={ingredient.id}
-              isChecked={ingredientState[i] == '1'}
-              handleToggle={handleIngredientToggle}
-            />
-          ))}   
-        </ul>
-      </div>
       <div className={styles.actions}>
         <button
           className={styles.clearButton}
@@ -103,6 +89,19 @@ export default function Ingredients({ recipeId, serves, ingredients, initSliderS
         >
           Add to bag
         </button>
+      </div>
+      <div className={styles.ingredients}>
+        <ul>
+          {ingredients.map(( ingredient, i ) => (
+            <Ingredient 
+              {...ingredient} 
+              multiplier={slider / serves} 
+              key={ingredient.id}
+              isChecked={ingredientState[i] == '1'}
+              handleToggle={handleIngredientToggle}
+            />
+          ))}   
+        </ul>
       </div>
     </div>
   );

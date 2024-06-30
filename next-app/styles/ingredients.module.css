@@ -5,6 +5,7 @@
 .ingredients {
     padding: 20px 0;
     background-color: rgb(179, 228, 228);
+    border-radius: 0 0 20px 20px;
 }
 
 .ingredients ul {
@@ -58,7 +59,6 @@
 }
 
 .actions {
-  border-radius: 0 0 20px 20px;
   background-color: black;
   color: white;
 }
@@ -78,12 +78,4 @@
   background-color: white;
   color: black;
   transition: background-color 0.2s;
-}
-
-.addToBagButton {
-  border-radius: 0 0 20px 0;
-}
-
-.clearButton {
-  border-radius: 0 0 0 20px;
 }

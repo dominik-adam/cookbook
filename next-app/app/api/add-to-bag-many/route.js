@@ -12,7 +12,7 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401});
     }
 
-    const { ingredients } = await req.json();
+    const { ingredients, multiplier } = await req.json();
     // TODO add validation
     
 
@@ -37,9 +37,9 @@ export async function POST(req) {
         const bagIngredientUpdateData = {}
         if (ingredient.amount) {
           if (bagIngredient.amount) {
-            bagIngredientUpdateData["amount"] = bagIngredient.amount + parseFloat(ingredient.amount);
+            bagIngredientUpdateData["amount"] = bagIngredient.amount + parseFloat(ingredient.amount) * parseFloat(multiplier);
           } else {
-            bagIngredientUpdateData["amount"] = parseFloat(ingredient.amount);
+            bagIngredientUpdateData["amount"] = parseFloat(ingredient.amount) * parseFloat(multiplier);
           }
     
           await prisma.bagIngredient.update({
@@ -60,7 +60,7 @@ export async function POST(req) {
           unitId: ingredient.unitId
         }
         if (ingredient.amount) {
-          bagIngredientCreateData["amount"] = parseFloat(ingredient.amount)
+          bagIngredientCreateData["amount"] = parseFloat(ingredient.amount) * parseFloat(multiplier)
         }
   
         await prisma.bagIngredient.create({
