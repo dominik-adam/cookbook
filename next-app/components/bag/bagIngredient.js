@@ -25,7 +25,7 @@ export default function BagIngredient({
   const [isEdit, setIsEdit] = useState(false);
 
   const editBagIngredient = async () => {
-    const response = await updateBagIngredient({ingredientId, unitId, newAmount, newNote});
+    const response = await updateBagIngredient({ingredientId, unitId, amount: newAmount, newNote});
     if (response.ok) {
       showMessage(`${ingredientName} was updated`, 'success');
       setAmount(newAmount);
