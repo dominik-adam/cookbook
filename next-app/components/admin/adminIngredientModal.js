@@ -32,6 +32,10 @@ export default function AdminIngredientModal({
 		setModalState(ModalState.CLOSED)
     setModalIngredient(undefined)
 		setModalTitle("");
+		setIngredient(undefined);
+		setUnit(undefined);
+		setAmount(undefined);
+		setInstruction("");
 	}
 
 	const selectIngredient = (ingredient) => {
