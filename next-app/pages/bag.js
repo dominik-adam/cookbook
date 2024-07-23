@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Layout, { siteTitle } from '../components/layout';
+import Image from 'next/image';
 import { getServerSession } from "next-auth/next";
 import { options } from 'app/api/auth/[...nextauth]/options'
 import { PrismaClient } from "@prisma/client"
@@ -84,7 +85,25 @@ export default function ShoppingBag({bagIngredients: initBagIngredients}) {
             {...bagIngredient}
             handleRemove={removeIngredient(i)}
           />
-        ))}   
+        ))}
+        <div 
+          className={styles.ingredient}
+          onClick={() => {}}
+        >
+          <Image
+            className={styles.ingredientImage}
+            src={'/icons/plus.jpg'}
+            style={{objectFit: "cover"}}
+            height={80}
+            width={80}
+            alt={"Add new bag item"}
+          />
+          <div className={styles.ingredientInfo}>
+            <span className={styles.ingredientName}>
+              Add new item
+            </span>
+          </div>
+        </div>
       </div>
     </Layout>
   );
