@@ -24,7 +24,7 @@ export async function DELETE(req) {
       },
     });
 
-    await prisma.bagIngredient.delete({
+    const entryToDelete = await prisma.bagIngredient.findUnique({
       where: {
         bagIngredientId: {
           userId: user.id,
@@ -33,6 +33,32 @@ export async function DELETE(req) {
         }
       }
     });
+
+    if (entryToDelete) {
+      await prisma.bagIngredient.delete({
+        where: {
+          bagIngredientId: {
+            userId: user.id,
+            ingredientId: ingredientId,
+            unitId: unitId
+          }
+        }
+      });
+  
+      await prisma.bagIngredient.updateMany({
+        where: {
+          userId: user.id,
+          order: {
+            gt: entryToDelete.order,
+          },
+        },
+        data: {
+          order: {
+            decrement: 1,
+          },
+        },
+      });
+    }
 
     return NextResponse.json({});
   } catch (error) {

@@ -31,7 +31,7 @@ export default function AdminContent({
       </div>
       <div className={styles.recipeVideoWrapper}>
         <label className={styles.inputLabel}>
-          Video url
+          Youtube id
         </label>
         <input
           className={styles.recipeVideoInput}

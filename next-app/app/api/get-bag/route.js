@@ -22,6 +22,9 @@ export async function GET(req) {
     const bagIngredients = await prisma.bagIngredient.findMany({
       where: {
         userId: user.id,
+      },
+      orderBy: {
+        order: 'asc',
       }
     });
 

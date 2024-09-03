@@ -35,6 +35,9 @@ export async function getServerSideProps(context) {
             ingredient: true,
             unit: true
           },
+          orderBy: {
+            order: 'asc',
+          }
         });
   
         if (bagIngredients != null) {
@@ -81,7 +84,7 @@ export default function ShoppingBag({bagIngredients: initBagIngredients}) {
       <div className={styles.bagIngredients}>
         {bagIngredients.map(( bagIngredient, i ) => (
           <BagIngredient 
-            key={i}
+            key={bagIngredient.ingredientId + bagIngredient.unitId}
             {...bagIngredient}
             handleRemove={removeIngredient(i)}
           />

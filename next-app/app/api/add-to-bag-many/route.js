@@ -22,6 +22,16 @@ export async function POST(req) {
       },
     });
 
+    const maxOrder = await prisma.bagIngredient.aggregate({
+      where: {
+        userId: user.id,
+      },
+      _max: {
+        order: true,
+      },
+    });
+    let baseOrder = maxOrder._max.order || 0;
+
     for (const ingredient of ingredients) {
       const bagIngredient = await prisma.bagIngredient.findUnique({
         where: {
@@ -57,7 +67,8 @@ export async function POST(req) {
         const bagIngredientCreateData = {
           userId: user.id,
           ingredientId: ingredient.ingredientId,
-          unitId: ingredient.unitId
+          unitId: ingredient.unitId,
+          order: ++baseOrder
         }
         if (ingredient.amount) {
           bagIngredientCreateData["amount"] = parseFloat(ingredient.amount) * parseFloat(multiplier)

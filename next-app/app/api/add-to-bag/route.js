@@ -57,10 +57,20 @@ export async function POST(req) {
         })
       }
     } else {
+      const maxOrder = await prisma.bagIngredient.aggregate({
+        where: {
+          userId: user.id,
+        },
+        _max: {
+          order: true,
+        },
+      });
+
       const bagIngredientCreateData = {
         userId: user.id,
         ingredientId: ingredientId,
-        unitId: unitId
+        unitId: unitId,
+        order: (maxOrder._max.order || 0) + 1
       }
       if (amount) {
         bagIngredientCreateData["amount"] = parseFloat(amount)
