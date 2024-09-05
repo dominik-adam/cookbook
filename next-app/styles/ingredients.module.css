@@ -42,6 +42,10 @@
   opacity: 1;
 }
 
+.slider:focus {
+  background: rgb(155, 155, 155)
+}
+
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;

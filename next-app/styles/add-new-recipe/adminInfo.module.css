@@ -82,6 +82,10 @@
     height: 100%;
 }
 
+.recipeThumbnailDragAndDrop:focus-within {
+    border: 3px solid black;
+}
+
 .recipeThumbnailPlaceholder {
     height: 100%;
     flex-wrap: wrap;

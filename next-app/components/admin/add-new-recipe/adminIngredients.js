@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import AdminIngredientModal from '@/components/admin/adminIngredientModal';
 import AdminIngredient from '@/components/admin/add-new-recipe/adminIngredient';
 import styles from '@/styles/ingredients.module.css';
@@ -17,6 +17,7 @@ export default function AdminIngredients({
   const [modalState, setModalState] = useState(ModalState.CLOSED)
   const [modalIngredient, setModalIngredient] = useState(undefined)
   const [updatedPosition, setUpdatedPosition] = useState(undefined)
+  const newIngredientRef = useRef(null);
 
   const openUpdateModal = (i, ingredient) => {
     setModalIngredient(ingredient)
@@ -30,6 +31,10 @@ export default function AdminIngredients({
       updateIngredient(updatedPosition, {ingredient, amount, unit, instruction, otherStuff});
     }
   }
+
+  useEffect(() => {
+    newIngredientRef.current.focus();
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -57,9 +62,11 @@ export default function AdminIngredients({
             />
           ))}
           {console.log(ingredients)}
-          <div 
+          <button 
             className={ingredientStyles.addIngredient}
             onClick={() => setModalState(ModalState.SELECT)}
+            tabIndex={1}
+            ref={newIngredientRef}
           >
             <Image
               className={ingredientStyles.ingredientImage}
@@ -73,7 +80,7 @@ export default function AdminIngredients({
                 Add ingredient
               </span>
             </div>
-          </div>
+          </button>
           <AdminIngredientModal
             modalState={modalState}
             modalIngredient={modalIngredient}
@@ -82,6 +89,7 @@ export default function AdminIngredients({
             serves={serves}
             addIngredient={addIngredient}
             updateIngredient={handleUpdate}
+            newIngredientRef={newIngredientRef}
           />
           
         </ul>

@@ -14,7 +14,8 @@ export default function AdminIngredientModal({
 	setModalIngredient,
 	serves, 
 	addIngredient,
-	updateIngredient
+	updateIngredient,
+	newIngredientRef
 }) {
 
 	const { showMessage } = useFlashMessage();
@@ -36,6 +37,7 @@ export default function AdminIngredientModal({
 		setUnit(undefined);
 		setAmount(undefined);
 		setInstruction("");
+		newIngredientRef.current.focus();
 	}
 
 	const selectIngredient = (ingredient) => {

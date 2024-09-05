@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import styles from '@/styles/add-new-recipe/modal/measurement.module.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function MeasurementAndInstructions({
   ingredient,
@@ -17,6 +17,7 @@ export default function MeasurementAndInstructions({
 }) {
 
   const [units, setUnits] = useState([]);
+  const inputRef = useRef(null);
 
   const fetchUnits = async () => {
 		try {
@@ -33,6 +34,7 @@ export default function MeasurementAndInstructions({
 
   useEffect(() => {
     fetchUnits();
+    inputRef.current.focus();
   }, []);
 
   return (
@@ -66,6 +68,7 @@ export default function MeasurementAndInstructions({
               value={isUpdate ? amount : undefined}
               onChange={(event) => setAmount(parseFloat(event.target.value))}
               placeholder="Enter a number"
+              ref={inputRef}
             />
           </div>
           <div className={styles.unitWrapper}>

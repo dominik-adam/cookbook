@@ -63,7 +63,7 @@ export default function SelectIngredient({
         </div>
       </div>
       <div className={tiles.parent}>
-        <div 
+        <button 
           className={tiles.tile} 
           onClick={createNewIngredient}
         >
@@ -77,9 +77,9 @@ export default function SelectIngredient({
             style={{objectFit: "cover"}}
             quality={50}
           />
-        </div>
+        </button>
         {ingredients.map((ingredient) => (
-          <div 
+          <button 
             className={tiles.tile} 
             key={ingredient.id}
             onClick={() => selectIngredient(ingredient)}
@@ -96,7 +96,7 @@ export default function SelectIngredient({
               style={{objectFit: "cover"}}
               quality={50}
             />}
-          </div>
+          </button>
         ))}
       </div>
     </>

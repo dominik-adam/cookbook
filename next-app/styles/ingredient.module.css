@@ -39,13 +39,22 @@
 .addIngredient {
     background-color: white;
     border-radius: 50px;
+    border: 5px solid white;
     cursor: pointer;
 
     display: flex;
     align-items: center;
     gap: 20px;
 
+    width: 100%;
     margin-bottom: 20px;
+    padding: 0;
+    transition: .2s;
+}
+
+.addIngredient:focus, .addIngredient:hover {
+    border: 5px solid black;
+    transition: .2s;
 }
 
 .addToBagWrapper {

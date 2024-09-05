@@ -39,6 +39,10 @@
     border: 3px solid rgb(179, 228, 228);
 }
 
+.unitSelect:focus {
+    border: 3px solid black;
+}
+
 .instructionInput {
     padding: 10px 20px;
     font-size: 1.2rem;
@@ -47,7 +51,6 @@
 }
 
 .amountInput:focus-visible, 
-.unitSelect:focus-visible, 
 .instructionInput:focus-visible {
     border: 3px solid rgb(179, 228, 228);
     outline: none;
