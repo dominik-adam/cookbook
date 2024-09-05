@@ -65,7 +65,6 @@ export default function AdminIngredients({
           <button 
             className={ingredientStyles.addIngredient}
             onClick={() => setModalState(ModalState.SELECT)}
-            tabIndex={1}
             ref={newIngredientRef}
           >
             <Image
