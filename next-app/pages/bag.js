@@ -8,8 +8,10 @@ import styles from '@/styles/bagIngredients.module.css';
 
 import BagIngredient from '@/components/bag/bagIngredient';
 import { useState } from 'react';
-import { removeBagIngredient } from '@/utils/ingredients'
+import { addIngredientToBag, removeBagIngredient, getBagIngredients } from '@/utils/ingredients'
 import { useFlashMessage } from '@/components/flashMessage/FlashMessageContext';
+import AdminIngredientModal from '@/components/admin/adminIngredientModal';
+import { ModalState } from '@/components/admin/add-new-recipe/modal/modalState'
 
 export async function getServerSideProps(context) {
   const { params, req, res } = context;
@@ -63,6 +65,36 @@ export default function ShoppingBag({bagIngredients: initBagIngredients}) {
   const { showMessage } = useFlashMessage();
 
   const [bagIngredients, setBagIngredients] = useState(initBagIngredients ?? []);
+  const [modalState, setModalState] = useState(ModalState.CLOSED)
+  const [modalIngredient, setModalIngredient] = useState(undefined)
+
+  const addIngredient = async (ingredient) => {
+    const response = await addIngredientToBag({ 
+      ingredientId: ingredient.ingredient.id,
+      unitId: ingredient.unit.id,
+      amount: ingredient.amount,
+      note: ingredient.instruction
+    });
+    if (response.ok) {
+      refreshBag();
+      showMessage(`${ingredient.ingredient.name} was added to the bag`, 'success');
+    } else {
+      showMessage(`${ingredient.ingredient.name} could not be added to the bag`, 'error');
+    }
+  }
+
+  const refreshBag = async () => {
+    try {
+			const response = await getBagIngredients();
+			if (!response.ok) {
+				throw new Error('Failed to fetch ingredients');
+			}
+			const { bagIngredients: newBag } = await response.json();
+			setBagIngredients(newBag);
+		} catch (error) {
+			console.error('Error fetching ingredients:', error);
+		}
+  }
 
   const removeIngredient = (key) => async (ingredientId, ingredientName, unitId) => {
     const response = await removeBagIngredient(ingredientId, unitId);
@@ -84,14 +116,14 @@ export default function ShoppingBag({bagIngredients: initBagIngredients}) {
       <div className={styles.bagIngredients}>
         {bagIngredients.map(( bagIngredient, i ) => (
           <BagIngredient 
-            key={bagIngredient.ingredientId + bagIngredient.unitId}
+            key={bagIngredient.ingredientId + bagIngredient.unitId + bagIngredient.amount}
             {...bagIngredient}
             handleRemove={removeIngredient(i)}
           />
         ))}
         <div 
           className={styles.ingredient}
-          onClick={() => {}}
+          onClick={() => {setModalState(ModalState.SELECT)}}
         >
           <Image
             className={styles.ingredientImage}
@@ -108,6 +140,16 @@ export default function ShoppingBag({bagIngredients: initBagIngredients}) {
           </div>
         </div>
       </div>
+      <AdminIngredientModal
+        modalState={modalState}
+        modalIngredient={modalIngredient}
+        setModalState={setModalState}
+        setModalIngredient={setModalIngredient}
+        serves={null}
+        addIngredient={addIngredient}
+        updateIngredient={() => {}}
+        newIngredientRef={null}
+      />
     </Layout>
   );
 }

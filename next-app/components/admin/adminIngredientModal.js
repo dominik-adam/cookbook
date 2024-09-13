@@ -37,7 +37,9 @@ export default function AdminIngredientModal({
 		setUnit(undefined);
 		setAmount(undefined);
 		setInstruction("");
-		newIngredientRef.current.focus();
+		if (newIngredientRef) {
+			newIngredientRef.current.focus();
+		}
 	}
 
 	const selectIngredient = (ingredient) => {

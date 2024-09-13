@@ -61,7 +61,6 @@ export default function AdminIngredients({
               key={i}
             />
           ))}
-          {console.log(ingredients)}
           <button 
             className={ingredientStyles.addIngredient}
             onClick={() => setModalState(ModalState.SELECT)}

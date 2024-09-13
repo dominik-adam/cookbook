@@ -15,7 +15,8 @@ export async function POST(req) {
     const { 
       ingredientId,
       unitId,
-      amount
+      amount,
+      note
     } = await req.json();
     // TODO add validation
     
@@ -70,7 +71,8 @@ export async function POST(req) {
         userId: user.id,
         ingredientId: ingredientId,
         unitId: unitId,
-        order: (maxOrder._max.order || 0) + 1
+        order: (maxOrder._max.order || 0) + 1,
+        note: note
       }
       if (amount) {
         bagIngredientCreateData["amount"] = parseFloat(amount)

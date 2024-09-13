@@ -40,6 +40,11 @@ export async function clearRecipeState(clearedState) {
   return response;
 };
 
+export async function getBagIngredients() {
+  const response = await fetch('/api/get-bag');
+  return response;
+}
+
 export async function addIngredientToBag(ingredient) {
   const response = await fetch('/api/add-to-bag', {
     method: 'POST',

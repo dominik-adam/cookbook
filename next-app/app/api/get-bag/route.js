@@ -23,6 +23,10 @@ export async function GET(req) {
       where: {
         userId: user.id,
       },
+      include: {
+        ingredient: true,
+        unit: true
+      },
       orderBy: {
         order: 'asc',
       }
