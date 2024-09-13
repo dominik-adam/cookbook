@@ -108,10 +108,24 @@
     }
 }
 
+@keyframes darkenAndBrighten {
+    0% {
+      background-color: white;
+      color: black
+    }
+    5% {
+      background-color: black;
+      color: white
+    }
+    100% {
+      background-color: white;
+      color: black;
+    }
+}
 
 @media only screen and (max-width: 600px) {
     .addIngredient {
-        border-radius: 50px;
+        border-radius: 10px;
         border: none;
         gap: 10px;
     }
@@ -119,7 +133,7 @@
     .ingredientImage {
         width: 60px;
         height: 60px;
-        border-radius: 50px;
+        border-radius: 10px 0 0 10px;
     }
 
     .addIngredient:focus, .addIngredient:hover {
@@ -128,7 +142,7 @@
     }
 
     .ingredient {
-        border-radius: 50px;
+        border-radius: 10px;
         background-color: white;
         margin-bottom: 10px;
     }
@@ -148,12 +162,13 @@
         display: flex;
         justify-content: center;
         flex-direction: column;
+        gap: 3px;
     }
 
     .addToBagButton {
         background-color: white;
         border: 2px solid white;
-        border-radius: 50px;
+        border-radius: 10px;
         color: black;
         cursor: pointer;
         font-size: 30px;
@@ -163,6 +178,10 @@
 
     .addToBagButtonWrapper {
         margin-right: 0;
-        border-radius: 50px;
+        border-radius: 10px;
+    }
+
+    .addToBagButton.animated {
+        animation: darkenAndBrighten 2.3s forwards;
     }
 }

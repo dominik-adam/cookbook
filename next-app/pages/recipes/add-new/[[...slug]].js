@@ -216,17 +216,17 @@ export default function AddRecipe({ recipe }) {
       </article>
       <div className={adminStyles.submitButtonWrapper}>
         <button 
+          className={adminStyles.deleteButton}
+          onClick={deleteRecipte}
+        >
+          Delete Recipe
+        </button>
+        <button 
           className={adminStyles.submitButton}
           onClick={saveRecipe}
           // disabled={!newIngredientName || !newIngredientImage}
         >
           Save Recipe
-        </button>
-        <button 
-          className={adminStyles.deleteButton}
-          onClick={deleteRecipte}
-        >
-          Delete Recipe
         </button>
       </div>
     </Layout>

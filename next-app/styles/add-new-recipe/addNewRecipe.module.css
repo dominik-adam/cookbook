@@ -36,3 +36,14 @@
     display: flex;
     gap: 10px;
 }
+
+@media only screen and (max-width: 600px) {
+    .submitButtonWrapper {
+        position: unset;
+        margin-top: 20px;
+    }
+
+    .submitButton, .deleteButton {
+        width: 50%;
+    }
+}

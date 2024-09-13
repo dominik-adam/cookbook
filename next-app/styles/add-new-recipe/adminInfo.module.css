@@ -113,7 +113,7 @@
         width: 100%;
     }
 
-    .recipeThumbnailPlaceholder {
+    .recipeThumbnailPlaceholder, .recipeThumbnailDragAndDrop {
         height: 200px;
     }
 }
