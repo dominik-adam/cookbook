@@ -41,6 +41,7 @@
     .submitButtonWrapper {
         position: unset;
         margin-top: 20px;
+        justify-content: center;
     }
 
     .submitButton, .deleteButton {
