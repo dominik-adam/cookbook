@@ -25,7 +25,7 @@
 
 @media only screen and (max-width: 600px) {
     .menu {
-        height: auto;
+        height: 125px;
         width: 100%;
         padding: 20px 0 10px 0;
         top: unset;

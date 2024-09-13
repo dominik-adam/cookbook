@@ -39,6 +39,10 @@
     border: 3px solid rgb(179, 228, 228);
 }
 
+.unitSelect > option {
+    font-size: 0.8rem;
+}
+
 .unitSelect:focus {
     border: 3px solid black;
 }
@@ -90,4 +94,18 @@
 
 .submitButtonWrapper {
 
+}
+
+@media only screen and (max-width: 600px) {
+    .parentDiv {
+        flex-direction: column;
+    }
+
+    .submitButtonWrapper {
+        text-align: center;
+    }
+
+    .ingredientImage, .ingredientImageWrapper {
+        width: 100%;
+    }
 }

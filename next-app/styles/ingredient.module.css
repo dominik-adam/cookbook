@@ -106,4 +106,63 @@
       background-color: black;
       color: white;
     }
-  }
+}
+
+
+@media only screen and (max-width: 600px) {
+    .addIngredient {
+        border-radius: 50px;
+        border: none;
+        gap: 10px;
+    }
+
+    .ingredientImage {
+        width: 60px;
+        height: 60px;
+        border-radius: 50px;
+    }
+
+    .addIngredient:focus, .addIngredient:hover {
+        border: none;
+        outline: none;
+    }
+
+    .ingredient {
+        border-radius: 50px;
+        background-color: white;
+        margin-bottom: 10px;
+    }
+
+    .ingredientName {
+        font-size: 0.8rem;
+        line-height: 1;
+    }
+    
+    .ingredientAmount {
+        line-height: 1;
+        font-size: 0.6rem;
+    }
+
+    .ingredientInfo {
+        color: black;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .addToBagButton {
+        background-color: white;
+        border: 2px solid white;
+        border-radius: 50px;
+        color: black;
+        cursor: pointer;
+        font-size: 30px;
+        height: 60px;
+        width: 60px;
+    }
+
+    .addToBagButtonWrapper {
+        margin-right: 0;
+        border-radius: 50px;
+    }
+}

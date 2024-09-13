@@ -49,4 +49,8 @@
     .parent {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .tileTitle {
+        font-size: 0.7rem;
+    }
 }

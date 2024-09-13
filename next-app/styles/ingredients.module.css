@@ -83,3 +83,10 @@
   color: black;
   transition: background-color 0.2s;
 }
+
+@media only screen and (max-width: 600px) {
+  .addToBagButton, .clearButton {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+}
