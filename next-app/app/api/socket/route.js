@@ -3,6 +3,11 @@ import { Server } from "socket.io";
 let io;
 
 export async function GET(req, res) {
+  if (!res.socket) {
+    res.status(500).json({ error: "Socket is not available" });
+    return;
+  }
+
   if (!res.socket.server.io) {
     console.log('Socket is initializing');
     io = new Server(res.socket.server);
