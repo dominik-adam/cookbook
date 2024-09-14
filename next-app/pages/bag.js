@@ -7,11 +7,14 @@ import { PrismaClient } from "@prisma/client"
 import styles from '@/styles/bagIngredients.module.css';
 
 import BagIngredient from '@/components/bag/bagIngredient';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { addIngredientToBag, removeBagIngredient, getBagIngredients } from '@/utils/ingredients'
 import { useFlashMessage } from '@/components/flashMessage/FlashMessageContext';
 import AdminIngredientModal from '@/components/admin/adminIngredientModal';
 import { ModalState } from '@/components/admin/add-new-recipe/modal/modalState'
+
+import io from 'socket.io-client'
+let socket
 
 export async function getServerSideProps(context) {
   const { params, req, res } = context;
