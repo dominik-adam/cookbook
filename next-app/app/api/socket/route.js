@@ -1,11 +1,13 @@
 import { Server } from "socket.io";
+import { NextResponse } from "next/server";
 
 let io;
 
-export async function GET(req, res) {
+export async function GET(req) {
+  const res = NextResponse.next();
+
   if (!res.socket) {
-    res.status(500).json({ error: "Socket is not available" });
-    return;
+    return NextResponse.json({ error: "Socket is not available" }, { status: 500 });
   }
 
   if (!res.socket.server.io) {
@@ -21,5 +23,6 @@ export async function GET(req, res) {
   } else {
     console.log('Socket is already running');
   }
-  res.end();
+
+  return res;
 }
