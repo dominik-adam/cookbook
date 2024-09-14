@@ -102,11 +102,29 @@ export default function ShoppingBag({bagIngredients: initBagIngredients}) {
       const updatedIngredients = [...bagIngredients];
       updatedIngredients.splice(key, 1);
       setBagIngredients(updatedIngredients);
+      socket.emit('removed-from-bag', key)
       showMessage(`${ingredientName} was removed from the bag`, 'success');
     } else {
       showMessage(`${ingredientName} could not be removed from the bag`, 'error');
     }
   }
+
+  const socketInitializer = async () => {
+    await fetch('/api/socket');
+    socket = io()
+
+    socket.on('connect', () => {
+      console.log('connected')
+    })
+
+    socket.on('remove-from-bag', key => {
+      const updatedIngredients = [...bagIngredients];
+      updatedIngredients.splice(key, 1);
+      setBagIngredients(updatedIngredients);
+    })
+  }
+  
+  useEffect(() => socketInitializer(), [])
 
   return (
     <Layout pageTitle={"Shopping Bag"}>
