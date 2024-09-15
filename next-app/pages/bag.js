@@ -102,9 +102,12 @@ export default function ShoppingBag({bagIngredients: initBagIngredients}) {
   const removeIngredient = (key) => async (ingredientId, ingredientName, unitId) => {
     const response = await removeBagIngredient(ingredientId, unitId);
     if (response.ok) {
-      const updatedIngredients = [...bagIngredients];
-      updatedIngredients.splice(key, 1);
-      setBagIngredients(updatedIngredients);
+      setBagIngredients((prevIngredients) => {
+        const updatedIngredients = [...prevIngredients];
+        updatedIngredients.splice(key, 1);
+        return updatedIngredients;
+      });
+  
       if (socket) {
         socket.emit('removed-from-bag', key);
       }
@@ -124,9 +127,11 @@ export default function ShoppingBag({bagIngredients: initBagIngredients}) {
       });
   
       socket.on('remove-from-bag', key => {
-        const updatedIngredients = [...bagIngredients];
-        updatedIngredients.splice(key, 1);
-        setBagIngredients(updatedIngredients);
+        setBagIngredients((prevIngredients) => {
+          const updatedIngredients = [...prevIngredients];
+          updatedIngredients.splice(key, 1);
+          return updatedIngredients;
+        });
       });
     };
   
