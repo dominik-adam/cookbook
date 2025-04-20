@@ -1,10 +1,14 @@
 # MY NOTES
 
+run docker with:
+ctrl + shift + b
+
 When deploying to production, set the NEXTAUTH_URL environment variable to the canonical URL of your site.
 NEXTAUTH_URL=https://example.com
 
 npx prisma migrate dev --name init
 npx prisma generate
+npx prisma db seed
 
 npx prisma studio
 

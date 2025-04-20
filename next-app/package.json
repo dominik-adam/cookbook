@@ -42,5 +42,8 @@
     "fs": false,
     "path": false,
     "os": false
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   }
 }

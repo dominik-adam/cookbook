@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Drink" ADD COLUMN     "serves" INTEGER NOT NULL DEFAULT 1;
