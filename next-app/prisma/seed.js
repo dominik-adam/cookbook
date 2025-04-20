@@ -1,5 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
-const RecipeCategory = require('./enum/recipeCategory');
+const RecipeCategory = require('../enum/recipeCategory');
 
 const prisma = new PrismaClient();
 
