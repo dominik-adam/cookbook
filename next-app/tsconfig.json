@@ -4,7 +4,8 @@
     "paths": {
       "@/styles/*": ["styles/*"],
       "@/components/*": ["components/*"],
-      "@/utils/*": ["utils/*"]
+      "@/utils/*": ["utils/*"],
+      "@/enum/*": ["enum/*"]
     },
     "lib": [
       "dom",

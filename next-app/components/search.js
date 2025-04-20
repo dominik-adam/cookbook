@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router'
 import styles from '@/styles/search.module.css';
 
-export default function SearchBar({fetchRecipes}) {
+export default function SearchBar({fetchResults}) {
 
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState(router.query.s);
@@ -11,7 +11,7 @@ export default function SearchBar({fetchRecipes}) {
   const handleInputChange = (event) => {
     const { value } = event.target;
     setSearchTerm(value);
-    fetchRecipes(value);
+    fetchResults(value);
   };
 
   return (

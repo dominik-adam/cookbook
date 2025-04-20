@@ -12,13 +12,13 @@ export async function getServerSideProps(context) {
   const prisma = new PrismaClient();
 
   try {
-    const recipes = await prisma.recipe.findMany({
+    const drinks = await prisma.recipe.findMany({
       where: {
         title: {
           contains: context.query.s,
           mode: 'insensitive'
         },
-        categoryId: RecipeCategory.FOOD,
+        categoryId: RecipeCategory.DRINK,
       },
       orderBy: {
         title: 'asc'
@@ -27,15 +27,15 @@ export async function getServerSideProps(context) {
   
     if (session && isAdmin(session.user.email)) {
       const addNew = {
-        slug: `add-new?c=${RecipeCategory.FOOD}`,
+        slug: `add-new?c=${RecipeCategory.DRINK}`,
         title: "Add new recipe",
         thumbnail: "/images/add-new.jpg"
       }
-      recipes.unshift(addNew)
+      drinks.unshift(addNew)
     }
     return {
       props: {
-        initRecipes: recipes,
+        initDrinks: drinks,
       },
     };
   } finally {
@@ -43,14 +43,14 @@ export async function getServerSideProps(context) {
   }
 }
 
-export default function Home({initRecipes}) {
+export default function Home({initDrinks}) {
 
   return (
-    <Layout pageTitle={"Recipes"}>
+    <Layout pageTitle={"Drinks"}>
       <Head>
         <title>{siteTitle}</title>
       </Head>
-      <Recipes category={RecipeCategory.FOOD} initRecipes={initRecipes}/>
+      <Recipes category={RecipeCategory.DRINK} initRecipes={initDrinks}/>
     </Layout>
   );
 }

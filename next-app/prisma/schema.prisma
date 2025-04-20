@@ -64,12 +64,12 @@ model Recipe {
   slug String @unique
   title String
   serves Int
-  // categoryId String
+  categoryId String @default("food")
   thumbnail String?
   instructions String?
   video String?
   link String?
-  // category RecipeCategory @relation(fields: [categoryId], references: [id])
+  category RecipeCategory @relation(fields: [categoryId], references: [id])
   gallery Image[]
   tags Tag[]
   ingredients RecipeIngredient[]
@@ -145,5 +145,5 @@ model BagIngredient {
 model RecipeCategory {
   id      String   @id
   name    String
-  // recipes Recipe[]
+  recipes Recipe[]
 }

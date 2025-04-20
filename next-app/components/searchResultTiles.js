@@ -3,10 +3,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import styles from '@/styles/recipes.module.css';
 
-export default function RecipeTiles({recipes}) {
+export default function SearchResultTiles({items}) {
   return (
     <div className={styles.parent}>
-      {recipes.map(({ slug, title, thumbnail }) => (
+      {items.map(({ slug, title, thumbnail }) => (
         <div className={styles.tile} key={slug}>
           <Link href={`/recipes/${slug}`}>
             <div className={styles.tileTitle}>{title}</div>

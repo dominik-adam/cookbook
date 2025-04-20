@@ -11,13 +11,15 @@ export async function GET(req) {
   try {
     const searchParams = req.nextUrl.searchParams
     const s = searchParams.get('s')
+    const category = searchParams.get('c')
 
     const recipes = await prisma.recipe.findMany({
       where: {
         title: {
           contains: s,
           mode: 'insensitive'
-        }
+        },
+        categoryId: category,
       },
       orderBy: {
         title: 'asc'

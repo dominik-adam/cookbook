@@ -40,6 +40,11 @@ export default function Layout({ children, pageTitle }) {
             image={"/icons/recipes.png"}
           />
           <MenuButton 
+            title={"Drinks"} 
+            url={"/drinks"} 
+            image={"/icons/drinks.png"}
+          />
+          <MenuButton 
             title={"Bag"} 
             url={"/bag"} 
             image={"/icons/shopping-bag.png"}

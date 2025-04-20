@@ -15,6 +15,7 @@ import AdminInfo from '@/components/admin/add-new-recipe/adminInfo';
 
 import { useFlashMessage } from '@/components/flashMessage/FlashMessageContext';
 import { isAdmin } from '@/utils/auth.js';
+import RecipeCategorySlug from '@/enum/recipeCategorySlug';
 
 
 export async function getServerSideProps(context) {
@@ -108,11 +109,14 @@ export default function AddRecipe({ recipe }) {
   const saveRecipe = async (e) => {
     e.preventDefault();
 
+    const category = router.query.c;
+    
     try {
       const formData = {
         id: recipe?.id,
         title,
         slug,
+        category,
         thumbnail,
         serves,
         instructions,
@@ -132,12 +136,14 @@ export default function AddRecipe({ recipe }) {
       });
 
       if (response.ok) {
+
         if (recipe?.id) {
           showMessage('Recipe updated successfully', 'success');
         } else {
           showMessage('Recipe created successfully', 'success');
         }
-        router.push('/');
+        router.push(`/${RecipeCategorySlug[category]}`);
+
       } else {
         const { error } = await response.json();
         showMessage(`Error: ${error}`, 'error');
@@ -159,12 +165,15 @@ export default function AddRecipe({ recipe }) {
       });
 
       if (response.ok) {
+
         if (recipe?.id) {
           showMessage('Recipe updated successfully', 'success');
         } else {
           showMessage('Recipe created successfully', 'success');
         }
-        router.push('/');
+        const category = router.query.c;
+        router.push(`/${RecipeCategorySlug[category]}`);
+
       } else {
         const { error } = await response.json();
         showMessage(`Error: ${error}`, 'error');

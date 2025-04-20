@@ -99,7 +99,7 @@ export default function Recipe({ recipe, sliderState, ingredientState, isAdmin }
   const router = useRouter();
 
   const editRecipe = () => {
-    router.push(`/recipes/add-new/${recipe.slug}`);
+    router.push(`/recipes/add-new/${recipe.slug}?c=${recipe.categoryId}`);
   };
 
   return (

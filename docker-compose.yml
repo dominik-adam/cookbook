@@ -20,6 +20,7 @@ services:
       - ./next-app/recipes:/app/recipes
       - ./next-app/styles:/app/styles
       - ./next-app/utils:/app/utils
+      - ./next-app/enum:/app/enum
       - ./next-app/components:/app/components
       - ./next-app/prisma:/app/prisma
       - ./next-app/pages:/app/pages
