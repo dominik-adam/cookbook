@@ -1,21 +1,23 @@
 const { PrismaClient } = require('@prisma/client');
+const RecipeCategory = require('./enum/recipeCategory');
+
 const prisma = new PrismaClient();
 
 async function main() {
   await prisma.recipeCategory.upsert({
-    where: { id: 'drink' },
+    where: { id: RecipeCategory.DRINK },
     update: {},
     create: {
-      id: 'drink',
+      id: RecipeCategory.DRINK,
       name: 'Drink',
     },
   });
 
   await prisma.recipeCategory.upsert({
-    where: { id: 'food' },
+    where: { id: RecipeCategory.FOOD },
     update: {},
     create: {
-      id: 'food',
+      id: RecipeCategory.FOOD,
       name: 'Food',
     },
   });
