@@ -35,6 +35,8 @@ jobs:
             cd $APP_DIR
             npm install
             npx prisma migrate deploy
+            npx prisma generate
+            npx prisma db seed
             npm run build
             pm2 restart cookbook
           "
