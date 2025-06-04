@@ -8,7 +8,7 @@ export default function YoutubeVideo({ videoId }) {
     height: "100%",
     width: "100%",
     playerVars: {
-      autoplay: 1,
+      autoplay: 0,
       enablejsapi: 1, // Required for JS API to work properly
       origin: typeof window !== 'undefined' ? window.location.origin : undefined, // Important!
     },
