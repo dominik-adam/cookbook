@@ -9,6 +9,8 @@ export default function YoutubeVideo({ videoId }) {
     width: "100%",
     playerVars: {
       autoplay: 1,
+      enablejsapi: 1, // Required for JS API to work properly
+      origin: typeof window !== 'undefined' ? window.location.origin : undefined, // Important!
     },
   };
 
