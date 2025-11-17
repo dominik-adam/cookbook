@@ -1,8 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from "@/utils/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET(req) {
-  const prisma = new PrismaClient();
 
   try {
     const searchParams = req.nextUrl.searchParams
@@ -23,7 +22,5 @@ export async function GET(req) {
     return NextResponse.json({ ingredients });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500});
-  } finally {
-    await prisma.$disconnect();
   }
 }

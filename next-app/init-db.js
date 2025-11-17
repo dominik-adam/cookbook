@@ -1,7 +1,6 @@
-const { PrismaClient } = require('@prisma/client');
 const { link } = require('fs');
 
-const prisma = new PrismaClient();
+import { prisma } from "@/utils/prisma";
 
 const main = async () => {
 
@@ -48,8 +47,6 @@ const main = async () => {
     });
   } catch (error) {
     console.error('Error inserting recipe:', error);
-  } finally {
-    await prisma.$disconnect();
   }
 };
 

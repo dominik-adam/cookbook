@@ -5,6 +5,7 @@
       "@/styles/*": ["styles/*"],
       "@/components/*": ["components/*"],
       "@/utils/*": ["utils/*"],
+      "@/types/*": ["types/*"],
       "@/enum/*": ["enum/*"]
     },
     "lib": [

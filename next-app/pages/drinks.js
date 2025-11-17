@@ -3,13 +3,12 @@ import Layout, { siteTitle } from '../components/layout';
 import Recipes from '../components/recipes';
 import { getServerSession } from "next-auth/next"
 import { options } from 'app/api/auth/[...nextauth]/options'
-import { PrismaClient } from '@prisma/client';
+import { prisma } from "@/utils/prisma";
 import { isAdmin } from '@/utils/auth.js';
 import RecipeCategory from '@/enum/recipeCategory';
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, options)
-  const prisma = new PrismaClient();
 
   try {
     const drinks = await prisma.recipe.findMany({
@@ -38,8 +37,6 @@ export async function getServerSideProps(context) {
         initDrinks: drinks,
       },
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }
 

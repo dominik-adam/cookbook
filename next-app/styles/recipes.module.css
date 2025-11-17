@@ -45,6 +45,61 @@
     background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
 }
 
+.selectedTile {
+    position: relative;
+    outline: 6px solid #3aa46c;
+}
+
+.selectedTile::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+.checkmarkWrapper {
+    display: none;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 3;
+}
+
+.checkmarkWrapperVisible {
+    display: block;
+}
+
+.checkmarkImage {
+    border-radius: 50%;
+}
+
+.selectedTitle {
+    font-weight: bold;
+}
+
+.floatingToggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 1101;
+}
+.floatingToggle input {
+    margin-right: 6px;
+}
+
 @media only screen and (max-width: 600px) {
     .parent {
         grid-template-columns: repeat(2, 1fr);

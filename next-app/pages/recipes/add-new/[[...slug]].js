@@ -7,7 +7,7 @@ import styles from '@/styles/recipe.module.css';
 import adminStyles from '@/styles/add-new-recipe/addNewRecipe.module.css';
 import { options } from 'app/api/auth/[...nextauth]/options'
 
-import { PrismaClient } from "@prisma/client"
+import { prisma } from "@/utils/prisma";
 import { useState } from 'react';
 import AdminIngredients from '@/components/admin/add-new-recipe/adminIngredients';
 import AdminContent from '@/components/admin/add-new-recipe/adminContent';
@@ -23,10 +23,8 @@ export async function getServerSideProps(context) {
   const { slug } = params;
   
   const session = await getServerSession(req, res, options)
-  const prisma = new PrismaClient()
 
   if (!session || !isAdmin(session.user.email)) {
-    await prisma.$disconnect();
     return {
       redirect: {
         destination: '/',
@@ -36,7 +34,6 @@ export async function getServerSideProps(context) {
   }
 
   if (!slug) {
-    await prisma.$disconnect();
     return {
       props: {},
     };
@@ -58,8 +55,6 @@ export async function getServerSideProps(context) {
       },
     },
   });
-
-  await prisma.$disconnect();
 
   if (!recipe) {
     return {

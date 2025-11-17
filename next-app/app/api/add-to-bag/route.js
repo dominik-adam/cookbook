@@ -1,11 +1,10 @@
 import { getServerSession } from "next-auth/next"
 import { options } from 'app/api/auth/[...nextauth]/options'
-import { PrismaClient } from '@prisma/client';
+import { prisma } from "@/utils/prisma";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
   const session = await getServerSession(options);
-  const prisma = new PrismaClient();
 
   try {
     if (!session) {
@@ -89,7 +88,5 @@ export async function POST(req) {
   } catch (error) {
     // TODO add general error message, specific is for debugging only 
     return NextResponse.json({ error: error.message }, { status: 500});
-  } finally {
-    await prisma.$disconnect();
   }
 }

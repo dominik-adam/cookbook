@@ -3,7 +3,7 @@ import Layout, { siteTitle } from '../components/layout';
 import Image from 'next/image';
 import { getServerSession } from "next-auth/next";
 import { options } from 'app/api/auth/[...nextauth]/options'
-import { PrismaClient } from "@prisma/client"
+import { prisma } from "@/utils/prisma";
 import styles from '@/styles/bagIngredients.module.css';
 
 import BagIngredient from '@/components/bag/bagIngredient';
@@ -20,7 +20,6 @@ export async function getServerSideProps(context) {
   const { params, req, res } = context;
 
   const session = await getServerSession(req, res, options);
-  const prisma = new PrismaClient();
 
   if (session) {
 
@@ -53,8 +52,6 @@ export async function getServerSideProps(context) {
           }
         }
       }
-    } finally {
-      await prisma.$disconnect();
     }
   }
 
