@@ -39,15 +39,6 @@ jobs:
             set -e
             cd $APP_DIR
 
-            # Create .env file with required variables
-            cat > .env << EOF
-DATABASE_URL=\"$DATABASE_URL\"
-NEXTAUTH_SECRET=\"$NEXTAUTH_SECRET\"
-NEXTAUTH_URL=\"$NEXTAUTH_URL\"
-GOOGLE_CLIENT_ID=\"$GOOGLE_CLIENT_ID\"
-GOOGLE_CLIENT_SECRET=\"$GOOGLE_CLIENT_SECRET\"
-EOF
-
             npm install
             npx prisma migrate deploy
             npx prisma generate
