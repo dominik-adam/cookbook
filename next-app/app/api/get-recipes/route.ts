@@ -10,7 +10,7 @@ export async function GET(req: Request) {
   try {
     const searchParams = new URL(req.url).searchParams;
     const s = searchParams.get("s") || "";
-    const category = searchParams.get("c") || undefined;
+    const category = searchParams.get("c");
 
     const recipes = await prisma.recipe.findMany({
       where: {
@@ -18,7 +18,7 @@ export async function GET(req: Request) {
           contains: s,
           mode: "insensitive",
         },
-        categoryId: category,
+        ...(category && { categoryId: category }),
       },
       orderBy: {
         title: "asc",
@@ -33,7 +33,7 @@ export async function GET(req: Request) {
       },
     });
 
-    if (session && isAdmin(session.user.email)) {
+    if (session && session.user?.email && isAdmin(session.user.email)) {
       const addNew = {
         slug: "add-new",
         title: "Add new recipe",
