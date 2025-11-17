@@ -35,7 +35,7 @@ export async function GET(req: Request) {
 
     if (session && session.user?.email && isAdmin(session.user.email)) {
       const addNew = {
-        slug: "add-new",
+        slug: `add-new?c=${category}`,
         title: "Add new recipe",
         thumbnail: "/images/add-new.jpg",
         ingredients: [],
