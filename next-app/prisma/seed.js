@@ -1,5 +1,7 @@
-import { prisma } from "@/utils/prisma";
+const { PrismaClient } = require('@prisma/client');
 const RecipeCategory = require('../enum/recipeCategory');
+
+const prisma = new PrismaClient();
 
 
 async function main() {
@@ -23,7 +25,11 @@ async function main() {
 }
 
 main()
-  .catch(e => {
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
     console.error(e);
+    await prisma.$disconnect();
     process.exit(1);
   });
