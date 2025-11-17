@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { getServerSession } from "next-auth/next";
 import { options } from 'app/api/auth/[...nextauth]/options'
 import { prisma } from "@/utils/prisma";
+import { getCanonicalEmail } from '@/utils/auth';
 import styles from '@/styles/bagIngredients.module.css';
 
 import BagIngredient from '@/components/bag/bagIngredient';
@@ -23,10 +24,10 @@ export async function getServerSideProps(context) {
 
   if (session) {
 
-    try {    
+    try {
       const user = await prisma.user.findUnique({
         where: {
-          email: session.user.email == "ttodova@gmail.com" ? "adam.dominik@gmail.com" : session.user.email,
+          email: getCanonicalEmail(session.user.email),
         },
       });
   

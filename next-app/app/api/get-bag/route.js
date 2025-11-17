@@ -2,6 +2,7 @@ import { prisma } from "@/utils/prisma";
 import { getServerSession } from "next-auth/next"
 import { options } from 'app/api/auth/[...nextauth]/options'
 import { NextResponse } from "next/server";
+import { getCanonicalEmail } from '@/utils/auth';
 
 export async function GET(req) {
   const session = await getServerSession(options);
@@ -14,7 +15,7 @@ export async function GET(req) {
 
     const user = await prisma.user.findUniqueOrThrow({
       where: {
-        email: session.user.email == "ttodova@gmail.com" ? "adam.dominik@gmail.com" : session.user.email,
+        email: getCanonicalEmail(session.user.email),
       },
     });
 

@@ -14,7 +14,7 @@ import { remark } from 'remark';
 import html from 'remark-html';
 
 import { useRouter } from 'next/router';
-import { isAdmin } from '@/utils/auth.js';
+import { isAdmin, getCanonicalEmail } from '@/utils/auth.js';
 
 
 export async function getServerSideProps(context) {
@@ -54,7 +54,7 @@ export async function getServerSideProps(context) {
   if (session) {
     const user = await prisma.user.findUnique({
       where: {
-        email: session.user.email == "ttodova@gmail.com" ? "adam.dominik@gmail.com" : session.user.email,
+        email: getCanonicalEmail(session.user.email),
       },
     });
 
