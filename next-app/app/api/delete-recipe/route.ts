@@ -1,9 +1,9 @@
 import { prisma } from "@/utils/prisma";
 import { getServerSession } from "next-auth/next"
 import { options } from 'app/api/auth/[...nextauth]/options'
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(req: Request) {
+export async function DELETE(req: NextRequest) {
   const session = await getServerSession(options);
 
   try {
@@ -18,7 +18,7 @@ export async function DELETE(req: Request) {
 
     await prisma.recipe.delete({
       where: {
-        id: recipeId
+        id: recipeId!
       }
     });
 

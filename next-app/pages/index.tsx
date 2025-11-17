@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Layout, { siteTitle } from '../components/layout';
+import Layout from '../components/layout';
 import Recipes from '../components/recipes';
 import RecipeCategory from '@/enum/recipeCategory';
 import { useState } from 'react';
@@ -30,6 +30,7 @@ export async function getServerSideProps(context) {
 }
 
 export default function Home({ initRecipes }) {
+  const siteTitle = 'My Cookbook';
   const [sidebarContent, setSidebarContent] = useState<JSX.Element | null>(null);
 
   return (

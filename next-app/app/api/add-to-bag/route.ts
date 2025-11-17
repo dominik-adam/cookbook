@@ -7,6 +7,9 @@ import { AddToBagSchema, validateData } from '@/lib/validations';
 import { handleApiError, AuthenticationError } from '@/lib/errorHandler';
 
 export async function POST(req: Request) {
+  let ingredientId: string | undefined;
+  let unitId: string | undefined;
+
   try {
     const session = await getServerSession(options);
 
@@ -22,12 +25,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
-    const { ingredientId, unitId, amount, note } = validation.data;
+    const { ingredientId: ingId, unitId: uId, amount, note } = validation.data;
+    ingredientId = ingId!;
+    unitId = uId!;
 
 
     const user = await prisma.user.findUniqueOrThrow({
       where: {
-        email: getCanonicalEmail(session.user!.email),
+        email: getCanonicalEmail(session.user!.email!),
       },
     });
 
@@ -35,8 +40,8 @@ export async function POST(req: Request) {
       where: {
         bagIngredientId: {
           userId: user.id,
-          ingredientId: ingredientId,
-          unitId: unitId
+          ingredientId: ingId!,
+          unitId: uId!
         },
       },
     });
@@ -49,13 +54,13 @@ export async function POST(req: Request) {
         } else {
           bagIngredientUpdateData["amount"] = parseFloat(amount);
         }
-  
+
         await prisma.bagIngredient.update({
           where: {
             bagIngredientId: {
               userId: user.id,
-              ingredientId: ingredientId,
-              unitId: unitId
+              ingredientId: ingId!,
+              unitId: uId!
             }
           },
           data: bagIngredientUpdateData,
@@ -73,8 +78,8 @@ export async function POST(req: Request) {
 
       const bagIngredientCreateData = {
         userId: user.id,
-        ingredientId: ingredientId,
-        unitId: unitId,
+        ingredientId: ingId!,
+        unitId: uId!,
         order: (maxOrder._max.order || 0) + 1,
         note: note
       }

@@ -8,6 +8,9 @@ import { RecipeSchema, validateData } from '@/lib/validations';
 import { handleApiError, AuthenticationError, NotFoundError } from '@/lib/errorHandler';
 
 export async function POST(req: Request) {
+  let id: string | undefined;
+  let slug: string | undefined;
+
   try {
     const session = await getServerSession(options);
 
@@ -24,8 +27,8 @@ export async function POST(req: Request) {
     }
 
     const {
-      id,
-      slug,
+      id: recipeId,
+      slug: recipeSlug,
       title,
       category,
       serves,
@@ -38,20 +41,23 @@ export async function POST(req: Request) {
       ingredients
     } = validation.data;
 
+    id = recipeId;
+    slug = recipeSlug;
+
 
     var recipe;
-    
-    if (id) {
+
+    if (recipeId) {
       // Check if recipe exists before updating
-      const existingRecipe = await prisma.recipe.findUnique({ where: { id } });
+      const existingRecipe = await prisma.recipe.findUnique({ where: { id: recipeId } });
       if (!existingRecipe) {
-        throw new NotFoundError(`Recipe with ID ${id} not found`);
+        throw new NotFoundError(`Recipe with ID ${recipeId} not found`);
       }
 
       recipe = await prisma.recipe.update({
-        where: { id: id },
+        where: { id: recipeId },
         data: {
-          slug: slug,
+          slug: recipeSlug,
           title: title,
           serves: serves,
           categoryId: category,
@@ -88,7 +94,7 @@ export async function POST(req: Request) {
     } else {
       recipe = await prisma.recipe.create({
         data: {
-          slug: slug,
+          slug: recipeSlug,
           title: title,
           serves: serves,
           categoryId: category,
@@ -115,7 +121,7 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({
-      message: id ? 'Recipe updated successfully' : 'Recipe created successfully',
+      message: recipeId ? 'Recipe updated successfully' : 'Recipe created successfully',
       recipe: recipe
     });
   } catch (error) {

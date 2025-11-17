@@ -1,7 +1,7 @@
 import { prisma } from "@/utils/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
 
   try {
     const searchParams = req.nextUrl.searchParams
@@ -10,7 +10,7 @@ export async function GET(req: Request) {
     const ingredients = await prisma.ingredient.findMany({
       where: {
         name: {
-          contains: s,
+          contains: s ?? undefined,
           mode: 'insensitive'
         }
       },

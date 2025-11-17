@@ -1,11 +1,11 @@
 import { prisma } from "@/utils/prisma";
 import { getServerSession } from "next-auth/next"
 import { options } from 'app/api/auth/[...nextauth]/options'
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getCanonicalEmail } from '@/utils/auth';
 import { RemoveFromBagSchema, validateData } from '@/lib/validations';
 
-export async function DELETE(req: Request) {
+export async function DELETE(req: NextRequest) {
   const session = await getServerSession(options);
 
   try {
@@ -30,7 +30,7 @@ export async function DELETE(req: Request) {
 
     const user = await prisma.user.findUniqueOrThrow({
       where: {
-        email: getCanonicalEmail(session.user!.email),
+        email: getCanonicalEmail(session.user!.email!),
       },
     });
 

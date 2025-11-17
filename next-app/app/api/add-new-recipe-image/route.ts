@@ -13,15 +13,15 @@ export async function POST(req: Request) {
     }
 
     const data = await req.formData();
-    const file = data.get('file');
+    const file = data.get('file') as File | null;
     // TODO add validation
 
-    if (!file) {
+    if (!file || typeof file === 'string') {
       return NextResponse.json({ error: 'Missing file' }, { status: 500});
     }
-  
+
     const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
+    const buffer = new Uint8Array(bytes)
     const path = process.cwd() + `/public/images/${file.name}`
     await writeFile(path, buffer)
 
