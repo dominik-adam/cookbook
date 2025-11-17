@@ -15,7 +15,7 @@ export async function GET(req: Request) {
 
     const user = await prisma.user.findUniqueOrThrow({
       where: {
-        email: getCanonicalEmail(session.user.email),
+        email: getCanonicalEmail(session.user!.email),
       },
     });
 

@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   try {
     const session = await getServerSession(options);
 
-    if (!session || !isAdmin(session.user.email)) {
+    if (!session || !session.user?.email || !isAdmin(session.user.email)) {
       throw new AuthenticationError('Admin access required');
     }
 

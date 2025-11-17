@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   const session = await getServerSession(options);
   
   try {
-    if (!session || !isAdmin(session.user.email)) {
+    if (!session || !session.user?.email || !isAdmin(session.user.email)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401});
     }
 
