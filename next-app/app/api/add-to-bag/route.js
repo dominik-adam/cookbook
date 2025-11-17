@@ -3,6 +3,7 @@ import { options } from 'app/api/auth/[...nextauth]/options'
 import { prisma } from "@/utils/prisma";
 import { NextResponse } from "next/server";
 import { getCanonicalEmail } from '@/utils/auth';
+import { AddToBagSchema, validateData } from '@/lib/validations';
 
 export async function POST(req) {
   const session = await getServerSession(options);
@@ -12,14 +13,16 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401});
     }
 
-    const { 
-      ingredientId,
-      unitId,
-      amount,
-      note
-    } = await req.json();
-    // TODO add validation
-    
+    const body = await req.json();
+
+    // Validate input
+    const validation = validateData(AddToBagSchema, body);
+    if (!validation.success) {
+      return NextResponse.json({ error: validation.error }, { status: 400 });
+    }
+
+    const { ingredientId, unitId, amount, note } = validation.data;
+
 
     const user = await prisma.user.findUniqueOrThrow({
       where: {

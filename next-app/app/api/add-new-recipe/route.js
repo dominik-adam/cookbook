@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { isAdmin } from '@/utils/auth.js';
 import { prisma } from "@/utils/prisma";
 import cuid from 'cuid';
+import { RecipeSchema, validateData } from '@/lib/validations';
 
 export async function POST(req) {
   const session = await getServerSession(options)
@@ -13,7 +14,15 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401});
     }
 
-    const { 
+    const body = await req.json();
+
+    // Validate input
+    const validation = validateData(RecipeSchema, body);
+    if (!validation.success) {
+      return NextResponse.json({ error: validation.error }, { status: 400 });
+    }
+
+    const {
       id,
       slug,
       title,
@@ -26,8 +35,7 @@ export async function POST(req) {
       gallery,
       tags,
       ingredients
-    } = await req.json();
-    // TODO add validation
+    } = validation.data;
 
 
     var recipe;

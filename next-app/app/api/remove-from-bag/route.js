@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth/next"
 import { options } from 'app/api/auth/[...nextauth]/options'
 import { NextResponse } from "next/server";
 import { getCanonicalEmail } from '@/utils/auth';
+import { RemoveFromBagSchema, validateData } from '@/lib/validations';
 
 export async function DELETE(req) {
   const session = await getServerSession(options);
@@ -13,9 +14,18 @@ export async function DELETE(req) {
     }
 
     const searchParams = req.nextUrl.searchParams;
-    const ingredientId = searchParams.get('ingredientId');
-    const unitId = searchParams.get('unitId');
-    // TODO add validation
+    const params = {
+      ingredientId: searchParams.get('ingredientId'),
+      unitId: searchParams.get('unitId'),
+    };
+
+    // Validate query parameters
+    const validation = validateData(RemoveFromBagSchema, params);
+    if (!validation.success) {
+      return NextResponse.json({ error: validation.error }, { status: 400 });
+    }
+
+    const { ingredientId, unitId } = validation.data;
 
 
     const user = await prisma.user.findUniqueOrThrow({
