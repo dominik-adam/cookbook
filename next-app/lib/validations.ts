@@ -168,14 +168,14 @@ export const CreateIngredientSchema = z.object({
  * @param {any} data - Data to validate
  * @returns {{ success: boolean, data?: any, error?: string }}
  */
-export function validateData(schema, data) {
+export function validateData(schema: z.ZodSchema, data: any): { success: true; data: any } | { success: false; error: string } {
   try {
     const validatedData = schema.parse(data);
     return { success: true, data: validatedData };
   } catch (error) {
     if (error instanceof z.ZodError) {
       // Format Zod errors into a readable message
-      const errorMessages = error.errors.map(err => {
+      const errorMessages = error.issues.map(err => {
         const path = err.path.join('.');
         return path ? `${path}: ${err.message}` : err.message;
       });
@@ -198,7 +198,7 @@ export function validateData(schema, data) {
  * @param {Object} params - Query parameters (typically URLSearchParams)
  * @returns {{ success: boolean, data?: any, error?: string }}
  */
-export function validateQueryParams(schema, params) {
+export function validateQueryParams(schema: z.ZodSchema, params: any) {
   // Query params are always strings, so we pass them as-is
   // The schema should handle type coercion if needed
   return validateData(schema, params);

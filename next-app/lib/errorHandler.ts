@@ -16,7 +16,10 @@ import { NextResponse } from "next/server";
  * Use this for operational errors that should be returned to the client
  */
 export class AppError extends Error {
-  constructor(message, statusCode = 500, isOperational = true) {
+  statusCode: number;
+  isOperational: boolean;
+
+  constructor(message: string, statusCode = 500, isOperational = true) {
     super(message);
     this.statusCode = statusCode;
     this.isOperational = isOperational;
@@ -29,7 +32,7 @@ export class AppError extends Error {
  * Specific error types for common scenarios
  */
 export class ValidationError extends AppError {
-  constructor(message) {
+  constructor(message: string) {
     super(message, 400, true);
   }
 }
@@ -61,9 +64,9 @@ export class ConflictError extends AppError {
 /**
  * Format error for logging (detailed)
  */
-function formatErrorForLogging(error, context = {}) {
+function formatErrorForLogging(error: any, context: Record<string, any> = {}) {
   const timestamp = new Date().toISOString();
-  const errorDetails = {
+  const errorDetails: any = {
     timestamp,
     name: error.name,
     message: error.message,
@@ -85,11 +88,11 @@ function formatErrorForLogging(error, context = {}) {
 /**
  * Format error for client response (safe)
  */
-function formatErrorForClient(error, isDevelopment) {
+function formatErrorForClient(error: any, isDevelopment: boolean) {
   const statusCode = error.statusCode || 500;
 
   // Base response
-  const response = {
+  const response: any = {
     error: error.message || 'An unexpected error occurred',
     statusCode,
   };
@@ -131,7 +134,7 @@ function formatErrorForClient(error, isDevelopment) {
  * @param {Object} context - Additional context for logging (e.g., route, userId)
  * @returns {NextResponse} - Formatted error response
  */
-export function handleApiError(error, context = {}) {
+export function handleApiError(error: any, context: Record<string, any> = {}) {
   const isDevelopment = process.env.NODE_ENV === 'development';
 
   // Log detailed error for debugging (server-side only)
@@ -174,7 +177,7 @@ export function handleApiError(error, context = {}) {
 /**
  * Handle Prisma-specific errors with friendly messages
  */
-function handlePrismaError(error, isDevelopment) {
+function handlePrismaError(error: any, isDevelopment: boolean) {
   let message = 'Database error occurred';
   let statusCode = 500;
 
@@ -206,7 +209,7 @@ function handlePrismaError(error, isDevelopment) {
       statusCode = 500;
   }
 
-  const clientError = {
+  const clientError: any = {
     error: message,
     statusCode,
   };
@@ -235,7 +238,7 @@ function handlePrismaError(error, isDevelopment) {
  * }, { route: '/api/add-to-bag' });
  * ```
  */
-export function asyncHandler(handler, context = {}) {
+export function asyncHandler(handler: (...args: any[]) => Promise<any>, context: Record<string, any> = {}) {
   return async (...args) => {
     try {
       return await handler(...args);
@@ -253,6 +256,6 @@ export function asyncHandler(handler, context = {}) {
  * if (!user) throwError('User not found', 404);
  * ```
  */
-export function throwError(message, statusCode = 500) {
+export function throwError(message: string, statusCode = 500) {
   throw new AppError(message, statusCode);
 }
