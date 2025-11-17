@@ -29,7 +29,7 @@ jobs:
           VPS_IP: ${{ secrets.VPS_IP }}
           APP_DIR: ${{ secrets.APP_DIR }}
         run: |
-          rsync -avz --exclude=node_modules --exclude=.git --exclude=dev.Dockerfile --exclude=prod.Dockerfile ./next-app/ $VPS_USER@$VPS_IP:$APP_DIR
+          rsync -avz --delete --exclude=node_modules --exclude=.git --exclude=dev.Dockerfile --exclude=prod.Dockerfile --exclude=.next ./next-app/ $VPS_USER@$VPS_IP:$APP_DIR
           ssh -o StrictHostKeyChecking=no $VPS_USER@$VPS_IP "
             set -e
             cd $APP_DIR
