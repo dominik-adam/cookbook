@@ -37,6 +37,13 @@ export async function getServerSideProps(context) {
         initDrinks: drinks,
       },
     };
+  } catch (error) {
+    console.error('Error fetching drinks:', error);
+    return {
+      props: {
+        initDrinks: [],
+      },
+    };
   }
 }
 

@@ -53,6 +53,8 @@ export async function getServerSideProps(context) {
           }
         }
       }
+    } catch (error) {
+      console.error('Error fetching bag ingredients:', error);
     }
   }
 
