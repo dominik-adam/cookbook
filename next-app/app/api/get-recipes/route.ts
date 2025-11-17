@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { options } from "app/api/auth/[...nextauth]/options";
 import { isAdmin } from "@/utils/auth";
 import { prisma } from "@/utils/prisma";
+import { handleApiError } from '@/lib/errorHandler';
 
 export async function GET(req: Request) {
   const session = await getServerSession(options);

@@ -4,13 +4,17 @@ import { options } from 'app/api/auth/[...nextauth]/options'
 import { NextResponse } from "next/server";
 import { getCanonicalEmail } from '@/utils/auth';
 import { UpdateBagIngredientSchema, validateData } from '@/lib/validations';
+import { handleApiError, AuthenticationError } from '@/lib/errorHandler';
 
 export async function POST(req: Request) {
-  const session = await getServerSession(options)
+  let ingredientId;
+  let unitId;
 
   try {
+    const session = await getServerSession(options)
+
     if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401});
+      throw new AuthenticationError();
     }
 
     const body = await req.json();
@@ -21,7 +25,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
-    const { ingredientId, unitId, amount, note } = validation.data;
+    const { ingredientId: ingId, unitId: uId, amount, note } = validation.data;
+    ingredientId = ingId;
+    unitId = uId;
 
     const user = await prisma.user.findUniqueOrThrow({
       where: {
@@ -45,7 +51,10 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: 'Bag item updated successfully' });
   } catch (error) {
-    // TODO add general error message, specific is for debugging only 
-    return NextResponse.json({ error: error.message }, { status: 500});
+    return handleApiError(error, {
+      route: '/api/update-bag-ingredient',
+      ingredientId,
+      unitId,
+    });
   }
 }

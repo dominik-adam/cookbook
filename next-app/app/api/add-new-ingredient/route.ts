@@ -4,13 +4,16 @@ import { NextResponse } from "next/server";
 import { isAdmin } from '@/utils/auth.js';
 import { prisma } from "@/utils/prisma";
 import { CreateIngredientSchema, validateData } from '@/lib/validations';
+import { handleApiError, AuthenticationError } from '@/lib/errorHandler';
 
 export async function POST(req: Request) {
-  const session = await getServerSession(options)
+  let name;
 
   try {
+    const session = await getServerSession(options)
+
     if (!session || !session.user?.email || !isAdmin(session.user.email)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401});
+      throw new AuthenticationError('Admin access required');
     }
 
     const body = await req.json();
@@ -21,7 +24,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
-    const { name, image } = validation.data;
+    const { name: ingredientName, image } = validation.data;
+    name = ingredientName;
 
     const ingredient = await prisma.ingredient.create({
       data: {
@@ -30,12 +34,14 @@ export async function POST(req: Request) {
       },
     })
 
-    return NextResponse.json({ 
-      message: 'Ingredient created successfully', 
+    return NextResponse.json({
+      message: 'Ingredient created successfully',
       ingredient: ingredient
     });
   } catch (error) {
-    // TODO add general error message, specific is for debugging only 
-    return NextResponse.json({ error: error.message }, { status: 500});
+    return handleApiError(error, {
+      route: '/api/add-new-ingredient',
+      ingredientName: name,
+    });
   }
 }

@@ -1,25 +1,31 @@
 import Head from 'next/head';
-import Layout, { siteTitle } from '../components/layout';
+import Layout from '../components/layout';
 import { useSession } from "next-auth/react"
 import { signIn, signOut } from "next-auth/react"
 import styles from '@/styles/profile.module.css';
 import Image from 'next/image';
+import { Session } from 'next-auth';
 
-function formatDateToHumanReadable(isoString) {
+function formatDateToHumanReadable(isoString: string): string {
   const date = new Date(isoString);
-  const options = { 
-    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', 
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
     hour: 'numeric', minute: 'numeric', second: 'numeric',
-    timeZoneName: 'short' 
+    timeZoneName: 'short'
   };
   return date.toLocaleDateString('en-US', options);
 }
 
-function UserInfo({session, status}) {
-  if (status !== "authenticated") {
+interface UserInfoProps {
+  session: Session | null;
+  status: 'authenticated' | 'loading' | 'unauthenticated';
+}
+
+function UserInfo({ session, status }: UserInfoProps) {
+  if (status !== "authenticated" || !session?.user) {
     return <>
       <div className={styles.notSignedIn}>Not signed in</div>
-      <button 
+      <button
         onClick={() => signIn('google')}
         className={`${styles.profileLogInButton}`}
       >
@@ -29,13 +35,15 @@ function UserInfo({session, status}) {
   }
 
   return <>
-    <Image
-      className={styles.profilePicture}
-      src={session.user.image}
-      height={200}
-      width={200}
-      alt="Profile picture"
-    />
+    {session.user.image && (
+      <Image
+        className={styles.profilePicture}
+        src={session.user.image}
+        height={200}
+        width={200}
+        alt="Profile picture"
+      />
+    )}
     <div className={styles.profileName}>
       {session.user.name}
     </div>
@@ -45,8 +53,8 @@ function UserInfo({session, status}) {
     <div className={styles.profileExpiration}>
       Session expires at: <b>{formatDateToHumanReadable(session.expires)}</b>
     </div>
-    <button 
-      onClick={() => signOut('google')}
+    <button
+      onClick={() => signOut()}
       className={`${styles.profileLogOutButton}`}
     >
       Log out
@@ -56,6 +64,7 @@ function UserInfo({session, status}) {
 
 export default function Profile() {
   const { data: session, status } = useSession()
+  const siteTitle = 'My Profile';
   return (
     <Layout pageTitle={"Profile"}>
       <Head>

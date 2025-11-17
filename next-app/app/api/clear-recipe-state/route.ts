@@ -4,13 +4,16 @@ import { options } from 'app/api/auth/[...nextauth]/options'
 import { NextResponse } from "next/server";
 import { getCanonicalEmail } from '@/utils/auth';
 import { ClearRecipeStateSchema, validateData } from '@/lib/validations';
+import { handleApiError, AuthenticationError } from '@/lib/errorHandler';
 
 export async function POST(req: Request) {
-  const session = await getServerSession(options)
+  let recipeId;
 
   try {
+    const session = await getServerSession(options)
+
     if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401});
+      throw new AuthenticationError();
     }
 
     const body = await req.json();
@@ -21,7 +24,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
-    const { recipeId, clearState } = validation.data;
+    const { recipeId: rId, clearState } = validation.data;
+    recipeId = rId;
 
     const user = await prisma.user.findUniqueOrThrow({
       where: {
@@ -64,7 +68,9 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: 'Recipe state cleared successfully' });
   } catch (error) {
-    // TODO add general error message, specific is for debugging only 
-    return NextResponse.json({ error: error.message }, { status: 500});
+    return handleApiError(error, {
+      route: '/api/clear-recipe-state',
+      recipeId,
+    });
   }
 }

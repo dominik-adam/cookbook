@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Layout, { siteTitle } from '@/components/layout';
+import Layout from '@/components/layout';
 import { useRouter } from 'next/router';
 
 import { getServerSession } from "next-auth/next"
@@ -71,6 +71,7 @@ export async function getServerSideProps(context) {
 
 export default function AddRecipe({ recipe }) {
   const { showMessage } = useFlashMessage();
+  const siteTitle = 'Add New Recipe';
 
   const router = useRouter();
 

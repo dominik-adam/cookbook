@@ -2,18 +2,25 @@ import { prisma } from "@/utils/prisma";
 import { getServerSession } from "next-auth/next"
 import { options } from 'app/api/auth/[...nextauth]/options'
 import { NextRequest, NextResponse } from "next/server";
+import { handleApiError, AuthenticationError } from '@/lib/errorHandler';
+import { isAdmin } from '@/utils/auth';
 
 export async function DELETE(req: NextRequest) {
-  const session = await getServerSession(options);
+  let recipeId;
 
   try {
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401});
+    const session = await getServerSession(options);
+
+    if (!session || !session.user?.email || !isAdmin(session.user.email)) {
+      throw new AuthenticationError('Admin access required');
     }
 
     const searchParams = req.nextUrl.searchParams;
-    const recipeId = searchParams.get('recipeId');
-    // TODO add validation
+    recipeId = searchParams.get('recipeId');
+
+    if (!recipeId) {
+      return NextResponse.json({ error: 'recipeId is required' }, { status: 400 });
+    }
 
 
     await prisma.recipe.delete({
@@ -22,8 +29,11 @@ export async function DELETE(req: NextRequest) {
       }
     });
 
-    return NextResponse.json({});
+    return NextResponse.json({ message: 'Recipe deleted successfully' });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500});
+    return handleApiError(error, {
+      route: '/api/delete-recipe',
+      recipeId,
+    });
   }
 }

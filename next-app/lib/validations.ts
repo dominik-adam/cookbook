@@ -4,6 +4,7 @@
  */
 
 import { z } from 'zod';
+import RecipeCategory from '@/enum/recipeCategory';
 
 // ============================================================================
 // Common Schemas
@@ -48,7 +49,7 @@ export const AddToBagManySchema = z.object({
       unitId: cuidSchema,
       amount: optionalPositiveNumber,
     })
-  ).min(1, 'At least one ingredient is required'),
+  ),
   multiplier: positiveNumber,
 });
 
@@ -130,7 +131,9 @@ export const RecipeSchema = z.object({
   title: z.string()
     .min(1, 'Title is required')
     .max(200, 'Title must be less than 200 characters'),
-  category: cuidSchema,
+  category: z.enum([RecipeCategory.FOOD, RecipeCategory.DRINK] as const, {
+    message: 'Category must be either "food" or "drink"',
+  }),
   serves: z.number().int().positive('Servings must be a positive integer'),
   thumbnail: z.string().url('Thumbnail must be a valid URL').optional().or(z.literal('')),
   instructions: z.string().optional(),
@@ -138,7 +141,7 @@ export const RecipeSchema = z.object({
   link: z.string().url('Link must be a valid URL').optional().or(z.literal('')),
   gallery: z.array(z.string().url('Gallery image must be a valid URL')).optional(),
   tags: z.array(z.string()).optional(),
-  ingredients: z.array(RecipeIngredientSchema).min(1, 'At least one ingredient is required'),
+  ingredients: z.array(RecipeIngredientSchema),
 });
 
 // ============================================================================

@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Layout, { siteTitle } from '../components/layout';
+import Layout from '../components/layout';
 import Image from 'next/image';
 import { getServerSession } from "next-auth/next";
 import { options } from 'app/api/auth/[...nextauth]/options'
@@ -13,16 +13,51 @@ import { addIngredientToBag, removeBagIngredient, getBagIngredients } from '@/ut
 import { useFlashMessage } from '@/components/flashMessage/FlashMessageContext';
 import AdminIngredientModal from '@/components/admin/adminIngredientModal';
 import { ModalState } from '@/components/admin/add-new-recipe/modal/modalState'
+import { GetServerSidePropsContext } from 'next';
+import { Socket } from 'socket.io-client';
 
 import io from 'socket.io-client'
-let socket
 
-export async function getServerSideProps(context) {
-  const { params, req, res } = context;
+let socket: Socket | undefined;
+
+interface BagIngredient {
+  ingredientId: string;
+  unitId: string;
+  amount?: number;
+  note?: string;
+  ingredient: {
+    id: string;
+    name: string;
+    image: string;
+  };
+  unit: {
+    id: string;
+    name: string;
+  };
+}
+
+interface IngredientToAdd {
+  ingredient: {
+    id: string;
+    name: string;
+  };
+  unit: {
+    id: string;
+  };
+  amount?: number;
+  instruction?: string;
+}
+
+interface BagProps {
+  bagIngredients?: BagIngredient[];
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { req, res } = context;
 
   const session = await getServerSession(req, res, options);
 
-  if (session) {
+  if (session && session.user?.email) {
 
     try {
       const user = await prisma.user.findUnique({
@@ -30,7 +65,7 @@ export async function getServerSideProps(context) {
           email: getCanonicalEmail(session.user.email),
         },
       });
-  
+
       if (user) {
         const bagIngredients = await prisma.bagIngredient.findMany({
           where: {
@@ -44,11 +79,11 @@ export async function getServerSideProps(context) {
             order: 'asc',
           }
         });
-  
+
         if (bagIngredients != null) {
           return {
             props: {
-              bagIngredients
+              bagIngredients: JSON.parse(JSON.stringify(bagIngredients))
             }
           }
         }
@@ -63,16 +98,18 @@ export async function getServerSideProps(context) {
   }
 }
 
-export default function ShoppingBag({bagIngredients: initBagIngredients}) {
+export default function ShoppingBag({ bagIngredients: initBagIngredients }: BagProps) {
 
   const { showMessage } = useFlashMessage();
 
-  const [bagIngredients, setBagIngredients] = useState(initBagIngredients ?? []);
-  const [modalState, setModalState] = useState(ModalState.CLOSED)
-  const [modalIngredient, setModalIngredient] = useState(undefined)
+  const siteTitle = 'My Shopping Bag';
 
-  const addIngredient = async (ingredient) => {
-    const response = await addIngredientToBag({ 
+  const [bagIngredients, setBagIngredients] = useState<BagIngredient[]>(initBagIngredients ?? []);
+  const [modalState, setModalState] = useState(ModalState.CLOSED)
+  const [modalIngredient, setModalIngredient] = useState<any>(undefined)
+
+  const addIngredient = async (ingredient: IngredientToAdd) => {
+    const response = await addIngredientToBag({
       ingredientId: ingredient.ingredient.id,
       unitId: ingredient.unit.id,
       amount: ingredient.amount,
@@ -99,7 +136,7 @@ export default function ShoppingBag({bagIngredients: initBagIngredients}) {
 		}
   }
 
-  const removeIngredient = (key) => async (ingredientId, ingredientName, unitId) => {
+  const removeIngredient = (key: number) => async (ingredientId: string, ingredientName: string, unitId: string) => {
     const response = await removeBagIngredient(ingredientId, unitId);
     if (response.ok) {
       setBagIngredients((prevIngredients) => {
@@ -107,7 +144,7 @@ export default function ShoppingBag({bagIngredients: initBagIngredients}) {
         updatedIngredients.splice(key, 1);
         return updatedIngredients;
       });
-  
+
       if (socket) {
         socket.emit('removed-from-bag', key);
       }
@@ -121,12 +158,12 @@ export default function ShoppingBag({bagIngredients: initBagIngredients}) {
     const socketInitializer = async () => {
       await fetch('/api/socket');
       socket = io();
-  
+
       socket.on('connect', () => {
         console.log('connected');
       });
-  
-      socket.on('remove-from-bag', key => {
+
+      socket.on('remove-from-bag', (key: number) => {
         setBagIngredients((prevIngredients) => {
           const updatedIngredients = [...prevIngredients];
           updatedIngredients.splice(key, 1);
@@ -134,9 +171,9 @@ export default function ShoppingBag({bagIngredients: initBagIngredients}) {
         });
       });
     };
-  
+
     socketInitializer();
-  
+
     return () => {
       if (socket) {
         socket.disconnect();
@@ -152,13 +189,16 @@ export default function ShoppingBag({bagIngredients: initBagIngredients}) {
       </Head>
       <div className={styles.bagIngredients}>
         {bagIngredients.map(( bagIngredient, i ) => (
-          <BagIngredient 
+          <BagIngredient
             key={bagIngredient.ingredientId + bagIngredient.unitId + bagIngredient.amount}
-            {...bagIngredient}
+            ingredient={bagIngredient.ingredient}
+            amount={bagIngredient.amount}
+            unit={bagIngredient.unit}
+            note={bagIngredient.note}
             handleRemove={removeIngredient(i)}
           />
         ))}
-        <div 
+        <div
           className={styles.ingredient}
           onClick={() => {setModalState(ModalState.SELECT)}}
         >

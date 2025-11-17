@@ -4,13 +4,17 @@ import { options } from 'app/api/auth/[...nextauth]/options'
 import { NextRequest, NextResponse } from "next/server";
 import { getCanonicalEmail } from '@/utils/auth';
 import { RemoveFromBagSchema, validateData } from '@/lib/validations';
+import { handleApiError, AuthenticationError } from '@/lib/errorHandler';
 
 export async function DELETE(req: NextRequest) {
-  const session = await getServerSession(options);
+  let ingredientId;
+  let unitId;
 
   try {
+    const session = await getServerSession(options);
+
     if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401});
+      throw new AuthenticationError();
     }
 
     const searchParams = req.nextUrl.searchParams;
@@ -25,7 +29,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
-    const { ingredientId, unitId } = validation.data;
+    ({ ingredientId, unitId } = validation.data);
 
 
     const user = await prisma.user.findUniqueOrThrow({
@@ -72,6 +76,10 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json({});
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500});
+    return handleApiError(error, {
+      route: '/api/remove-from-bag',
+      ingredientId,
+      unitId,
+    });
   }
 }

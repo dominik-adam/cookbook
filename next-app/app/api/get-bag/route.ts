@@ -3,13 +3,14 @@ import { getServerSession } from "next-auth/next"
 import { options } from 'app/api/auth/[...nextauth]/options'
 import { NextResponse } from "next/server";
 import { getCanonicalEmail } from '@/utils/auth';
+import { handleApiError, AuthenticationError } from '@/lib/errorHandler';
 
 export async function GET(req: Request) {
-  const session = await getServerSession(options);
-
   try {
+    const session = await getServerSession(options);
+
     if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401});
+      throw new AuthenticationError();
     }
 
 
@@ -34,6 +35,8 @@ export async function GET(req: Request) {
 
     return NextResponse.json({ bagIngredients });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500});
+    return handleApiError(error, {
+      route: '/api/get-bag',
+    });
   }
 }
