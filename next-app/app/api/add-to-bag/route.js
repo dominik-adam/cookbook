@@ -4,13 +4,14 @@ import { prisma } from "@/utils/prisma";
 import { NextResponse } from "next/server";
 import { getCanonicalEmail } from '@/utils/auth';
 import { AddToBagSchema, validateData } from '@/lib/validations';
+import { handleApiError, AuthenticationError } from '@/lib/errorHandler';
 
 export async function POST(req) {
-  const session = await getServerSession(options);
-
   try {
+    const session = await getServerSession(options);
+
     if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401});
+      throw new AuthenticationError();
     }
 
     const body = await req.json();
@@ -86,11 +87,14 @@ export async function POST(req) {
       })
     }
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       message: 'Ingredient was successfully added to the bag'
     });
   } catch (error) {
-    // TODO add general error message, specific is for debugging only 
-    return NextResponse.json({ error: error.message }, { status: 500});
+    return handleApiError(error, {
+      route: '/api/add-to-bag',
+      ingredientId,
+      unitId,
+    });
   }
 }

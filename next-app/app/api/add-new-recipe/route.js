@@ -5,13 +5,14 @@ import { isAdmin } from '@/utils/auth.js';
 import { prisma } from "@/utils/prisma";
 import cuid from 'cuid';
 import { RecipeSchema, validateData } from '@/lib/validations';
+import { handleApiError, AuthenticationError, NotFoundError } from '@/lib/errorHandler';
 
 export async function POST(req) {
-  const session = await getServerSession(options)
-
   try {
+    const session = await getServerSession(options);
+
     if (!session || !isAdmin(session.user.email)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401});
+      throw new AuthenticationError('Admin access required');
     }
 
     const body = await req.json();
@@ -41,6 +42,12 @@ export async function POST(req) {
     var recipe;
     
     if (id) {
+      // Check if recipe exists before updating
+      const existingRecipe = await prisma.recipe.findUnique({ where: { id } });
+      if (!existingRecipe) {
+        throw new NotFoundError(`Recipe with ID ${id} not found`);
+      }
+
       recipe = await prisma.recipe.update({
         where: { id: id },
         data: {
@@ -107,12 +114,15 @@ export async function POST(req) {
       })
     }
 
-    return NextResponse.json({ 
-      message: 'Recipe created successfully', 
+    return NextResponse.json({
+      message: id ? 'Recipe updated successfully' : 'Recipe created successfully',
       recipe: recipe
     });
   } catch (error) {
-    // TODO add general error message, specific is for debugging only 
-    return NextResponse.json({ error: error.message }, { status: 500});
+    return handleApiError(error, {
+      route: '/api/add-new-recipe',
+      recipeId: id,
+      slug,
+    });
   }
 }
