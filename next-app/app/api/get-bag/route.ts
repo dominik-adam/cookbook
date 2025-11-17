@@ -4,7 +4,7 @@ import { options } from 'app/api/auth/[...nextauth]/options'
 import { NextResponse } from "next/server";
 import { getCanonicalEmail } from '@/utils/auth';
 
-export async function GET(req) {
+export async function GET(req: Request) {
   const session = await getServerSession(options);
 
   try {

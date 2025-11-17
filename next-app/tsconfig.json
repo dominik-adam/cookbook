@@ -6,7 +6,8 @@
       "@/components/*": ["components/*"],
       "@/utils/*": ["utils/*"],
       "@/types/*": ["types/*"],
-      "@/enum/*": ["enum/*"]
+      "@/enum/*": ["enum/*"],
+      "@/lib/*": ["lib/*"]
     },
     "lib": [
       "dom",

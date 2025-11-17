@@ -7,7 +7,7 @@ import cuid from 'cuid';
 import { RecipeSchema, validateData } from '@/lib/validations';
 import { handleApiError, AuthenticationError, NotFoundError } from '@/lib/errorHandler';
 
-export async function POST(req) {
+export async function POST(req: Request) {
   try {
     const session = await getServerSession(options);
 

@@ -5,7 +5,7 @@ import { isAdmin } from '@/utils/auth.js';
 import { prisma } from "@/utils/prisma";
 import { CreateIngredientSchema, validateData } from '@/lib/validations';
 
-export async function POST(req) {
+export async function POST(req: Request) {
   const session = await getServerSession(options)
 
   try {

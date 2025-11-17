@@ -6,7 +6,7 @@ import { getCanonicalEmail } from '@/utils/auth';
 import { AddToBagSchema, validateData } from '@/lib/validations';
 import { handleApiError, AuthenticationError } from '@/lib/errorHandler';
 
-export async function POST(req) {
+export async function POST(req: Request) {
   try {
     const session = await getServerSession(options);
 

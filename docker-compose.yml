@@ -22,6 +22,7 @@ services:
       - ./next-app/utils:/app/utils
       - ./next-app/types:/app/types
       - ./next-app/enum:/app/enum
+      - ./next-app/lib:/app/lib
       - ./next-app/components:/app/components
       - ./next-app/prisma:/app/prisma
       - ./next-app/pages:/app/pages

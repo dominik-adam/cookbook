@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { getCanonicalEmail } from '@/utils/auth';
 import { RemoveFromBagSchema, validateData } from '@/lib/validations';
 
-export async function DELETE(req) {
+export async function DELETE(req: Request) {
   const session = await getServerSession(options);
 
   try {

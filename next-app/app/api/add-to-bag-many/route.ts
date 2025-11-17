@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { getCanonicalEmail } from '@/utils/auth';
 import { AddToBagManySchema, validateData } from '@/lib/validations';
 
-export async function POST(req) {
+export async function POST(req: Request) {
   const session = await getServerSession(options);
 
   try {

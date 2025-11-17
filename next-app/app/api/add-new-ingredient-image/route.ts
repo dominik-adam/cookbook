@@ -4,7 +4,7 @@ import { writeFile } from 'fs/promises'
 import { NextResponse } from "next/server";
 import { isAdmin } from '@/utils/auth.js';
 
-export async function POST(req) {
+export async function POST(req: Request) {
   const session = await getServerSession(options);
   
   try {
@@ -22,15 +22,15 @@ export async function POST(req) {
   
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
-    const path = process.cwd() + `/public/images/${file.name}`
+    const path = process.cwd() + `/public/ingredients/${file.name}`
     await writeFile(path, buffer)
 
     return NextResponse.json({ 
       message: 'File uploaded successfully', 
-      filepath: `/images/${file.name}` 
+      filepath: `/ingredients/${file.name}` 
     });
   } catch (error) {
     // TODO add general error message, specific is for debugging only 
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500});
   }
 }

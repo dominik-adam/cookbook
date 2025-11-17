@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth/next"
 import { options } from 'app/api/auth/[...nextauth]/options'
 import { NextResponse } from "next/server";
 
-export async function DELETE(req) {
+export async function DELETE(req: Request) {
   const session = await getServerSession(options);
 
   try {
