@@ -28,15 +28,30 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
           VPS_IP: ${{ secrets.VPS_IP }}
           APP_DIR: ${{ secrets.APP_DIR }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         run: |
-          rsync -avz --delete --exclude=node_modules --exclude=.git --exclude=dev.Dockerfile --exclude=prod.Dockerfile --exclude=.next ./next-app/ $VPS_USER@$VPS_IP:$APP_DIR
-          ssh -o StrictHostKeyChecking=no $VPS_USER@$VPS_IP "
+          rsync -avz --delete --exclude=node_modules --exclude=.git --exclude=dev.Dockerfile --exclude=prod.Dockerfile --exclude=.next --exclude=.env --exclude=.env.local --exclude=.env.production.local ./next-app/ $VPS_USER@$VPS_IP:$APP_DIR
+          ssh -o StrictHostKeyChecking=no $VPS_USER@$VPS_IP bash -c "'
             set -e
             cd $APP_DIR
+
+            # Create .env file with required variables
+            cat > .env << EOF
+DATABASE_URL=\"$DATABASE_URL\"
+NEXTAUTH_SECRET=\"$NEXTAUTH_SECRET\"
+NEXTAUTH_URL=\"$NEXTAUTH_URL\"
+GOOGLE_CLIENT_ID=\"$GOOGLE_CLIENT_ID\"
+GOOGLE_CLIENT_SECRET=\"$GOOGLE_CLIENT_SECRET\"
+EOF
+
             npm install
             npx prisma migrate deploy
             npx prisma generate
             npx prisma db seed
             npm run build
             pm2 restart cookbook
-          "
+          '"
