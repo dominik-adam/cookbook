@@ -38,9 +38,11 @@ export default function Recipes({ initRecipes, category, setSidebarContent }: Re
           {aggregated.length > 0 ? (
             aggregated.map((item) => (
               <li key={item.ingredientId}>
-                  {item.amounts.map((amt, idx) => (
-                    amt.amount ? `${amt.amount} ${amt.unit}` : ''
-                  )).filter(s => s).join(' + ')}
+                  {item.amounts.map((amt) => {
+                    if (!amt.amount) return '';
+                    const unit = amt.amount > 1 && amt.unitPlural ? amt.unitPlural : amt.unit;
+                    return unit ? `${amt.amount} ${unit}` : `${amt.amount}`;
+                  }).filter(s => s).join(' + ')}
                   {item.amounts.some(amt => amt.amount) ? ' ' : ''}
                   {item.name}
                 </li>
