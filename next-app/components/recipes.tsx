@@ -38,7 +38,10 @@ export default function Recipes({ initRecipes, category, setSidebarContent }: Re
           {aggregated.length > 0 ? (
             aggregated.map((item) => (
               <li key={item.ingredientId}>
-                  {item.totalAmount ? `${item.totalAmount} ${item.unit} ` : ''}
+                  {item.amounts.map((amt, idx) => (
+                    amt.amount ? `${amt.amount} ${amt.unit}` : ''
+                  )).filter(s => s).join(' + ')}
+                  {item.amounts.some(amt => amt.amount) ? ' ' : ''}
                   {item.name}
                 </li>
               ))

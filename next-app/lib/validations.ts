@@ -107,10 +107,10 @@ export const ClearRecipeStateSchema = z.object({
  */
 const RecipeIngredientSchema = z.object({
   id: cuidSchema.optional(),
-  ingredientId: cuidSchema,
-  unitId: cuidSchema,
+  ingredientId: cuidSchema.optional(),
+  unitId: cuidSchema.optional(),
   amount: optionalPositiveNumber,
-  instruction: z.string().max(500, 'Instruction must be less than 500 characters').optional(),
+  instruction: z.string().max(500, 'Instruction must be less than 500 characters').optional().nullable(),
   ingredient: z.object({
     id: cuidSchema,
   }).optional(),
@@ -135,12 +135,12 @@ export const RecipeSchema = z.object({
     message: 'Category must be either "food" or "drink"',
   }),
   serves: z.number().int().positive('Servings must be a positive integer'),
-  thumbnail: z.string().url('Thumbnail must be a valid URL').optional().or(z.literal('')),
-  instructions: z.string().optional(),
-  video: z.string().url('Video must be a valid URL').optional().or(z.literal('')),
-  link: z.string().url('Link must be a valid URL').optional().or(z.literal('')),
-  gallery: z.array(z.string().url('Gallery image must be a valid URL')).optional(),
-  tags: z.array(z.string()).optional(),
+  thumbnail: z.string().max(500, 'Thumbnail path must be less than 500 characters').optional().nullable(),
+  instructions: z.string().optional().nullable(),
+  video: z.string().max(200, 'Video ID must be less than 200 characters').optional().nullable(),
+  link: z.string().max(500, 'Link must be less than 500 characters').optional().nullable(),
+  gallery: z.array(z.string()).optional().nullable(),
+  tags: z.array(z.string()).optional().nullable(),
   ingredients: z.array(RecipeIngredientSchema),
 });
 

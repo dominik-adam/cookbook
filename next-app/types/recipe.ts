@@ -38,9 +38,11 @@ export type AggregatedIngredient = {
   ingredientId: string;
   name: string;
   image: string;
-  totalAmount: number | null;
-  unit: string;
-  unitPlural: string;
+  amounts: Array<{
+    amount: number | null;
+    unit: string;
+    unitPlural: string;
+  }>;
 };
 
 export type RecipesProps = {

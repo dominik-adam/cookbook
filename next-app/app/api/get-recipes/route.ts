@@ -46,7 +46,8 @@ export async function GET(req: Request) {
 
     return NextResponse.json({ recipes });
   } catch (error: any) {
-    console.error("Error in get-recipes route:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return handleApiError(error, {
+      route: '/api/get-recipes',
+    });
   }
 }
