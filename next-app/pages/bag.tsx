@@ -15,6 +15,7 @@ import AdminIngredientModal from '@/components/admin/adminIngredientModal';
 import { ModalState } from '@/components/admin/add-new-recipe/modal/modalState'
 import { GetServerSidePropsContext } from 'next';
 import { Socket } from 'socket.io-client';
+import { calculateIngredientNutrition } from '@/utils/nutritionCalculations';
 
 import io from 'socket.io-client'
 
@@ -29,6 +30,10 @@ interface BagIngredient {
     id: string;
     name: string;
     image: string;
+    caloriesPer100g?: number | null;
+    proteinPer100g?: number | null;
+    carbsPer100g?: number | null;
+    fatPer100g?: number | null;
   };
   unit: {
     id: string;
@@ -107,6 +112,25 @@ export default function ShoppingBag({ bagIngredients: initBagIngredients }: BagP
   const [bagIngredients, setBagIngredients] = useState<BagIngredient[]>(initBagIngredients ?? []);
   const [modalState, setModalState] = useState(ModalState.CLOSED)
   const [modalIngredient, setModalIngredient] = useState<any>(undefined)
+
+  // Calculate total nutrition for all bag ingredients
+  const totalNutrition = bagIngredients.reduce((acc, bagIngredient) => {
+    const nutrition = calculateIngredientNutrition(
+      bagIngredient.ingredient,
+      bagIngredient.amount || 0,
+      bagIngredient.unit.name
+    );
+
+    if (nutrition.calories) {
+      acc.calories += nutrition.calories;
+      acc.protein += nutrition.protein || 0;
+      acc.carbs += nutrition.carbs || 0;
+      acc.fat += nutrition.fat || 0;
+      acc.hasData = true;
+    }
+
+    return acc;
+  }, { calories: 0, protein: 0, carbs: 0, fat: 0, hasData: false });
 
   const addIngredient = async (ingredient: IngredientToAdd) => {
     const response = await addIngredientToBag({
@@ -187,6 +211,37 @@ export default function ShoppingBag({ bagIngredients: initBagIngredients }: BagP
       <Head>
         <title>{siteTitle}</title>
       </Head>
+
+      {totalNutrition.hasData && (
+        <div className={styles.nutritionSummary}>
+          <h2>Total Nutrition</h2>
+          <div className={styles.nutritionGrid}>
+            <div className={styles.nutritionItem}>
+              <span className={styles.nutritionLabel}>Calories</span>
+              <span className={styles.nutritionValue}>{Math.round(totalNutrition.calories)}</span>
+            </div>
+            {totalNutrition.protein > 0 && (
+              <div className={styles.nutritionItem}>
+                <span className={styles.nutritionLabel}>Protein</span>
+                <span className={styles.nutritionValue}>{Math.round(totalNutrition.protein * 10) / 10}g</span>
+              </div>
+            )}
+            {totalNutrition.carbs > 0 && (
+              <div className={styles.nutritionItem}>
+                <span className={styles.nutritionLabel}>Carbs</span>
+                <span className={styles.nutritionValue}>{Math.round(totalNutrition.carbs * 10) / 10}g</span>
+              </div>
+            )}
+            {totalNutrition.fat > 0 && (
+              <div className={styles.nutritionItem}>
+                <span className={styles.nutritionLabel}>Fat</span>
+                <span className={styles.nutritionValue}>{Math.round(totalNutrition.fat * 10) / 10}g</span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className={styles.bagIngredients}>
         {bagIngredients.map(( bagIngredient, i ) => (
           <BagIngredient

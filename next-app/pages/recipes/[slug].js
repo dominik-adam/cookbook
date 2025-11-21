@@ -15,6 +15,7 @@ import html from 'remark-html';
 
 import { useRouter } from 'next/router';
 import { isAdmin, getCanonicalEmail } from '@/utils/auth.js';
+import { calculateRecipeNutrition } from '@/utils/nutritionCalculations';
 
 
 export async function getServerSideProps(context) {
@@ -48,6 +49,10 @@ export async function getServerSideProps(context) {
       notFound: true,
     };
   }
+
+  // Calculate nutrition
+  const nutrition = calculateRecipeNutrition(recipe.ingredients, recipe.serves);
+  recipe.nutrition = nutrition;
 
   const session = await getServerSession(req, res, options);
 
@@ -105,13 +110,48 @@ export default function Recipe({ recipe, sliderState, ingredientState, isAdmin }
         <div className={styles.container}>
 
           <div className={styles.ingredients}>
-            <Ingredients 
+            <Ingredients
               recipeId={recipe.id}
               serves={recipe.serves}
               ingredients={recipe.ingredients}
               initSliderState={sliderState}
               initIngredientState={ingredientState}
             />
+
+            {recipe.nutrition && recipe.nutrition.perServing.calories && (
+              <div className={styles.nutritionInfo}>
+                <h3>Nutrition Facts (per serving)</h3>
+                <div className={styles.nutritionGrid}>
+                  <div className={styles.nutritionItem}>
+                    <span className={styles.nutritionLabel}>Calories</span>
+                    <span className={styles.nutritionValue}>{recipe.nutrition.perServing.calories}</span>
+                  </div>
+                  {recipe.nutrition.perServing.protein && (
+                    <div className={styles.nutritionItem}>
+                      <span className={styles.nutritionLabel}>Protein</span>
+                      <span className={styles.nutritionValue}>{recipe.nutrition.perServing.protein}g</span>
+                    </div>
+                  )}
+                  {recipe.nutrition.perServing.carbs && (
+                    <div className={styles.nutritionItem}>
+                      <span className={styles.nutritionLabel}>Carbs</span>
+                      <span className={styles.nutritionValue}>{recipe.nutrition.perServing.carbs}g</span>
+                    </div>
+                  )}
+                  {recipe.nutrition.perServing.fat && (
+                    <div className={styles.nutritionItem}>
+                      <span className={styles.nutritionLabel}>Fat</span>
+                      <span className={styles.nutritionValue}>{recipe.nutrition.perServing.fat}g</span>
+                    </div>
+                  )}
+                </div>
+                {!recipe.nutrition.hasCompleteData && (
+                  <p className={styles.nutritionDisclaimer}>
+                    * Some ingredients lack nutritional data
+                  </p>
+                )}
+              </div>
+            )}
           </div>
           
           <div className={styles.instructions}>

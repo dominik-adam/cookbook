@@ -12,17 +12,68 @@
     width: 70%;
 }
 
+.nutritionInfo {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.nutritionInfo h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.nutritionGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.nutritionItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: white;
+    border-radius: 4px;
+}
+
+.nutritionLabel {
+    font-weight: 500;
+    color: #666;
+}
+
+.nutritionValue {
+    font-weight: 700;
+    color: #3aa46c;
+    font-size: 1.1rem;
+}
+
+.nutritionDisclaimer {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: #999;
+    font-style: italic;
+}
+
 @media only screen and (max-width: 600px) {
     .container {
         flex-direction: column;
         margin-top: 20px;
     }
-    
+
     .ingredients {
         width: 100%;
     }
-    
+
     .instructions {
         width: 100%;
+    }
+
+    .nutritionGrid {
+        grid-template-columns: 1fr;
     }
 }

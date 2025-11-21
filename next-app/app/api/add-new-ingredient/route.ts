@@ -24,13 +24,27 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
-    const { name: ingredientName, image } = validation.data;
+    const {
+      name: ingredientName,
+      image,
+      caloriesPer100g,
+      proteinPer100g,
+      carbsPer100g,
+      fatPer100g
+    } = validation.data;
     name = ingredientName;
+
+    // Use placeholder image if none provided
+    const imagePath = image || '/images/ingredients/placeholder.png';
 
     const ingredient = await prisma.ingredient.create({
       data: {
         name: name,
-        image: image,
+        image: imagePath,
+        caloriesPer100g: caloriesPer100g,
+        proteinPer100g: proteinPer100g,
+        carbsPer100g: carbsPer100g,
+        fatPer100g: fatPer100g,
       },
     })
 

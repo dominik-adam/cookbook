@@ -10,6 +10,8 @@ export default function Recipes({ initRecipes, category, setSidebarContent }: Re
   const [recipes, setRecipes] = useState<Recipe[]>(initRecipes ?? []);
   const [selectMode, setSelectMode] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [availableTags, setAvailableTags] = useState<string[]>([]);
 
   const toggleSelect = (slug: string) => {
     setSelected((prev) =>
@@ -17,12 +19,34 @@ export default function Recipes({ initRecipes, category, setSidebarContent }: Re
     );
   };
 
-  const fetchRecipes = async (searchTerm: string) => {
+  const toggleTag = (tag: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  };
+
+  const fetchRecipes = async (searchTerm: string, filterTags: string[] = []) => {
     try {
-      const response = await fetch(`/api/get-recipes?s=${searchTerm}&c=${category}`);
+      const tagsQuery = filterTags.length > 0 ? `&tags=${filterTags.join(',')}` : '';
+      const response = await fetch(`/api/get-recipes?s=${searchTerm}&c=${category}${tagsQuery}`);
       if (!response.ok) throw new Error('Failed to fetch recipes');
       const data: { recipes: Recipe[] } = await response.json();
       setRecipes(data.recipes);
+
+      // Extract unique tags from recipes
+      const uniqueTags = new Set<string>();
+      data.recipes.forEach((recipe) => {
+        if (recipe.tags) {
+          recipe.tags.forEach((tag: any) => {
+            if (typeof tag === 'string') {
+              uniqueTags.add(tag);
+            } else if (tag.name) {
+              uniqueTags.add(tag.name);
+            }
+          });
+        }
+      });
+      setAvailableTags(Array.from(uniqueTags).sort());
     } catch (error) {
       console.error('Error fetching recipes:', error);
     }
@@ -56,11 +80,48 @@ export default function Recipes({ initRecipes, category, setSidebarContent }: Re
     )
   }, [selected, recipes]);
 
+  useEffect(() => {
+    // Extract tags from initial recipes
+    const uniqueTags = new Set<string>();
+    initRecipes?.forEach((recipe) => {
+      if (recipe.tags) {
+        recipe.tags.forEach((tag) => {
+          uniqueTags.add(tag.name);
+        });
+      }
+    });
+    setAvailableTags(Array.from(uniqueTags).sort());
+  }, [initRecipes]);
+
+  useEffect(() => {
+    // Refetch recipes when selected tags change
+    fetchRecipes('', selectedTags);
+  }, [selectedTags]);
+
   return (
     <div>
       <section className={utilStyles.marginBottom30}>
-        <SearchBar fetchResults={fetchRecipes} />
+        <SearchBar fetchResults={(term) => fetchRecipes(term, selectedTags)} />
       </section>
+
+      {availableTags.length > 0 && (
+        <section className={recipesStyles.tagFilters}>
+          <div className={recipesStyles.tagFilterLabel}>Filter by tags:</div>
+          <div className={recipesStyles.tagFilterButtons}>
+            {availableTags.map((tag) => (
+              <button
+                key={tag}
+                className={`${recipesStyles.tagFilterButton} ${
+                  selectedTags.includes(tag) ? recipesStyles.tagFilterButtonActive : ''
+                }`}
+                onClick={() => toggleTag(tag)}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <SearchResultTiles

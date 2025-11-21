@@ -44,6 +44,7 @@ export async function getServerSideProps(context) {
       slug: slug[0],
     },
     include: {
+      tags: true,
       ingredients: {
         include: {
           ingredient: true,
@@ -83,7 +84,7 @@ export default function AddRecipe({ recipe }) {
   const [video, setVideo] = useState(recipe ? recipe.video : undefined)
   const [link, setLink] = useState(recipe ? recipe.link : undefined)
   const [gallery, setGallery] = useState(recipe ? recipe.gallery : undefined)
-  const [tags, setTags] = useState(recipe ? recipe.tags : undefined)
+  const [tags, setTags] = useState(recipe && recipe.tags ? recipe.tags.map(tag => tag.name) : undefined)
   const [ingredients, setIngredients] = useState(recipe ? recipe.ingredients : [])
 
   const addIngredient = (ingredient) => {

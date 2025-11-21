@@ -80,6 +80,10 @@ model Ingredient {
   id String @id @default(cuid())
   name String
   image String
+  caloriesPer100g Float?
+  proteinPer100g Float?
+  carbsPer100g Float?
+  fatPer100g Float?
   recipeIngredients RecipeIngredient[]
   bagIngredients BagIngredient[]
 }
@@ -106,7 +110,7 @@ model MeasurementUnit {
 
 model Tag {
   id String @id @default(cuid())
-  name String
+  name String @unique
   recipes Recipe[]
 }
 

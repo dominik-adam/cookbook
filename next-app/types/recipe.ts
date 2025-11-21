@@ -8,6 +8,10 @@ export type Ingredient = {
   id: string;
   name: string;
   image: string;
+  caloriesPer100g?: number | null;
+  proteinPer100g?: number | null;
+  carbsPer100g?: number | null;
+  fatPer100g?: number | null;
 };
 
 export type RecipeIngredient = {
@@ -19,6 +23,15 @@ export type RecipeIngredient = {
   instruction: string | null;
   ingredient: Ingredient;
   unit: IngredientUnit;
+  calories?: number | null;
+  protein?: number | null;
+  carbs?: number | null;
+  fat?: number | null;
+};
+
+export type Tag = {
+  id: string;
+  name: string;
 };
 
 export type Recipe = {
@@ -31,7 +44,17 @@ export type Recipe = {
   instructions?: string;
   thumbnail?: string;
   video?: string;
+  tags?: Tag[];
   ingredients?: RecipeIngredient[];
+  totalCalories?: number | null;
+  caloriesPerServing?: number | null;
+  totalProtein?: number | null;
+  proteinPerServing?: number | null;
+  totalCarbs?: number | null;
+  carbsPerServing?: number | null;
+  totalFat?: number | null;
+  fatPerServing?: number | null;
+  hasCompleteNutritionData?: boolean;
 };
 
 export type AggregatedIngredient = {
@@ -43,6 +66,10 @@ export type AggregatedIngredient = {
     unit: string;
     unitPlural: string;
   }>;
+  calories?: number | null;
+  protein?: number | null;
+  carbs?: number | null;
+  fat?: number | null;
 };
 
 export type RecipesProps = {

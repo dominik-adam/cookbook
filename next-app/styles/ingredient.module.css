@@ -36,6 +36,12 @@
 
 }
 
+.ingredientCalories {
+    color: #3aa46c;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
 .addIngredient {
     background-color: white;
     border-radius: 50px;
@@ -155,6 +161,10 @@
     .ingredientAmount {
         line-height: 1;
         font-size: 0.6rem;
+    }
+
+    .ingredientCalories {
+        font-size: 0.65rem;
     }
 
     .ingredientInfo {

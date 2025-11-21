@@ -13,7 +13,7 @@ services:
       - WATCHPACK_POLLING=true
       - NODE_ENV=development
     env_file:
-      - .env
+      - ./next-app/.env.local
     volumes:
       - ./next-app/app:/app/app
       - ./next-app/public:/app/public

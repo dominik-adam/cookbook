@@ -9,9 +9,10 @@ interface LayoutProps {
   children: ReactNode;
   pageTitle?: string;
   sidebarContent?: ReactNode;
+  isAdmin?: boolean;
 }
 
-export default function Layout({ children, pageTitle, sidebarContent }: LayoutProps) {
+export default function Layout({ children, pageTitle, sidebarContent, isAdmin }: LayoutProps) {
   const name = pageTitle ? `🍳 ${pageTitle} 🍳` : '';
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -55,6 +56,9 @@ export default function Layout({ children, pageTitle, sidebarContent }: LayoutPr
           <MenuButton title="Recipes" url="/" image="/icons/recipes.png" />
           <MenuButton title="Drinks" url="/drinks" image="/icons/drinks.png" />
           <MenuButton title="Bag" url="/bag" image="/icons/shopping-bag.png" />
+          {isAdmin && (
+            <MenuButton title="Ingredients" url="/ingredients" image="/icons/recipes.png" />
+          )}
         </div>
       </div>
     </div>

@@ -54,6 +54,24 @@ export async function POST(req: Request) {
         throw new NotFoundError(`Recipe with ID ${recipeId} not found`);
       }
 
+      // Handle tags - find or create them
+      let tagConnections: { id: string }[] = [];
+      if (tags && tags.length > 0) {
+        tagConnections = await Promise.all(
+          tags.map(async (tagName: string) => {
+            let tag = await prisma.tag.findFirst({
+              where: { name: tagName }
+            });
+            if (!tag) {
+              tag = await prisma.tag.create({
+                data: { name: tagName }
+              });
+            }
+            return { id: tag.id };
+          })
+        );
+      }
+
       recipe = await prisma.recipe.update({
         where: { id: recipeId },
         data: {
@@ -66,7 +84,9 @@ export async function POST(req: Request) {
           video: video,
           link: link,
           gallery: gallery,
-          tags: tags,
+          tags: {
+            set: tagConnections
+          },
           ingredients: {
             // Delete ingredients that are not in the updated list
             deleteMany: {
@@ -92,6 +112,24 @@ export async function POST(req: Request) {
       });
       
     } else {
+      // Handle tags - find or create them
+      let tagConnections: { id: string }[] = [];
+      if (tags && tags.length > 0) {
+        tagConnections = await Promise.all(
+          tags.map(async (tagName: string) => {
+            let tag = await prisma.tag.findFirst({
+              where: { name: tagName }
+            });
+            if (!tag) {
+              tag = await prisma.tag.create({
+                data: { name: tagName }
+              });
+            }
+            return { id: tag.id };
+          })
+        );
+      }
+
       recipe = await prisma.recipe.create({
         data: {
           slug: recipeSlug,
@@ -103,7 +141,9 @@ export async function POST(req: Request) {
           video: video,
           link: link,
           gallery: gallery,
-          tags: tags,
+          tags: {
+            connect: tagConnections
+          },
           ingredients: {
             create: ingredients.map(item => ({
               amount: item.amount,

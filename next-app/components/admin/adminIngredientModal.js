@@ -26,6 +26,7 @@ export default function AdminIngredientModal({
 	const [unit, setUnit] = useState(undefined);
 	const [amount, setAmount] = useState(undefined);
 	const [instruction, setInstruction] = useState("");
+	const [initialIngredientName, setInitialIngredientName] = useState("");
 
 	const isOpen = modalState !== ModalState.CLOSED;
 
@@ -48,15 +49,10 @@ export default function AdminIngredientModal({
 		setModalState(ModalState.MEASUREMENT_AND_INSTRUCTIONS);
 	}
 
-	const createNewIngredient = () => {
+	const createNewIngredient = (searchTerm = "") => {
+		setInitialIngredientName(searchTerm);
 		setModalTitle("Create new ingredient");
 		setModalState(ModalState.CREATE);
-  }
-
-  const backToIngredientSelection = () => {
-    setModalTitle("Select ingredient");
-		setModalState(ModalState.SELECT);
-    fetchIngredients(searchTerm);
   }
 
 	const updateIngredientWrapper = () => {
@@ -115,7 +111,8 @@ export default function AdminIngredientModal({
                 createNewIngredient={createNewIngredient}
               /> : modalState == ModalState.CREATE ?
 							<AddNewIngredient
-                backToIngredientSelection={backToIngredientSelection}
+                selectIngredient={selectIngredient}
+                initialName={initialIngredientName}
               /> : modalState == ModalState.MEASUREMENT_AND_INSTRUCTIONS || modalState == ModalState.UPDATE ?
 							<MeasurementAndInstructions
                 ingredient={ingredient}

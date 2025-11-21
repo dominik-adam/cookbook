@@ -63,9 +63,9 @@ export default function SelectIngredient({
         </div>
       </div>
       <div className={tiles.parent}>
-        <button 
-          className={tiles.tile} 
-          onClick={createNewIngredient}
+        <button
+          className={tiles.tile}
+          onClick={() => createNewIngredient(searchTerm)}
         >
           <div className={tiles.tileTitle}>Add new ingredient</div>
           <div className={tiles.tileOverlay}></div>

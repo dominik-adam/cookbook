@@ -4,12 +4,17 @@ import { useRef } from 'react';
 import { useEffect } from 'react';
 import styles from "@/styles/add-new-recipe/modal/addNewIngredient.module.css"
 
-export default function AddNewIngredient({ 
-  backToIngredientSelection
+export default function AddNewIngredient({
+  selectIngredient,
+  initialName = ""
 }) {
-	const [newIngredientName, setNewIngredientName] = useState(undefined);
+	const [newIngredientName, setNewIngredientName] = useState(initialName);
 	const [newIngredientImage, setNewIngredientImage] = useState();
 	const [newIngredientImageUrlObj, setNewIngredientImageUrlObj] = useState();
+	const [caloriesPer100g, setCaloriesPer100g] = useState(null);
+	const [proteinPer100g, setProteinPer100g] = useState(null);
+	const [carbsPer100g, setCarbsPer100g] = useState(null);
+	const [fatPer100g, setFatPer100g] = useState(null);
   const inputRef = useRef(null);
 
 	function handleNewIngredientImageChange(e) {
@@ -22,43 +27,64 @@ export default function AddNewIngredient({
     inputRef.current.focus();
   }, []);
 
+  useEffect(() => {
+    // Update the ingredient name when initialName changes
+    setNewIngredientName(initialName);
+  }, [initialName]);
+
 	const saveIngredient = async (event) => {
     event.preventDefault();
-		if (!newIngredientName || !newIngredientImage) {
-      // wrong form data alert
+		if (!newIngredientName) {
+      // Name is required
 			return;
 		}
 
     try {
-      const formData = new FormData();
-      formData.append('file', newIngredientImage);
+      let imagePath = null;
 
-      const addNewFileResponse = await fetch('/api/add-new-ingredient-image', {
-        method: 'POST',
-        body: formData,
-      });
+      // Upload image only if provided
+      if (newIngredientImage) {
+        const formData = new FormData();
+        formData.append('file', newIngredientImage);
 
-      if (!addNewFileResponse.ok) {
-        const { error } = await addNewFileResponse.json();
-        console.log(`Error: ${error}`);
+        const addNewFileResponse = await fetch('/api/add-new-ingredient-image', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!addNewFileResponse.ok) {
+          const { error } = await addNewFileResponse.json();
+          console.log(`Error: ${error}`);
+          return;
+        }
+
+        const { filepath } = await addNewFileResponse.json();
+        imagePath = filepath;
       }
-
-      const { filepath } = await addNewFileResponse.json();
 
       const addNewIngredientResponse = await fetch('/api/add-new-ingredient', {
         method: 'POST',
         headers: {
-        'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name: newIngredientName, image: filepath }),
+        body: JSON.stringify({
+          name: newIngredientName,
+          image: imagePath,
+          caloriesPer100g: caloriesPer100g,
+          proteinPer100g: proteinPer100g,
+          carbsPer100g: carbsPer100g,
+          fatPer100g: fatPer100g,
+        }),
       });
 
       if (!addNewIngredientResponse.ok) {
         const { error } = await addNewIngredientResponse.json();
         console.log(`Error: ${error}`);
+        return;
       }
 
-      backToIngredientSelection();
+      const { ingredient } = await addNewIngredientResponse.json();
+      selectIngredient(ingredient);
     } catch (error) {
       console.log(error);
     }
@@ -75,18 +101,19 @@ export default function AddNewIngredient({
           className={styles.ingredientNameInput}
           type="text"
           placeholder="Enter name..."
+          value={newIngredientName}
           onChange={(event) => setNewIngredientName(event.target.value)}
         />
       </div>
       <div className={styles.ingredientImageWrapper}>
         <label className={styles.inputLabel}>
-          Ingredient image
+          Ingredient image (optional)
         </label>
         <div className={styles.ingredientImageDragAndDrop}>
-          <input 
+          <input
             className={styles.ingredientImageInput}
-            type="file" 
-            onChange={handleNewIngredientImageChange} 
+            type="file"
+            onChange={handleNewIngredientImageChange}
           />
           {newIngredientImageUrlObj ? <Image
             className={styles.ingredientImageImage}
@@ -111,11 +138,70 @@ export default function AddNewIngredient({
           }
         </div>
       </div>
+      <div className={styles.ingredientNameWrapper}>
+        <label className={styles.inputLabel}>
+          Nutritional Information (optional, per 100g)
+        </label>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px' }}>
+          <div className={styles.ingredientNameWrapper}>
+            <label className={styles.inputLabel} style={{ fontSize: '0.85rem', paddingBottom: '3px' }}>
+              Calories
+            </label>
+            <input
+              className={styles.ingredientNameInput}
+              type="number"
+              step="0.1"
+              placeholder="e.g., 250"
+              value={caloriesPer100g ?? ''}
+              onChange={(e) => setCaloriesPer100g(e.target.value ? parseFloat(e.target.value) : null)}
+            />
+          </div>
+          <div className={styles.ingredientNameWrapper}>
+            <label className={styles.inputLabel} style={{ fontSize: '0.85rem', paddingBottom: '3px' }}>
+              Protein (g)
+            </label>
+            <input
+              className={styles.ingredientNameInput}
+              type="number"
+              step="0.1"
+              placeholder="e.g., 15.5"
+              value={proteinPer100g ?? ''}
+              onChange={(e) => setProteinPer100g(e.target.value ? parseFloat(e.target.value) : null)}
+            />
+          </div>
+          <div className={styles.ingredientNameWrapper}>
+            <label className={styles.inputLabel} style={{ fontSize: '0.85rem', paddingBottom: '3px' }}>
+              Carbs (g)
+            </label>
+            <input
+              className={styles.ingredientNameInput}
+              type="number"
+              step="0.1"
+              placeholder="e.g., 30.2"
+              value={carbsPer100g ?? ''}
+              onChange={(e) => setCarbsPer100g(e.target.value ? parseFloat(e.target.value) : null)}
+            />
+          </div>
+          <div className={styles.ingredientNameWrapper}>
+            <label className={styles.inputLabel} style={{ fontSize: '0.85rem', paddingBottom: '3px' }}>
+              Fat (g)
+            </label>
+            <input
+              className={styles.ingredientNameInput}
+              type="number"
+              step="0.1"
+              placeholder="e.g., 8.5"
+              value={fatPer100g ?? ''}
+              onChange={(e) => setFatPer100g(e.target.value ? parseFloat(e.target.value) : null)}
+            />
+          </div>
+        </div>
+      </div>
       <div className={styles.submitButtonWrapper}>
-        <button 
+        <button
           className={styles.submitButton}
           onClick={saveIngredient}
-          disabled={!newIngredientName || !newIngredientImage}
+          disabled={!newIngredientName}
         >
           Save Ingredient
         </button>

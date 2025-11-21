@@ -17,7 +17,7 @@ const SearchResultTiles = function SearchResultTiles({
 }) {
   return (
     <div className={styles.parent}>
-      {items.map(({ slug, title, thumbnail }) => {
+      {items.map(({ slug, title, thumbnail, caloriesPerServing }) => {
         const isSelected = selected.includes(slug);
 
         const content = (
@@ -35,6 +35,12 @@ const SearchResultTiles = function SearchResultTiles({
             <div className={`${styles.tileTitle} ${isSelected ? styles.selectedTitle : ''}`}>
               {title}
             </div>
+
+            {caloriesPerServing && (
+              <div className={styles.nutritionBadge}>
+                {caloriesPerServing} cal
+              </div>
+            )}
 
             <div className={styles.tileOverlay}></div>
 

@@ -21,9 +21,9 @@ const cuidSchema = z.string().cuid('Invalid ID format');
 const positiveNumber = z.number().positive('Must be a positive number');
 
 /**
- * Optional positive number
+ * Optional positive number (can be undefined or null)
  */
-const optionalPositiveNumber = z.number().positive('Must be a positive number').optional();
+const optionalPositiveNumber = z.number().positive('Must be a positive number').optional().nullable();
 
 // ============================================================================
 // Bag Ingredient Schemas
@@ -156,8 +156,14 @@ export const CreateIngredientSchema = z.object({
     .min(1, 'Name is required')
     .max(100, 'Name must be less than 100 characters'),
   image: z.string()
-    .min(1, 'Image is required')
-    .max(500, 'Image path must be less than 500 characters'),
+    .max(500, 'Image path must be less than 500 characters')
+    .optional()
+    .nullable()
+    .default('/images/ingredients/placeholder.png'),
+  caloriesPer100g: z.number().nonnegative('Calories must be non-negative').optional().nullable(),
+  proteinPer100g: z.number().nonnegative('Protein must be non-negative').optional().nullable(),
+  carbsPer100g: z.number().nonnegative('Carbs must be non-negative').optional().nullable(),
+  fatPer100g: z.number().nonnegative('Fat must be non-negative').optional().nullable(),
 });
 
 // ============================================================================

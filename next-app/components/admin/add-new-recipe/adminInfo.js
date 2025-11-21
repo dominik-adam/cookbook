@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '@/styles/add-new-recipe/adminInfo.module.css';
 import Image from 'next/image';
 import { useFlashMessage } from '@/components/flashMessage/FlashMessageContext';
 
-export default function AdminInfo({ 
+export default function AdminInfo({
   title,
   setTitle,
   slug,
@@ -14,6 +14,7 @@ export default function AdminInfo({
   setTags
 }) {
   const { showMessage } = useFlashMessage();
+  const [newTag, setNewTag] = useState('');
 
   async function handleNewIngredientImageChange(e) {
     try {
@@ -36,7 +37,25 @@ export default function AdminInfo({
     } catch (error) {
       showMessage('Error uploading image', 'error');
     }
-	}
+  }
+
+  const addTag = (e) => {
+    e.preventDefault();
+    if (!newTag.trim()) return;
+
+    const trimmedTag = newTag.trim();
+    if (tags && tags.includes(trimmedTag)) {
+      showMessage('Tag already added', 'error');
+      return;
+    }
+
+    setTags(tags ? [...tags, trimmedTag] : [trimmedTag]);
+    setNewTag('');
+  };
+
+  const removeTag = (tagToRemove) => {
+    setTags(tags.filter(tag => tag !== tagToRemove));
+  };
   
   return (
     <div className={styles.wrapper}>
@@ -102,6 +121,50 @@ export default function AdminInfo({
             onChange={(e) => setSlug(e.target.value)}
             required
           />
+        </div>
+        <div className={styles.recipeTagsWrapper}>
+          <label className={styles.inputLabel}>
+            Tags
+          </label>
+          <div className={styles.tagsContainer}>
+            {tags && tags.length > 0 && (
+              <div className={styles.tagsList}>
+                {tags.map((tag, index) => (
+                  <span key={index} className={styles.tag}>
+                    {tag}
+                    <button
+                      type="button"
+                      onClick={() => removeTag(tag)}
+                      className={styles.tagRemoveButton}
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+            <div className={styles.addTagWrapper}>
+              <input
+                className={styles.tagInput}
+                type="text"
+                placeholder="Add a tag..."
+                value={newTag}
+                onChange={(e) => setNewTag(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    addTag(e);
+                  }
+                }}
+              />
+              <button
+                type="button"
+                onClick={addTag}
+                className={styles.addTagButton}
+              >
+                Add
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
