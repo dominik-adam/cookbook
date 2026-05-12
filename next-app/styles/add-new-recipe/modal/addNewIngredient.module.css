@@ -13,7 +13,7 @@
 }
 
 .ingredientNameInput:focus-visible {
-    border: 3px solid rgb(179, 228, 228);
+    border: 3px solid black;
     outline: none;
 }
 
@@ -44,6 +44,10 @@
     border: 3px solid rgb(179, 228, 228);
     position: relative;
     height: 200px;
+}
+
+.ingredientImageDragAndDrop:focus-within {
+    border: 3px solid black;
 }
 
 .ingredientImageWrapper {

@@ -31,6 +31,16 @@ export default function AddNewIngredient({
     }
   }
 
+  function handlePaste(e: React.ClipboardEvent) {
+    const item = Array.from(e.clipboardData.items).find(i => i.type.startsWith('image/'));
+    if (!item) return;
+    const file = item.getAsFile();
+    if (file) {
+      setNewIngredientImage(file);
+      setNewIngredientImageUrlObj(URL.createObjectURL(file));
+    }
+  }
+
   useEffect(() => {
     // Focus on the input element when the component mounts
     inputRef.current?.focus();
@@ -118,7 +128,7 @@ export default function AddNewIngredient({
         <label className={styles.inputLabel}>
           Ingredient image (optional)
         </label>
-        <div className={styles.ingredientImageDragAndDrop}>
+        <div className={styles.ingredientImageDragAndDrop} onPaste={handlePaste}>
           <input
             className={styles.ingredientImageInput}
             type="file"

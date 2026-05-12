@@ -27,17 +27,21 @@ export default function AdminInfo({
   const { showMessage } = useFlashMessage();
   const [newTag, setNewTag] = useState<string>('');
 
-  async function handleNewIngredientImageChange(e: React.ChangeEvent<HTMLInputElement>) {
-    try {
-      const file = e.target.files?.[0];
-      if (!file) return;
+  const generateSlug = (text: string) =>
+  text
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')       // spaces → -
+    .replace(/[^a-z0-9-]/g, ''); // optional: remove special chars
 
-      const formDataThumbnail = new FormData();
-      formDataThumbnail.append('file', file);
+  async function uploadThumbnail(file: File) {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
 
       const response = await fetch('/api/add-new-recipe-image', {
         method: 'POST',
-        body: formDataThumbnail,
+        body: formData,
       });
 
       if (response.ok) {
@@ -51,6 +55,18 @@ export default function AdminInfo({
     } catch (error) {
       showMessage('Error uploading image', 'error');
     }
+  }
+
+  function handleNewIngredientImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) uploadThumbnail(file);
+  }
+
+  function handlePaste(e: React.ClipboardEvent) {
+    const item = Array.from(e.clipboardData.items).find(i => i.type.startsWith('image/'));
+    if (!item) return;
+    const file = item.getAsFile();
+    if (file) uploadThumbnail(file);
   }
 
   const addTag = (e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLInputElement>) => {
@@ -79,7 +95,7 @@ export default function AdminInfo({
         <label className={styles.inputLabel}>
           Thumbnail
         </label>
-        <div className={styles.recipeThumbnailDragAndDrop}>
+        <div className={styles.recipeThumbnailDragAndDrop} onPaste={handlePaste}>
           <input
             className={styles.recipeThumbnailInput}
             type="file"
@@ -121,7 +137,11 @@ export default function AdminInfo({
             type="text"
             id="title"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              setTitle(value);
+              setSlug(generateSlug(value));
+            }}
             required
           />
         </div>
