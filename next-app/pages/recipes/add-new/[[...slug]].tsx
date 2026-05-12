@@ -22,6 +22,7 @@ import type { Recipe, RecipeIngredient, Tag } from '@/types/recipe';
 type RecipeWithDetails = Recipe & {
   tags?: Tag[];
   ingredients?: RecipeIngredient[];
+  gallery?: string[] | null;
 };
 
 type AddRecipePageProps = {

@@ -38,6 +38,7 @@ interface BagIngredient {
   unit: {
     id: string;
     name: string;
+    plural: string;
   };
 }
 
@@ -49,8 +50,8 @@ interface IngredientToAdd {
   unit: {
     id: string;
   };
-  amount?: number;
-  instruction?: string;
+  amount: number | null;
+  instruction: string | null;
 }
 
 interface BagProps {
@@ -137,7 +138,7 @@ export default function ShoppingBag({ bagIngredients: initBagIngredients }: BagP
       ingredientId: ingredient.ingredient.id,
       unitId: ingredient.unit.id,
       amount: ingredient.amount,
-      note: ingredient.instruction
+      note: ingredient.instruction ?? undefined
     });
     if (response.ok) {
       refreshBag();
@@ -247,9 +248,9 @@ export default function ShoppingBag({ bagIngredients: initBagIngredients }: BagP
           <BagIngredient
             key={bagIngredient.ingredientId + bagIngredient.unitId + bagIngredient.amount}
             ingredient={bagIngredient.ingredient}
-            amount={bagIngredient.amount}
+            amount={bagIngredient.amount ?? null}
             unit={bagIngredient.unit}
-            note={bagIngredient.note}
+            note={bagIngredient.note ?? null}
             handleRemove={removeIngredient(i)}
           />
         ))}

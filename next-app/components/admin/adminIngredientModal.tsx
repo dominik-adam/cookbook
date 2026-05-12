@@ -20,10 +20,10 @@ type AdminIngredientModalProps = {
   modalIngredient: RecipeIngredient | undefined;
   setModalState: (state: symbol) => void;
   setModalIngredient: (ingredient: RecipeIngredient | undefined) => void;
-  serves: number;
+  serves: number | null;
   addIngredient: (ingredient: RecipeIngredientInput) => void;
   updateIngredient: (ingredient: Ingredient, amount: number | null, unit: IngredientUnit, instruction: string) => void;
-  newIngredientRef: React.RefObject<HTMLButtonElement>;
+  newIngredientRef: React.RefObject<HTMLButtonElement> | null;
 };
 
 export default function AdminIngredientModal({

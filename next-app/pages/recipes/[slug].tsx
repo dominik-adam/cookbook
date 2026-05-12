@@ -24,16 +24,16 @@ type RecipePageProps = {
     instructions: string;
     nutrition?: {
       perServing: {
-        calories?: number;
-        protein?: number;
-        carbs?: number;
-        fat?: number;
+        calories?: number | null;
+        protein?: number | null;
+        carbs?: number | null;
+        fat?: number | null;
       };
       hasCompleteData: boolean;
     };
   };
-  sliderState: number;
-  ingredientState?: string;
+  sliderState: number | null;
+  ingredientState?: string | null;
   isAdmin?: boolean;
 };
 
@@ -141,8 +141,8 @@ export default function Recipe({ recipe, sliderState, ingredientState, isAdmin }
               recipeId={recipe.id}
               serves={recipe.serves}
               ingredients={recipe.ingredients ?? []}
-              initSliderState={sliderState}
-              initIngredientState={ingredientState}
+              initSliderState={sliderState ?? recipe.serves}
+              initIngredientState={ingredientState ?? undefined}
             />
 
             {recipe.nutrition && recipe.nutrition.perServing.calories && (

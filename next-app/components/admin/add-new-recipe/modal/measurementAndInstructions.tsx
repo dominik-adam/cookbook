@@ -8,7 +8,7 @@ type MeasurementAndInstructionsProps = {
   amount: number | null | undefined;
   unit: IngredientUnit | undefined;
   instruction: string;
-  serves: number;
+  serves: number | null;
   setUnit: (unit: IngredientUnit) => void;
   setAmount: (amount: number | null) => void;
   setInstructions: (instruction: string) => void;
@@ -75,7 +75,7 @@ export default function MeasurementAndInstructions({
         <div className={styles.ingredientInfo}>
           <div className={styles.amountWrapper}>
             <label className={styles.inputLabel}>
-              Amount per {serves} servings
+              {serves != null ? `Amount per ${serves} servings` : 'Amount'}
             </label>
             <input
               type="number"

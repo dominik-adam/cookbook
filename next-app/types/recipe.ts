@@ -40,10 +40,10 @@ export type Recipe = {
   slug: string;
   title: string;
   serves: number;
-  link?: string;
-  instructions?: string;
-  thumbnail?: string;
-  video?: string;
+  link?: string | null;
+  instructions?: string | null;
+  thumbnail?: string | null;
+  video?: string | null;
   tags?: Tag[];
   ingredients?: RecipeIngredient[];
   totalCalories?: number | null;
