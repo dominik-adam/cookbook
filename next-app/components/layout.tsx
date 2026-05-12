@@ -56,6 +56,7 @@ export default function Layout({ children, pageTitle, sidebarContent, isAdmin }:
           <MenuButton title="Recipes" url="/" image="/icons/recipes.png" />
           <MenuButton title="Drinks" url="/drinks" image="/icons/drinks.png" />
           <MenuButton title="Bag" url="/bag" image="/icons/shopping-bag.png" />
+          <MenuButton title="Workout" url="/workout" image="/icons/workout.png" />
           {isAdmin && (
             <MenuButton title="Ingredients" url="/ingredients" image="/icons/recipes.png" />
           )}

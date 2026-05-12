@@ -212,3 +212,34 @@ export function validateQueryParams(schema: z.ZodSchema, params: any) {
   // The schema should handle type coercion if needed
   return validateData(schema, params);
 }
+
+// ============================================================================
+// Workout Schemas
+// ============================================================================
+
+const ExerciseInputSchema = z.object({
+  exerciseName: z.string().min(1, 'Exercise name is required').max(200),
+  sets: z.number().int().positive().optional().nullable(),
+  reps: z.number().int().positive().optional().nullable(),
+  weight: z.number().nonnegative().optional().nullable(),
+  duration: z.number().int().positive().optional().nullable(),
+  distance: z.number().nonnegative().optional().nullable(),
+  notes: z.string().max(500).optional().nullable(),
+});
+
+export const LogWorkoutSchema = z.object({
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be YYYY-MM-DD'),
+  notes: z.string().max(1000).optional().nullable(),
+  exercises: z.array(ExerciseInputSchema).min(1, 'At least one exercise is required'),
+});
+
+export const UpdateWorkoutSchema = z.object({
+  sessionId: z.string().cuid('Invalid session ID'),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be YYYY-MM-DD'),
+  notes: z.string().max(1000).optional().nullable(),
+  exercises: z.array(ExerciseInputSchema).min(1, 'At least one exercise is required'),
+});
+
+export const DeleteWorkoutSchema = z.object({
+  sessionId: z.string().cuid('Invalid session ID'),
+});

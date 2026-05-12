@@ -45,6 +45,7 @@ model User {
   image         String?
   bagIngredients BagIngredient[]
   recipeIngredientState RecipeIngredientState[]
+  workoutSessions WorkoutSession[]
   accounts      Account[]
   sessions      Session[]
 }
@@ -148,4 +149,28 @@ model RecipeCategory {
   id      String   @id
   name    String
   recipes Recipe[]
+}
+
+model WorkoutSession {
+  id        String            @id @default(cuid())
+  userId    String
+  date      DateTime
+  notes     String?
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exercises WorkoutExercise[]
+
+  @@unique([userId, date])
+}
+
+model WorkoutExercise {
+  id           String         @id @default(cuid())
+  sessionId    String
+  exerciseName String
+  sets         Int?
+  reps         Int?
+  weight       Float?
+  duration     Int?
+  distance     Float?
+  notes        String?
+  session      WorkoutSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 }
