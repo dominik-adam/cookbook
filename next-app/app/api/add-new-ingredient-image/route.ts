@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth/next"
 import { options } from 'app/api/auth/[...nextauth]/options'
 import { writeFile } from 'fs/promises'
 import { NextResponse } from "next/server";
-import { isAdmin } from '@/utils/auth.ts';
+import { isAdmin } from '@/utils/auth';
 
 export async function POST(req: Request) {
   const session = await getServerSession(options);

@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next"
 import { options } from 'app/api/auth/[...nextauth]/options'
 import { NextResponse } from "next/server";
-import { isAdmin } from '@/utils/auth.ts';
+import { isAdmin } from '@/utils/auth';
 import { prisma } from "@/utils/prisma";
 import cuid from 'cuid';
 import { RecipeSchema, validateData } from '@/lib/validations';
