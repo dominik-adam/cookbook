@@ -31,7 +31,7 @@ export default function Ingredients({
   }
 
   const handleIngredientToggle = (key: string, isChecked: boolean) => {
-    const updatedKeyState = [...ingredientState];
+    const updatedKeyState = ingredientState.split('');
     const index = ingredients.findIndex((item) => item.ingredientId === key);
     updatedKeyState[index] = isChecked ? '1' : '0';
     const newKeystate = updatedKeyState.join('');
