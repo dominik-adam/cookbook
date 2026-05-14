@@ -3,34 +3,33 @@ import Layout from '../components/layout';
 import { getServerSession } from 'next-auth/next';
 import { options } from 'app/api/auth/[...nextauth]/options';
 import { prisma } from '@/utils/prisma';
-import styles from '@/styles/workout.module.css';
-import { useState, useEffect } from 'react';
+import styles from '@/styles/planner.module.css';
+import { useState, useEffect, useCallback } from 'react';
 import type { GetServerSidePropsContext } from 'next';
-import type { WorkoutSession, WorkoutStats } from '@/types/workout';
+import type { DayData, DailyPlanSettings, MonthData, PlannerStats } from '@/types/planner';
 
-import WorkoutCalendar from '@/components/workout/WorkoutCalendar';
-import WorkoutLogModal from '@/components/workout/WorkoutLogModal';
-import WorkoutProgress from '@/components/workout/WorkoutProgress';
+import DayView from '@/components/workout/DayView';
+import MonthCalendar from '@/components/workout/MonthCalendar';
+import PlannerStatsComponent from '@/components/workout/PlannerStats';
+import PlanSettings from '@/components/workout/PlanSettings';
 
-type ActiveTab = 'calendar' | 'progress';
+type ActiveTab = 'today' | 'calendar' | 'stats';
 
 interface WorkoutPageProps {
-  initSessions: WorkoutSession[];
+  initSettings: DailyPlanSettings | null;
+  initDayData: DayData | null;
   initYear: number;
   initMonth: number;
+  initDate: string;
+  needsInit: boolean;
 }
 
-function padLeft(n: number): string {
-  return n < 10 ? `0${n}` : `${n}`;
-}
-
-function toDateStr(isoString: string): string {
-  return isoString.slice(0, 10);
-}
-
-function formatDisplayDate(dateStr: string): string {
-  const d = new Date(dateStr + 'T12:00:00');
-  return d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+function todayStr(): string {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -46,179 +45,232 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       where: { email: session.user.email },
     });
 
-    if (!user) {
-      return { redirect: { destination: '/', permanent: false } };
-    }
+    if (!user) return { redirect: { destination: '/', permanent: false } };
 
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth() + 1;
+    const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
-    const startDate = new Date(year, month - 1, 1);
-    const endDate = new Date(year, month, 0, 23, 59, 59, 999);
-
-    const sessions = await prisma.workoutSession.findMany({
-      where: {
-        userId: user.id,
-        date: { gte: startDate, lte: endDate },
-      },
-      include: { exercises: true },
-      orderBy: { date: 'asc' },
+    const settings = await prisma.dailyPlanSettings.findUnique({
+      where: { userId: user.id },
     });
+
+    if (!settings) {
+      return {
+        props: {
+          initSettings: null,
+          initDayData: null,
+          initYear: year,
+          initMonth: month,
+          initDate: dateStr,
+          needsInit: true,
+        },
+      };
+    }
+
+    const date = new Date(dateStr + 'T12:00:00.000Z');
+    const dayStart = new Date(dateStr + 'T00:00:00.000Z');
+    const dayEnd = new Date(dateStr + 'T23:59:59.999Z');
+
+    const [dailyLog, exerciseSchedules] = await Promise.all([
+      prisma.dailyLog.findUnique({
+        where: { userId_date: { userId: user.id, date } },
+        include: { calorieEntries: { orderBy: { createdAt: 'asc' } } },
+      }),
+      prisma.exerciseSchedule.findMany({
+        where: { userId: user.id, scheduledDate: { gte: dayStart, lte: dayEnd } },
+        include: { exerciseLog: true },
+        orderBy: { exerciseType: 'asc' },
+      }),
+    ]);
+
+    const initDayData: DayData = {
+      dailyLog: dailyLog ? JSON.parse(JSON.stringify(dailyLog)) : null,
+      exerciseSchedules: JSON.parse(JSON.stringify(exerciseSchedules)),
+      settings: JSON.parse(JSON.stringify(settings)),
+    };
 
     return {
       props: {
-        initSessions: JSON.parse(JSON.stringify(sessions)),
+        initSettings: JSON.parse(JSON.stringify(settings)),
+        initDayData,
         initYear: year,
         initMonth: month,
+        initDate: dateStr,
+        needsInit: false,
       },
     };
   } catch (error) {
-    console.error('Error fetching workout data:', error);
+    console.error('Error loading workout page:', error);
+    const now = new Date();
     return {
       props: {
-        initSessions: [],
-        initYear: new Date().getFullYear(),
-        initMonth: new Date().getMonth() + 1,
+        initSettings: null,
+        initDayData: null,
+        initYear: now.getFullYear(),
+        initMonth: now.getMonth() + 1,
+        initDate: todayStr(),
+        needsInit: true,
       },
     };
   }
 }
 
-export default function WorkoutPage({ initSessions, initYear, initMonth }: WorkoutPageProps) {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('calendar');
-
-  // Calendar state — month is 0-indexed internally, 1-indexed for API calls
+export default function WorkoutPage({
+  initSettings,
+  initDayData,
+  initYear,
+  initMonth,
+  initDate,
+  needsInit,
+}: WorkoutPageProps) {
+  const [activeTab, setActiveTab] = useState<ActiveTab>('today');
+  const [selectedDate, setSelectedDate] = useState(initDate);
+  const [dayData, setDayData] = useState<DayData | null>(initDayData);
+  const [isDayLoading, setIsDayLoading] = useState(false);
+  const [monthData, setMonthData] = useState<MonthData | null>(null);
+  const [isMonthLoading, setIsMonthLoading] = useState(false);
   const [currentYear, setCurrentYear] = useState(initYear);
   const [currentMonth, setCurrentMonth] = useState(initMonth - 1); // 0-indexed
-  const [sessions, setSessions] = useState<WorkoutSession[]>(initSessions);
-  const [isLoadingCalendar, setIsLoadingCalendar] = useState(false);
-
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [sessionToEdit, setSessionToEdit] = useState<WorkoutSession | null>(null);
-  const [modalDefaultDate, setModalDefaultDate] = useState<string | undefined>(undefined);
-
-  const [exerciseSuggestions, setExerciseSuggestions] = useState<string[]>([]);
-  const [stats, setStats] = useState<WorkoutStats | null>(null);
-  const [isLoadingStats, setIsLoadingStats] = useState(false);
+  const [statsData, setStatsData] = useState<PlannerStats | null>(null);
+  const [isStatsLoading, setIsStatsLoading] = useState(false);
   const [statsLoaded, setStatsLoaded] = useState(false);
+  const [statsRangeDays, setStatsRangeDays] = useState(90);
+  const [settings, setSettings] = useState<DailyPlanSettings | null>(initSettings);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  // Load exercise suggestions once on mount
+  // Initialize plan on first visit
   useEffect(() => {
-    fetch('/api/get-exercise-suggestions')
-      .then((r) => r.json())
-      .then((data) => setExerciseSuggestions(data.exercises ?? []))
-      .catch(() => {});
+    if (!needsInit) return;
+    (async () => {
+      try {
+        const res = await fetch('/api/planner/init', { method: 'POST' });
+        if (res.ok) {
+          const data = await res.json();
+          setSettings(data.settings);
+          await loadDay(initDate, true);
+        }
+      } catch {
+        // ignore — user will see empty state
+      }
+    })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const loadMonthSessions = async (year: number, month: number) => {
-    setIsLoadingCalendar(true);
+  const loadDay = useCallback(async (dateStr: string, silent = false) => {
+    if (!silent) setIsDayLoading(true);
     try {
-      const res = await fetch(`/api/get-workouts?year=${year}&month=${month + 1}`);
+      const res = await fetch(`/api/planner/day?date=${dateStr}`);
       if (res.ok) {
         const data = await res.json();
-        setSessions(data.sessions ?? []);
+        setDayData(data);
+        if (data.settings) setSettings(data.settings);
       }
     } catch {
-      // keep existing sessions on error
+      // keep existing data
     } finally {
-      setIsLoadingCalendar(false);
+      setIsDayLoading(false);
     }
-  };
+  }, []);
 
-  const loadStats = async () => {
-    setIsLoadingStats(true);
+  const loadMonth = useCallback(async (year: number, month: number) => {
+    setIsMonthLoading(true);
     try {
-      const res = await fetch('/api/get-workout-stats');
+      const res = await fetch(`/api/planner/month?year=${year}&month=${month + 1}`);
       if (res.ok) {
         const data = await res.json();
-        setStats(data);
+        setMonthData(data);
+      }
+    } catch {
+      // keep existing
+    } finally {
+      setIsMonthLoading(false);
+    }
+  }, []);
+
+  const loadStats = useCallback(async (days: number) => {
+    setIsStatsLoading(true);
+    try {
+      let url = '/api/planner/stats';
+      if (days > 0) {
+        const to = new Date();
+        const from = new Date(to.getTime() - (days - 1) * 24 * 60 * 60 * 1000);
+        const toStr = to.toISOString().slice(0, 10);
+        const fromStr = from.toISOString().slice(0, 10);
+        url += `?from=${fromStr}&to=${toStr}`;
+      }
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+        setStatsData(data.stats);
         setStatsLoaded(true);
       }
     } catch {
-      // keep null stats on error
+      // keep existing
     } finally {
-      setIsLoadingStats(false);
+      setIsStatsLoading(false);
     }
-  };
+  }, []);
 
-  const handleMonthChange = (year: number, month: number) => {
+  function handleDateChange(dateStr: string) {
+    setSelectedDate(dateStr);
+    loadDay(dateStr);
+  }
+
+  function handleDayUpdated() {
+    loadDay(selectedDate);
+  }
+
+  function handleTabChange(tab: ActiveTab) {
+    setActiveTab(tab);
+    if (tab === 'calendar' && !monthData) {
+      loadMonth(currentYear, currentMonth);
+    }
+    if (tab === 'stats' && !statsLoaded) {
+      loadStats(statsRangeDays);
+    }
+  }
+
+  function handleMonthChange(year: number, month: number) {
     setCurrentYear(year);
     setCurrentMonth(month);
-    setSelectedDate(null);
-    loadMonthSessions(year, month);
-  };
+    loadMonth(year, month);
+  }
 
-  const handleDayClick = (dateStr: string) => {
-    setSelectedDate((prev) => (prev === dateStr ? null : dateStr));
-  };
+  function handleCalendarDayClick(dateStr: string) {
+    setSelectedDate(dateStr);
+    setActiveTab('today');
+    loadDay(dateStr);
+  }
 
-  const handleOpenLogModal = (date?: string) => {
-    setSessionToEdit(null);
-    setModalDefaultDate(date);
-    setIsModalOpen(true);
-  };
+  function handleStatsRangeChange(days: number) {
+    setStatsRangeDays(days);
+    loadStats(days);
+  }
 
-  const handleEditSession = (session: WorkoutSession) => {
-    setSessionToEdit(session);
-    setModalDefaultDate(undefined);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSessionToEdit(null);
-    setModalDefaultDate(undefined);
-  };
-
-  const handleModalSaved = () => {
-    loadMonthSessions(currentYear, currentMonth);
-    if (statsLoaded) loadStats();
-    // Reload suggestions to pick up new exercise names
-    fetch('/api/get-exercise-suggestions')
-      .then((r) => r.json())
-      .then((data) => setExerciseSuggestions(data.exercises ?? []))
-      .catch(() => {});
-  };
-
-  const handleDeleteSession = async (sessionId: string) => {
-    if (!window.confirm('Delete this workout? This cannot be undone.')) return;
-
-    const res = await fetch('/api/delete-workout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sessionId }),
-    });
-
-    if (res.ok) {
-      setSessions((prev) => prev.filter((s) => s.id !== sessionId));
-      setSelectedDate(null);
-      if (statsLoaded) loadStats();
-    }
-  };
-
-  const handleTabChange = (tab: ActiveTab) => {
-    setActiveTab(tab);
-    if (tab === 'progress' && !statsLoaded) {
-      loadStats();
-    }
-  };
-
-  const sessionDates = sessions.map((s) => toDateStr(s.date));
-  const selectedSession = selectedDate
-    ? sessions.find((s) => toDateStr(s.date) === selectedDate) ?? null
-    : null;
+  function handleSettingsSaved(newSettings: DailyPlanSettings) {
+    setSettings(newSettings);
+    // Reload current day in case targets changed
+    loadDay(selectedDate);
+    // Reload month if on calendar tab
+    if (activeTab === 'calendar') loadMonth(currentYear, currentMonth);
+  }
 
   return (
     <Layout pageTitle="Workout">
       <Head>
-        <title>My Workout</title>
+        <title>Daily Planner</title>
       </Head>
 
-      {/* Tab bar */}
+      {/* Tab bar + gear */}
       <div className={styles.tabBar}>
+        <button
+          className={activeTab === 'today' ? styles.tabActive : styles.tab}
+          onClick={() => handleTabChange('today')}
+        >
+          Today
+        </button>
         <button
           className={activeTab === 'calendar' ? styles.tabActive : styles.tab}
           onClick={() => handleTabChange('calendar')}
@@ -226,127 +278,66 @@ export default function WorkoutPage({ initSessions, initYear, initMonth }: Worko
           Calendar
         </button>
         <button
-          className={activeTab === 'progress' ? styles.tabActive : styles.tab}
-          onClick={() => handleTabChange('progress')}
+          className={activeTab === 'stats' ? styles.tabActive : styles.tab}
+          onClick={() => handleTabChange('stats')}
         >
-          Progress
+          Stats
+        </button>
+        <div className={styles.tabBarSpacer} />
+        <button
+          className={styles.gearButton}
+          onClick={() => setIsSettingsOpen(true)}
+          title="Plan settings"
+          aria-label="Open plan settings"
+        >
+          ⚙
         </button>
       </div>
 
+      {/* Today tab */}
+      {activeTab === 'today' && (
+        <DayView
+          date={selectedDate}
+          dayData={dayData}
+          isLoading={isDayLoading}
+          settings={settings}
+          onDateChange={handleDateChange}
+          onDayUpdated={handleDayUpdated}
+          onOpenSettings={() => setIsSettingsOpen(true)}
+        />
+      )}
+
       {/* Calendar tab */}
       {activeTab === 'calendar' && (
-        <>
-          <div className={styles.calendarActions}>
-            <button
-              className={styles.logButton}
-              onClick={() => handleOpenLogModal(selectedDate ?? undefined)}
-            >
-              + Log Workout
-            </button>
-          </div>
-
-          <WorkoutCalendar
-            year={currentYear}
-            month={currentMonth}
-            sessionDates={sessionDates}
-            selectedDate={selectedDate}
-            onDayClick={handleDayClick}
-            onMonthChange={handleMonthChange}
-            isLoading={isLoadingCalendar}
-          />
-
-          {/* Day detail panel */}
-          {selectedDate && (
-            <div className={styles.dayDetail}>
-              <div className={styles.dayDetailHeader}>
-                <span className={styles.dayDetailTitle}>
-                  {formatDisplayDate(selectedDate)}
-                </span>
-                {selectedSession && (
-                  <div className={styles.dayDetailActions}>
-                    <button
-                      className={styles.editButton}
-                      onClick={() => handleEditSession(selectedSession)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className={styles.deleteButton}
-                      onClick={() => handleDeleteSession(selectedSession.id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              {selectedSession ? (
-                <>
-                  {selectedSession.notes && (
-                    <div className={styles.sessionNotes}>{selectedSession.notes}</div>
-                  )}
-                  {selectedSession.exercises.map((exercise, i) => {
-                    const meta: string[] = [];
-                    if (exercise.sets != null && exercise.reps != null) {
-                      meta.push(`${exercise.sets} × ${exercise.reps} reps`);
-                    } else if (exercise.sets != null) {
-                      meta.push(`${exercise.sets} sets`);
-                    } else if (exercise.reps != null) {
-                      meta.push(`${exercise.reps} reps`);
-                    }
-                    if (exercise.weight != null) meta.push(`${exercise.weight} kg`);
-                    if (exercise.duration != null) meta.push(`${exercise.duration} min`);
-                    if (exercise.distance != null) meta.push(`${exercise.distance} km`);
-
-                    return (
-                      <div key={exercise.id ?? i} className={styles.exerciseCard}>
-                        <div className={styles.exerciseName}>{exercise.exerciseName}</div>
-                        {meta.length > 0 && (
-                          <div className={styles.exerciseMeta}>
-                            {meta.map((m) => (
-                              <span key={m} className={styles.exerciseMetaItem}>{m}</span>
-                            ))}
-                          </div>
-                        )}
-                        {exercise.notes && (
-                          <div className={styles.sessionNotes} style={{ marginTop: 6 }}>
-                            {exercise.notes}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </>
-              ) : (
-                <div className={styles.noWorkoutMessage}>
-                  <p>No workout logged for this day.</p>
-                  <button
-                    className={styles.noWorkoutLogButton}
-                    onClick={() => handleOpenLogModal(selectedDate)}
-                  >
-                    Log Workout
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
-        </>
+        <MonthCalendar
+          year={currentYear}
+          month={currentMonth}
+          monthData={monthData}
+          selectedDate={selectedDate}
+          isLoading={isMonthLoading}
+          onDayClick={handleCalendarDayClick}
+          onMonthChange={handleMonthChange}
+        />
       )}
 
-      {/* Progress tab */}
-      {activeTab === 'progress' && (
-        <WorkoutProgress stats={stats} isLoading={isLoadingStats} />
+      {/* Stats tab */}
+      {activeTab === 'stats' && (
+        <PlannerStatsComponent
+          stats={statsData}
+          isLoading={isStatsLoading}
+          onRangeChange={handleStatsRangeChange}
+        />
       )}
 
-      {/* Log / Edit modal */}
-      <WorkoutLogModal
-        isOpen={isModalOpen}
-        sessionToEdit={sessionToEdit}
-        exerciseSuggestions={exerciseSuggestions}
-        defaultDate={modalDefaultDate}
-        onClose={handleCloseModal}
-        onSaved={handleModalSaved}
-      />
+      {/* Settings modal */}
+      {settings && (
+        <PlanSettings
+          isOpen={isSettingsOpen}
+          settings={settings}
+          onClose={() => setIsSettingsOpen(false)}
+          onSaved={handleSettingsSaved}
+        />
+      )}
     </Layout>
   );
 }

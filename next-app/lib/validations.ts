@@ -243,3 +243,67 @@ export const UpdateWorkoutSchema = z.object({
 export const DeleteWorkoutSchema = z.object({
   sessionId: z.string().cuid('Invalid session ID'),
 });
+
+// ============================================================================
+// Planner Schemas
+// ============================================================================
+
+const dateStringSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be YYYY-MM-DD');
+
+export const PlannerWaterSchema = z.object({
+  date: dateStringSchema,
+  amount: z.number().nonnegative().max(20),
+});
+
+export const PlannerCreatineSchema = z.object({
+  date: dateStringSchema,
+  done: z.boolean(),
+});
+
+export const PlannerWeightSchema = z.object({
+  date: dateStringSchema,
+  weightKg: z.number().positive().max(500),
+});
+
+export const PlannerCalorieAddSchema = z.object({
+  date: dateStringSchema,
+  amount: z.number().int().positive().max(10000),
+  label: z.string().max(100).optional(),
+});
+
+export const PlannerCalorieRemoveSchema = z.object({
+  entryId: z.string().cuid('Invalid entry ID'),
+});
+
+export const PlannerExerciseLogSchema = z.object({
+  scheduleId: z.string().cuid('Invalid schedule ID'),
+  sprintsDone: z.number().int().nonnegative().optional(),
+  setResults: z.array(z.number().int().nonnegative()).optional(),
+  weightKgUsed: z.number().nonnegative().optional(),
+  notes: z.string().max(500).optional(),
+  fullyCompleted: z.boolean().default(false),
+});
+
+export const PlannerRescheduleSchema = z.object({
+  scheduleId: z.string().cuid('Invalid schedule ID'),
+  direction: z.enum(['prev', 'next']),
+});
+
+export const PlannerSettingsUpdateSchema = z.object({
+  waterTargetL: z.number().positive().optional(),
+  creatineTargetG: z.number().positive().optional(),
+  calorieTarget: z.number().int().positive().optional(),
+  sprintCount: z.number().int().positive().optional(),
+  sprintFrequencyDays: z.number().int().min(1).max(14).optional(),
+  pullupWeightKg: z.number().nonnegative().optional(),
+  pullupSets: z.number().int().positive().optional(),
+  pullupRepsPerSet: z.number().int().positive().optional(),
+  pullupFrequencyDays: z.number().int().min(1).max(14).optional(),
+  dipWeightKg: z.number().nonnegative().optional(),
+  dipSets: z.number().int().positive().optional(),
+  dipRepsPerSet: z.number().int().positive().optional(),
+  dipFrequencyDays: z.number().int().min(1).max(14).optional(),
+  sprintStartDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
+  pullupStartDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
+  dipStartDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
+});
