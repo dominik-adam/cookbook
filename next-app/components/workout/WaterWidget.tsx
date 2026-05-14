@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styles from '@/styles/planner.module.css';
 import type { DailyLog, DailyPlanSettings } from '@/types/planner';
+import { HOLD_TO_RESET_MS } from '@/lib/uiConfig';
 
 interface WaterWidgetProps {
   dailyLog: DailyLog | null;
@@ -9,106 +10,89 @@ interface WaterWidgetProps {
   onUpdated: () => void;
 }
 
-function progressColor(pct: number): string {
-  if (pct <= 0) return '#e8e8e8';
-  if (pct < 0.5) return '#f5c842';
-  if (pct < 0.75) return '#f5a623';
-  if (pct < 1) return '#7ec8a0';
-  return '#3aa46c';
-}
+const BG_DEFAULT  = 'linear-gradient(145deg, #0d2a6e 0%, #1048b0 100%)';
+const BG_COMPLETE = 'linear-gradient(145deg, #0a4a2d 0%, #1a7a4a 100%)';
 
 export default function WaterWidget({ dailyLog, settings, date, onUpdated }: WaterWidgetProps) {
-  const target = dailyLog?.waterTargetL ?? settings?.waterTargetL ?? 3;
+  const target   = dailyLog?.waterTargetL ?? settings?.waterTargetL ?? 3;
   const [consumed, setConsumed] = useState(dailyLog?.waterConsumedL ?? 0);
-  const [inputVal, setInputVal] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [isHolding, setIsHolding] = useState(false);
 
-  const pct = Math.min(consumed / target, 1);
+  const pct        = Math.min(consumed / target, 1);
   const isComplete = consumed >= target;
 
-  async function updateWater(newAmount: number) {
-    setIsLoading(true);
-    setError('');
-    const clamped = Math.max(0, Math.round(newAmount * 100) / 100);
-    setConsumed(clamped); // optimistic
-    try {
-      const res = await fetch('/api/planner/water', {
+  // Debounce API saves so rapid clicks coalesce into one request
+  const pendingRef = useRef(consumed);
+  const saveTimer  = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function scheduleSave(newAmount: number) {
+    pendingRef.current = newAmount;
+    if (saveTimer.current) clearTimeout(saveTimer.current);
+    saveTimer.current = setTimeout(async () => {
+      const amt = Math.max(0, Math.round(pendingRef.current * 1000) / 1000);
+      await fetch('/api/planner/water', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ date, amount: clamped }),
+        body: JSON.stringify({ date, amount: amt }),
       });
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.error ?? 'Failed to save');
-        setConsumed(dailyLog?.waterConsumedL ?? 0);
-      } else {
-        onUpdated();
-      }
-    } catch {
-      setError('Network error');
-      setConsumed(dailyLog?.waterConsumedL ?? 0);
-    } finally {
-      setIsLoading(false);
+      onUpdated();
+    }, 400);
+  }
+
+  // Hold-to-reset (2 s)
+  const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const didHold   = useRef(false);
+
+  function handlePointerDown() {
+    didHold.current = false;
+    setIsHolding(true);
+    holdTimer.current = setTimeout(() => {
+      didHold.current = true;
+      setIsHolding(false);
+      setConsumed(0);
+      scheduleSave(0);
+    }, HOLD_TO_RESET_MS);
+  }
+
+  function handlePointerUp() {
+    if (holdTimer.current) clearTimeout(holdTimer.current);
+    setIsHolding(false);
+    if (!didHold.current) {
+      const next = Math.round((consumed + 0.5) * 1000) / 1000;
+      setConsumed(next);
+      scheduleSave(next);
     }
   }
 
-  function handleQuickAdd(delta: number) {
-    updateWater(consumed + delta);
+  function handlePointerLeave() {
+    if (holdTimer.current) clearTimeout(holdTimer.current);
+    setIsHolding(false);
   }
 
-  function handleManualAdd() {
-    const val = parseFloat(inputVal);
-    if (isNaN(val) || val <= 0) return;
-    setInputVal('');
-    updateWater(consumed + val);
-  }
+  const displayMl = Math.round(consumed * 1000);
+  const targetMl  = Math.round(target  * 1000);
 
   return (
-    <div className={`${styles.widgetCard} ${isComplete ? styles.widgetCardComplete : ''}`}>
-      <div className={styles.widgetHeader}>
-        <span className={styles.widgetTitle}>
-          Water
-          <span className={styles.widgetSubtitle}>intake</span>
-        </span>
-        <span className={styles.widgetValue}>
-          {consumed.toFixed(1)} / {target.toFixed(1)} L
-        </span>
-      </div>
+    <div
+      className={`${styles.widgetCard} ${styles.widgetHabit}`}
+      style={{ background: isComplete ? BG_COMPLETE : BG_DEFAULT }}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerLeave}
+    >
+      {isHolding && <div className={styles.wHoldRipple} />}
 
-      <div className={styles.progressBarOuter}>
-        <div
-          className={styles.progressBarInner}
-          style={{ width: `${pct * 100}%`, backgroundColor: progressColor(pct) }}
-        />
-      </div>
+      <div className={styles.wLabel}>Water</div>
 
-      <div className={styles.waterQuickAdd}>
-        <button className={styles.quickAddBtn} onClick={() => handleQuickAdd(0.25)} disabled={isLoading}>+0.25L</button>
-        <button className={styles.quickAddBtn} onClick={() => handleQuickAdd(0.5)} disabled={isLoading}>+0.5L</button>
-        <button className={styles.quickAddBtn} onClick={() => handleQuickAdd(1)} disabled={isLoading}>+1L</button>
-        {consumed > 0 && (
-          <button className={styles.quickAddBtn} onClick={() => updateWater(Math.max(0, consumed - 0.5))} disabled={isLoading}>
-            −0.5L
-          </button>
-        )}
+      <div>
+        <div className={styles.wBigNum}>
+          {displayMl} <span className={styles.wUnit}>ml</span>
+        </div>
+        <div className={styles.wProgressBar}>
+          <div className={styles.wProgressFill} style={{ width: `${pct * 100}%` }} />
+        </div>
+        <div className={styles.wSubLabel}>/ {targetMl} ml · tap +500 ml · hold to reset</div>
       </div>
-
-      <div className={styles.waterInputRow}>
-        <input
-          className={styles.waterInput}
-          type="number"
-          step="0.1"
-          min="0"
-          placeholder="Custom L — press Enter"
-          value={inputVal}
-          onChange={(e) => setInputVal(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleManualAdd()}
-          onBlur={handleManualAdd}
-        />
-      </div>
-
-      {error && <div className={styles.errorMsg}>{error}</div>}
     </div>
   );
 }

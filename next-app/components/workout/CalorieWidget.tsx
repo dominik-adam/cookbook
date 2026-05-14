@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styles from '@/styles/planner.module.css';
 import type { CalorieEntry, DailyLog, DailyPlanSettings } from '@/types/planner';
+import { HOLD_TO_RESET_MS } from '@/lib/uiConfig';
 
 interface CalorieWidgetProps {
   dailyLog: DailyLog | null;
@@ -9,27 +10,23 @@ interface CalorieWidgetProps {
   onUpdated: () => void;
 }
 
-function progressColor(pct: number): string {
-  if (pct <= 0) return '#e8e8e8';
-  if (pct < 0.5) return '#f5c842';
-  if (pct < 0.75) return '#f5a623';
-  if (pct < 1) return '#7ec8a0';
-  return '#3aa46c';
-}
+const BG_DEFAULT  = 'linear-gradient(145deg, #2d1a4e 0%, #1a0d3a 100%)';
+const BG_COMPLETE = 'linear-gradient(145deg, #0a4a2d 0%, #1a7a4a 100%)';
 
 export default function CalorieWidget({ dailyLog, settings, date, onUpdated }: CalorieWidgetProps) {
-  const target = dailyLog?.calorieTarget ?? settings?.calorieTarget ?? 2500;
+  const target         = dailyLog?.calorieTarget ?? settings?.calorieTarget ?? 2500;
   const entries: CalorieEntry[] = dailyLog?.calorieEntries ?? [];
-  const totalConsumed = entries.reduce((s, e) => s + e.amount, 0);
-  const pct = Math.min(totalConsumed / target, 1);
-  const isComplete = totalConsumed >= target;
+  const totalConsumed  = entries.reduce((s, e) => s + e.amount, 0);
+  const pct            = Math.min(totalConsumed / target, 1);
+  const isComplete     = totalConsumed >= target;
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen]       = useState(false);
   const [newAmount, setNewAmount] = useState('');
-  const [newLabel, setNewLabel] = useState('');
-  const [isAdding, setIsAdding] = useState(false);
+  const [newLabel,  setNewLabel]  = useState('');
+  const [isAdding,  setIsAdding]  = useState(false);
   const [isDeletingId, setIsDeletingId] = useState<string | null>(null);
-  const [error, setError] = useState('');
+  const [error, setError]         = useState('');
+  const [isHolding, setIsHolding] = useState(false);
 
   async function handleAdd() {
     const amt = parseInt(newAmount, 10);
@@ -42,19 +39,10 @@ export default function CalorieWidget({ dailyLog, settings, date, onUpdated }: C
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ date, amount: amt, label: newLabel || undefined }),
       });
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.error ?? 'Failed to add');
-      } else {
-        setNewAmount('');
-        setNewLabel('');
-        onUpdated();
-      }
-    } catch {
-      setError('Network error');
-    } finally {
-      setIsAdding(false);
-    }
+      if (!res.ok) { const d = await res.json(); setError(d.error ?? 'Failed to add'); }
+      else { setNewAmount(''); setNewLabel(''); onUpdated(); }
+    } catch { setError('Network error'); }
+    finally { setIsAdding(false); }
   }
 
   async function handleDelete(entryId: string) {
@@ -65,42 +53,76 @@ export default function CalorieWidget({ dailyLog, settings, date, onUpdated }: C
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ entryId }),
       });
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.error ?? 'Failed to delete');
-      } else {
-        onUpdated();
-      }
-    } catch {
-      setError('Network error');
-    } finally {
-      setIsDeletingId(null);
-    }
+      if (!res.ok) { const d = await res.json(); setError(d.error ?? 'Failed to delete'); }
+      else onUpdated();
+    } catch { setError('Network error'); }
+    finally { setIsDeletingId(null); }
+  }
+
+  async function handleClearAll() {
+    if (entries.length === 0) return;
+    try {
+      await Promise.all(
+        entries.map((e) =>
+          fetch('/api/planner/calories/remove', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ entryId: e.id }),
+          })
+        )
+      );
+      onUpdated();
+    } catch { /* ignore */ }
+  }
+
+  // Hold-to-reset (2 s) — clears all calorie entries
+  const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const didHold   = useRef(false);
+
+  function handlePointerDown() {
+    didHold.current = false;
+    setIsHolding(true);
+    holdTimer.current = setTimeout(() => {
+      didHold.current = true;
+      setIsHolding(false);
+      handleClearAll();
+    }, HOLD_TO_RESET_MS);
+  }
+
+  function handlePointerUp() {
+    if (holdTimer.current) clearTimeout(holdTimer.current);
+    setIsHolding(false);
+    if (!didHold.current) setIsOpen(true);
+  }
+
+  function handlePointerLeave() {
+    if (holdTimer.current) clearTimeout(holdTimer.current);
+    setIsHolding(false);
   }
 
   return (
     <>
-      <div className={`${styles.widgetCard} ${isComplete ? styles.widgetCardComplete : ''}`}>
-        <div className={styles.widgetHeader}>
-          <span className={styles.widgetTitle}>
-            Calories
-            <span className={styles.widgetSubtitle}>intake</span>
-          </span>
-          <span className={styles.widgetValue}>
-            {totalConsumed} / {target} kcal
-          </span>
-        </div>
+      {/* Widget tile */}
+      <div
+        className={`${styles.widgetCard} ${styles.widgetHabit}`}
+        style={{ background: isComplete ? BG_COMPLETE : BG_DEFAULT, position: 'relative' }}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerLeave}
+      >
+        {isHolding && <div className={styles.wHoldRipple} />}
 
-        <div className={styles.progressBarOuter}>
-          <div
-            className={styles.progressBarInner}
-            style={{ width: `${pct * 100}%`, backgroundColor: progressColor(pct) }}
-          />
-        </div>
+        <div className={styles.wLabel}>Calories</div>
 
-        <button className={styles.calorieOpenBtn} onClick={() => setIsOpen(true)}>
-          {entries.length > 0 ? `${entries.length} entr${entries.length === 1 ? 'y' : 'ies'} — add more` : '+ Log calories'}
-        </button>
+        <div>
+          <div className={styles.wBigNum}>
+            {totalConsumed} <span className={styles.wUnit}>kcal</span>
+          </div>
+          <div className={styles.wProgressBar}>
+            <div className={styles.wProgressFill} style={{ width: `${pct * 100}%` }} />
+          </div>
+          <div className={styles.wSubLabel}>/ {target} target · tap to log · hold to clear</div>
+        </div>
       </div>
 
       {/* Calorie modal */}
@@ -129,9 +151,7 @@ export default function CalorieWidget({ dailyLog, settings, date, onUpdated }: C
                       onClick={() => handleDelete(e.id)}
                       disabled={isDeletingId === e.id}
                       title="Remove"
-                    >
-                      ✕
-                    </button>
+                    >✕</button>
                   </div>
                 ))
               )}
@@ -155,11 +175,7 @@ export default function CalorieWidget({ dailyLog, settings, date, onUpdated }: C
                 onChange={(e) => setNewLabel(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
               />
-              <button
-                className={styles.calorieAddBtn}
-                onClick={handleAdd}
-                disabled={isAdding || !newAmount}
-              >
+              <button className={styles.calorieAddBtn} onClick={handleAdd} disabled={isAdding || !newAmount}>
                 Add
               </button>
             </div>

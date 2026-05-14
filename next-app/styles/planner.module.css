@@ -92,8 +92,9 @@
 /* ── Widget grid ── */
 .widgetGrid {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 10px;
+  align-items: flex-start;
 }
 
 /* ── Widget card (shared base) ── */
@@ -818,19 +819,20 @@
 }
 
 /* ── Calendar (month view) ── */
-.calendar {
-  background: #fff;
-  border: 1px solid rgb(179, 228, 228);
-  border-radius: 12px;
-  padding: 16px;
-  margin-top: 16px;
+/* ── Calendar ── */
+.calendarWrap {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 110px);
+  margin-top: 8px;
 }
 
 .calendarHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 14px;
+  padding: 4px 0 10px;
+  flex-shrink: 0;
 }
 
 .calMonthTitle {
@@ -852,10 +854,25 @@
   background-color: rgb(179, 228, 228);
 }
 
-.calGrid {
+/* Flex column that fills remaining height */
+.calendarBody {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background: #fff;
+  border: 1px solid rgb(179, 228, 228);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+/* Day-of-week header row (separate from the day grid) */
+.calDayHeaderRow {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 3px;
+  margin-bottom: 4px;
+  flex-shrink: 0;
 }
 
 .calDayHeader {
@@ -863,18 +880,28 @@
   font-size: 0.7rem;
   font-weight: 700;
   color: #888;
-  padding: 4px 0;
+  padding: 2px 0 4px;
+}
+
+/* Day cells grid — fills the remaining calendar body height */
+.calDayGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 3px;
+  flex: 1;
+  min-height: 0;
 }
 
 .calDayCell {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  min-height: 52px;
-  border-radius: 8px;
+  align-items: flex-start;
+  border-radius: 6px;
   cursor: pointer;
-  padding: 5px 2px;
+  padding: 4px 3px;
   transition: background-color 0.15s;
+  overflow: hidden;
 }
 
 .calDayCell:hover {
@@ -899,34 +926,98 @@
 }
 
 .calDayNum {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
+  align-self: flex-end;
+  line-height: 1;
+  margin-bottom: 2px;
+  color: #555;
 }
 
-.calDotRow {
-  display: flex;
-  gap: 2px;
+/* ── Calendar exercise mini-cards ── */
+.calExCard {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 5px 6px 6px;
   margin-top: 3px;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+}
+
+.calExCardHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.calExCardTitle {
+  font-size: 0.55rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  opacity: 0.75;
+}
+
+.calExCardBtns {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.calExCardBtn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.4);
+  cursor: pointer;
+  font-size: 0.65rem;
+  padding: 0 2px;
+  line-height: 1;
+}
+
+.calExCardBtn:hover:not(:disabled) { color: rgba(255,255,255,0.95); }
+.calExCardBtn:disabled { opacity: 0.25; cursor: not-allowed; }
+
+/* Big number — sprints count or sets×reps */
+.calExCardBigNum {
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: rgba(255,255,255,0.95);
+  letter-spacing: -0.02em;
+}
+
+/* Smaller subtitle — e.g. "+10 kg" */
+.calExCardSub {
+  font-size: 0.55rem;
+  color: rgba(255,255,255,0.5);
+  margin-top: 2px;
+  font-weight: 600;
+}
+
+/* Set boxes for logged strength */
+.calExSetRow {
+  display: flex;
+  gap: 3px;
   flex-wrap: wrap;
-  justify-content: center;
-  max-width: 36px;
 }
 
-.calDot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
+.calExSetBox {
+  background: rgba(255,255,255,0.15);
+  border-radius: 4px;
+  padding: 2px 5px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.95);
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1.3;
 }
 
-.calDotGreen {
-  background-color: #3aa46c;
-}
-
-.calDotGray {
-  background-color: #ccc;
-}
-
-.calDotOrange {
-  background-color: #f5a623;
+.calExSetSep {
+  opacity: 0.45;
+  margin: 0 1px;
+  font-weight: 400;
+  font-size: 0.55rem;
 }
 
 /* ── Stats section ── */
@@ -1057,12 +1148,13 @@
     font-size: 1.6rem;
   }
 
-  .calDayCell {
-    min-height: 44px;
+  .calExCardBigNum {
+    font-size: 0.85rem;
   }
 
-  .calDayNum {
-    font-size: 0.75rem;
+  .calExSetBox {
+    font-size: 0.55rem;
+    padding: 1px 3px;
   }
 
   .setRow {
@@ -1073,4 +1165,247 @@
     width: 44px;
     font-size: 0.85rem;
   }
+}
+
+/* ════════════════════════════════════════════════
+   Samsung-style widget redesign
+   ════════════════════════════════════════════════ */
+
+/* Habit widgets: 2 per row */
+.widgetHabit {
+  flex: 1 1 calc(50% - 5px);
+  min-width: 130px;
+  min-height: 116px;
+  border-radius: 20px !important;
+  border: none !important;
+  padding: 14px !important;
+  background: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  color: white;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  overflow: hidden;
+}
+.widgetHabit:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Exercise widgets: full width by default */
+.widgetExercise {
+  flex: 1 1 100%;
+  border-radius: 20px !important;
+  border: none !important;
+  padding: 16px !important;
+  background: none;
+  color: white;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  overflow: hidden;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.widgetExercise:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Strength widgets (Pullups / Dips): half-width, side by side */
+.widgetStrength {
+  flex: 1 1 calc(50% - 5px);
+  min-width: 140px;
+}
+
+/* Widget typography */
+.wLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 4px;
+}
+
+.wBigNum {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+}
+
+.wUnit {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+}
+
+.wSubLabel {
+  font-size: 0.63rem;
+  color: rgba(255,255,255,0.45);
+  margin-top: 3px;
+}
+
+/* Thin progress bar */
+.wProgressBar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 6px 0 2px;
+}
+.wProgressFill {
+  height: 100%;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.9);
+  transition: width 0.35s ease;
+}
+
+/* Hold-to-reset ripple overlay */
+.wHoldRipple {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  border-radius: inherit;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+
+/* Exercise widget header */
+.wExerciseHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.wExerciseTitleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.wExerciseLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.65);
+}
+.wExerciseWeight {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+}
+.wExerciseActions {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+/* Set boxes */
+.wSetRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.wSetBox {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 12px;
+  overflow: hidden;
+  width: 54px;
+  flex-shrink: 0;
+  transition: background 0.3s ease;
+}
+.wSetBoxBtn {
+  width: 100%;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.13);
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.8);
+  transition: background 0.12s;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.wSetBoxBtn:hover { background: rgba(255,255,255,0.23); }
+.wSetBoxBtn:active { background: rgba(255,255,255,0.33); }
+.wSetBoxCenter {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+/* Seamless weight input */
+.wSeamlessInput {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  width: 100%;
+  padding: 0;
+  font-family: inherit;
+  -moz-appearance: textfield;
+}
+.wSeamlessInput::placeholder {
+  color: rgba(255,255,255,0.4);
+}
+.wSeamlessInput::-webkit-inner-spin-button,
+.wSeamlessInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+/* Subtle reschedule buttons inside exercise widgets */
+.wRescheduleBtn {
+  background: rgba(255,255,255,0.13);
+  border: none;
+  border-radius: 7px;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.8rem;
+  padding: 5px 9px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.wRescheduleBtn:hover { background: rgba(255,255,255,0.23); }
+.wRescheduleBtn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* Auto-save status inside exercise widgets */
+.wSaveStatus {
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.45);
+  margin-left: auto;
+}
+.wSaveStatus[data-status='pending'] { color: rgba(255,255,255,0.35); }
+.wSaveStatus[data-status='saving']  { color: rgba(255,255,255,0.5);  }
+.wSaveStatus[data-status='saved']   { color: rgba(100,220,150,0.8);  }
+.wSaveStatus[data-status='error']   { color: rgba(255,100,100,0.9);  }
+
+/* Exercise section heading in DayView */
+.wSectionLabel {
+  flex: 1 1 100%;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #aaa;
+  padding: 4px 2px 0;
 }

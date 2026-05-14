@@ -262,7 +262,7 @@ export const PlannerCreatineSchema = z.object({
 
 export const PlannerWeightSchema = z.object({
   date: dateStringSchema,
-  weightKg: z.number().positive().max(500),
+  weightKg: z.number().positive().max(500).nullable(),
 });
 
 export const PlannerCalorieAddSchema = z.object({

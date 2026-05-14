@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styles from '@/styles/planner.module.css';
 import type { DailyLog, DailyPlanSettings } from '@/types/planner';
+import { HOLD_TO_RESET_MS } from '@/lib/uiConfig';
 
 interface CreatineWidgetProps {
   dailyLog: DailyLog | null;
@@ -9,57 +10,74 @@ interface CreatineWidgetProps {
   onUpdated: () => void;
 }
 
+const BG_UNDONE = 'linear-gradient(145deg, #1c1c2e 0%, #16213e 100%)';
+const BG_DONE   = 'linear-gradient(145deg, #0a4a5e 0%, #0d6a8e 100%)';
+
 export default function CreatineWidget({ dailyLog, settings, date, onUpdated }: CreatineWidgetProps) {
   const dose = dailyLog?.creatineTargetG ?? settings?.creatineTargetG ?? 5;
   const [done, setDone] = useState(dailyLog?.creatineDone ?? false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [isHolding, setIsHolding] = useState(false);
 
-  async function toggle() {
-    const newDone = !done;
-    setDone(newDone); // optimistic
-    setIsLoading(true);
-    setError('');
+  async function saveDone(newDone: boolean, prevDone: boolean) {
     try {
       const res = await fetch('/api/planner/creatine', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ date, done: newDone }),
       });
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.error ?? 'Failed to save');
-        setDone(!newDone);
-      } else {
-        onUpdated();
-      }
+      if (!res.ok) setDone(prevDone); // revert on error
+      else onUpdated();
     } catch {
-      setError('Network error');
-      setDone(!newDone);
-    } finally {
-      setIsLoading(false);
+      setDone(prevDone);
     }
   }
 
+  // Hold-to-reset (2 s)
+  const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const didHold   = useRef(false);
+
+  function handlePointerDown() {
+    didHold.current = false;
+    setIsHolding(true);
+    holdTimer.current = setTimeout(() => {
+      didHold.current = true;
+      setIsHolding(false);
+      setDone(false);
+      saveDone(false, true);
+    }, HOLD_TO_RESET_MS);
+  }
+
+  function handlePointerUp() {
+    if (holdTimer.current) clearTimeout(holdTimer.current);
+    setIsHolding(false);
+    if (!didHold.current) {
+      const newDone = !done;
+      setDone(newDone);
+      saveDone(newDone, done);
+    }
+  }
+
+  function handlePointerLeave() {
+    if (holdTimer.current) clearTimeout(holdTimer.current);
+    setIsHolding(false);
+  }
+
   return (
-    <div className={`${styles.widgetCard} ${done ? styles.widgetCardComplete : ''}`}>
-      <div className={styles.widgetHeader}>
-        <span className={styles.widgetTitle}>
-          Creatine
-          <span className={styles.widgetSubtitle}>{dose}g daily</span>
-        </span>
-        {done && <span className={styles.widgetValue}>✓ done</span>}
+    <div
+      className={`${styles.widgetCard} ${styles.widgetHabit}`}
+      style={{ background: done ? BG_DONE : BG_UNDONE, position: 'relative' }}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerLeave}
+    >
+      {isHolding && <div className={styles.wHoldRipple} />}
+      <div className={styles.wLabel}>Creatine</div>
+      <div className={styles.wBigNum}>
+        {dose} <span className={styles.wUnit}>g</span>
       </div>
-
-      <button
-        className={`${styles.creatineToggle} ${done ? styles.creatineToggleDone : styles.creatineToggleUndone}`}
-        onClick={toggle}
-        disabled={isLoading}
-      >
-        {done ? '✓ Taken today' : 'Mark as taken'}
-      </button>
-
-      {error && <div className={styles.errorMsg}>{error}</div>}
+      <div className={styles.wSubLabel}>
+        {done ? 'taken · hold to undo' : 'tap to mark taken'}
+      </div>
     </div>
   );
 }

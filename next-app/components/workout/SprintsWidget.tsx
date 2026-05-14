@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from '@/styles/planner.module.css';
 import type { DailyPlanSettings, ExerciseSchedule, ProgressionSuggestion } from '@/types/planner';
+import { HOLD_TO_RESET_MS } from '@/lib/uiConfig';
 
 interface SprintsWidgetProps {
   schedule: ExerciseSchedule;
@@ -8,46 +9,42 @@ interface SprintsWidgetProps {
   onUpdated: () => void;
 }
 
-function progressColor(pct: number): string {
-  if (pct <= 0) return '#e8e8e8';
-  if (pct < 0.5) return '#f5c842';
-  if (pct < 0.75) return '#f5a623';
-  if (pct < 1) return '#7ec8a0';
-  return '#3aa46c';
-}
+const BG          = 'linear-gradient(145deg, #0a1a4e 0%, #0d2a80 100%)';
+const BG_COMPLETE = 'linear-gradient(145deg, #0a4a2d 0%, #1a7a4a 100%)';
 
 type SaveStatus = 'idle' | 'pending' | 'saving' | 'saved' | 'error';
 
 export default function SprintsWidget({ schedule, settings, onUpdated }: SprintsWidgetProps) {
-  const log = schedule.exerciseLog;
+  const log     = schedule.exerciseLog;
   const planned = log?.sprintsPlanned ?? settings?.sprintCount ?? 8;
 
   const [sprintsDone, setSprintsDone] = useState(log?.sprintsDone ?? 0);
-  const [notes, setNotes] = useState(log?.notes ?? '');
-  const [showNotes, setShowNotes] = useState(!!log?.notes);
-  const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
+  const [saveStatus,  setSaveStatus]  = useState<SaveStatus>('idle');
   const [isRescheduling, setIsRescheduling] = useState(false);
-  const [error, setError] = useState('');
+  const [isHolding, setIsHolding]     = useState(false);
+  const [error, setError]             = useState('');
   const [progression, setProgression] = useState<ProgressionSuggestion>(null);
+
+  // Notes kept but not shown in UI — preserved on every save
+  const notesRef = useRef(log?.notes ?? '');
 
   const fullyCompleted = planned > 0 && sprintsDone >= planned;
   const pct = Math.min(sprintsDone / planned, 1);
 
-  // Always read the freshest state inside the debounce timer
-  const latestRef = useRef({ sprintsDone, notes, fullyCompleted });
-  latestRef.current = { sprintsDone, notes, fullyCompleted };
-
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const didMount = useRef(false);
+  // ── Auto-save debounce ────────────────────────────────────────────────────
+  const latestRef    = useRef({ sprintsDone, fullyCompleted });
+  latestRef.current  = { sprintsDone, fullyCompleted };
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const didMount     = useRef(false);
+  const isResetting  = useRef(false);
 
   useEffect(() => {
     if (!didMount.current) { didMount.current = true; return; }
-
+    if (isResetting.current) { isResetting.current = false; return; } // hold-to-reset: skip save
     setSaveStatus('pending');
-    if (timerRef.current) clearTimeout(timerRef.current);
-
-    timerRef.current = setTimeout(async () => {
-      const { sprintsDone, notes, fullyCompleted } = latestRef.current;
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(async () => {
+      const { sprintsDone, fullyCompleted } = latestRef.current;
       setSaveStatus('saving');
       try {
         const res = await fetch('/api/planner/exercise/log', {
@@ -56,14 +53,14 @@ export default function SprintsWidget({ schedule, settings, onUpdated }: Sprints
           body: JSON.stringify({
             scheduleId: schedule.id,
             sprintsDone,
-            notes: notes || undefined,
+            notes: notesRef.current || undefined,
             fullyCompleted,
           }),
         });
         const data = await res.json();
         if (!res.ok) {
           setSaveStatus('error');
-          setError(data.error ?? 'Failed to save');
+          setError(data.error ?? 'Save failed');
         } else {
           setSaveStatus('saved');
           setError('');
@@ -75,27 +72,58 @@ export default function SprintsWidget({ schedule, settings, onUpdated }: Sprints
         setSaveStatus('error');
         setError('Network error');
       }
-    }, 1000);
-
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+    }, 600);
+    return () => { if (saveTimerRef.current) clearTimeout(saveTimerRef.current); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sprintsDone, notes]);
+  }, [sprintsDone]);
 
+  // ── Hold-to-reset (3 s) ───────────────────────────────────────────────────
+  const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const didHold   = useRef(false);
+
+  function handlePointerDown() {
+    didHold.current = false;
+    setIsHolding(true);
+    holdTimer.current = setTimeout(async () => {
+      didHold.current = true;
+      setIsHolding(false);
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current); // cancel pending save
+      isResetting.current = true;
+      setSprintsDone(0);
+      setSaveStatus('idle');
+      if (log) {
+        await fetch('/api/planner/exercise/log', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scheduleId: schedule.id }),
+        });
+      }
+      onUpdated();
+    }, HOLD_TO_RESET_MS);
+  }
+
+  function handlePointerUp() {
+    if (holdTimer.current) clearTimeout(holdTimer.current);
+    setIsHolding(false);
+    if (!didHold.current) setSprintsDone((n) => n + 1);
+  }
+
+  function handlePointerLeave() {
+    if (holdTimer.current) clearTimeout(holdTimer.current);
+    setIsHolding(false);
+  }
+
+  // ── Reschedule ────────────────────────────────────────────────────────────
   async function handleReschedule(direction: 'prev' | 'next') {
     setIsRescheduling(true);
-    setError('');
     try {
       const res = await fetch('/api/planner/exercise/reschedule', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ scheduleId: schedule.id, direction }),
       });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error ?? 'Cannot reschedule');
-      } else {
-        onUpdated();
-      }
+      if (!res.ok) { const d = await res.json(); setError(d.error ?? 'Cannot reschedule'); }
+      else onUpdated();
     } catch {
       setError('Network error');
     } finally {
@@ -106,77 +134,75 @@ export default function SprintsWidget({ schedule, settings, onUpdated }: Sprints
   const alreadyLogged = !!log;
 
   return (
-    <div className={`${styles.widgetCard} ${fullyCompleted ? styles.widgetCardComplete : ''}`}>
-      <div className={styles.exerciseHeader}>
-        <span className={styles.widgetTitle}>Sprints</span>
-        <span className={styles.widgetValue}>{sprintsDone} / {planned}</span>
+    <div
+      className={`${styles.widgetCard} ${styles.widgetExercise}`}
+      style={{ background: fullyCompleted ? BG_COMPLETE : BG, position: 'relative', cursor: 'pointer' }}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerLeave}
+    >
+      {/* Darkening overlay while holding */}
+      {isHolding && <div className={styles.wHoldRipple} />}
+
+      <div className={styles.wExerciseHeader}>
+        <div className={styles.wExerciseTitleGroup}>
+          <span className={styles.wExerciseLabel}>Sprints</span>
+          <span className={styles.wExerciseWeight}>{sprintsDone} / {planned}</span>
+        </div>
+
+        <div className={styles.wExerciseActions}>
+          {!alreadyLogged && (
+            <>
+              <button
+                className={styles.wRescheduleBtn}
+                title="Move to yesterday"
+                disabled={isRescheduling}
+                // stop pointer events reaching the card — prevents unwanted add/reset
+                onPointerDown={(e) => e.stopPropagation()}
+                onPointerUp={(e) => e.stopPropagation()}
+                onClick={() => handleReschedule('prev')}
+              >←</button>
+              <button
+                className={styles.wRescheduleBtn}
+                title="Move to tomorrow"
+                disabled={isRescheduling}
+                onPointerDown={(e) => e.stopPropagation()}
+                onPointerUp={(e) => e.stopPropagation()}
+                onClick={() => handleReschedule('next')}
+              >→</button>
+            </>
+          )}
+          <span className={styles.wSaveStatus} data-status={saveStatus}>
+            {saveStatus === 'pending' && '…'}
+            {saveStatus === 'saving'  && 'saving'}
+            {saveStatus === 'saved'   && '✓'}
+            {saveStatus === 'error'   && 'err'}
+          </span>
+        </div>
       </div>
 
-      <div className={styles.progressBarOuter}>
-        <div
-          className={styles.progressBarInner}
-          style={{ width: `${pct * 100}%`, backgroundColor: progressColor(pct) }}
-        />
+      <div className={styles.wProgressBar}>
+        <div className={styles.wProgressFill} style={{ width: `${pct * 100}%` }} />
+      </div>
+      <div className={styles.wSubLabel} style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.63rem', marginTop: 6 }}>
+        tap +1 · hold 3 s to reset
       </div>
 
-      <div className={styles.sprintRow}>
-        <input
-          className={styles.sprintInput}
-          type="number"
-          min="0"
-          value={sprintsDone}
-          onChange={(e) => setSprintsDone(Math.max(0, parseInt(e.target.value) || 0))}
-        />
-        <span style={{ fontSize: '0.85rem', color: '#666' }}>sprints done</span>
-      </div>
-
-      <button className={styles.notesToggle} onClick={() => setShowNotes((p) => !p)}>
-        {showNotes ? 'Hide notes' : 'Add notes'}
-      </button>
-
-      {showNotes && (
-        <textarea
-          className={styles.notesInput}
-          placeholder="How did it feel?"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-        />
+      {error && (
+        <div style={{ color: 'rgba(255,120,120,0.9)', fontSize: '0.75rem', marginTop: 6 }}>{error}</div>
       )}
 
-      <div className={styles.exerciseFooter}>
-        {!alreadyLogged && (
-          <>
-            <button
-              className={styles.rescheduleBtn}
-              onClick={() => handleReschedule('prev')}
-              disabled={isRescheduling}
-              title="Move to yesterday"
-            >←</button>
-            <button
-              className={styles.rescheduleBtn}
-              onClick={() => handleReschedule('next')}
-              disabled={isRescheduling}
-              title="Move to tomorrow"
-            >→</button>
-          </>
-        )}
-        <span className={styles.autoSaveStatus} data-status={saveStatus}>
-          {saveStatus === 'pending' && 'Unsaved…'}
-          {saveStatus === 'saving' && 'Saving…'}
-          {saveStatus === 'saved' && '✓ Saved'}
-          {saveStatus === 'error' && 'Save failed'}
-        </span>
-      </div>
-
-      {error && <div className={styles.errorMsg}>{error}</div>}
-
       {progression && (
-        <div className={styles.progressionBanner}>
+        <div
+          className={styles.progressionBanner}
+          style={{ marginTop: 10 }}
+          // prevent banner clicks from triggering the card's add/reset
+          onPointerDown={(e) => e.stopPropagation()}
+          onPointerUp={(e) => e.stopPropagation()}
+        >
           <div className={styles.progressionMessage}>{progression.message}</div>
           <div className={styles.progressionActions}>
-            <button className={styles.progressionDismiss} onClick={() => setProgression(null)}>
-              Dismiss
-            </button>
+            <button className={styles.progressionDismiss} onClick={() => setProgression(null)}>Dismiss</button>
           </div>
         </div>
       )}

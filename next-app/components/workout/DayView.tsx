@@ -9,6 +9,7 @@ import type { DayData, DailyPlanSettings } from '@/types/planner';
 
 interface DayViewProps {
   date: string;
+  today: string;
   dayData: DayData | null;
   isLoading: boolean;
   settings: DailyPlanSettings | null;
@@ -37,16 +38,9 @@ function shiftDate(dateStr: string, delta: number): string {
   return d.toISOString().slice(0, 10);
 }
 
-function todayStr(): string {
-  const d = new Date();
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
-}
-
 export default function DayView({
   date,
+  today,
   dayData,
   isLoading,
   settings,
@@ -54,7 +48,6 @@ export default function DayView({
   onDayUpdated,
   onOpenSettings,
 }: DayViewProps) {
-  const today = todayStr();
   const isToday = date === today;
 
   const dailyLog = dayData?.dailyLog ?? null;
@@ -124,10 +117,8 @@ export default function DayView({
 
           {/* Exercise widgets — only for scheduled days */}
           {exerciseSchedules.length > 0 && (
-            <div style={{ marginTop: 4 }}>
-              <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#888', marginBottom: 8 }}>
-                Exercises today
-              </div>
+            <>
+              <div className={styles.wSectionLabel}>Exercises today</div>
               {exerciseSchedules.map((sched) =>
                 sched.exerciseType === 'SPRINTS' ? (
                   <SprintsWidget
@@ -146,7 +137,7 @@ export default function DayView({
                   />
                 )
               )}
-            </div>
+            </>
           )}
         </div>
       )}

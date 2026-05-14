@@ -75,11 +75,26 @@ export type DayData = {
   settings: DailyPlanSettings | null;
 };
 
+export type CalendarExercise = {
+  scheduleId: string;
+  type: ExerciseType;
+  logged: boolean;
+  fullyCompleted: boolean;
+  past: boolean;
+  // Sprints
+  sprintsDone: number | null;
+  sprintsPlanned: number | null;
+  // Strength
+  setResults: number[] | null;
+  weightKgUsed: number | null;
+  // Planned values (from log snapshot if logged, from settings if not)
+  setsPlanned: number | null;
+  repsPerSetPlanned: number | null;
+  weightKgPlanned: number | null;
+};
+
 export type DaySummary = {
-  waterDone: boolean;
-  creatineDone: boolean;
-  caloriesDone: boolean;
-  exercises: Array<{ type: ExerciseType; completed: boolean; past: boolean }>;
+  exercises: CalendarExercise[];
 };
 
 export type MonthData = {

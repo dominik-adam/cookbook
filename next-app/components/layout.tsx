@@ -13,8 +13,6 @@ interface LayoutProps {
 }
 
 export default function Layout({ children, pageTitle, sidebarContent, isAdmin }: LayoutProps) {
-  const name = pageTitle ? `🍳 ${pageTitle} 🍳` : '';
-
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
@@ -29,13 +27,13 @@ export default function Layout({ children, pageTitle, sidebarContent, isAdmin }:
         {/* Main content */}
       <div className={`${styles.notMenu} ${isSidebarOpen ? styles.shifted : ''}`}>
           <div className={styles.container}>
-            <header className={styles.header}>
-              {pageTitle && (
+            {pageTitle && (
+              <header className={styles.header}>
                 <h1 className={`${utilStyles.heading2Xl} ${utilStyles.marginBottom30}`}>
-                  {name}
+                  🍳 {pageTitle} 🍳
                 </h1>
-              )}
-            </header>
+              </header>
+            )}
             <main>{children}</main>
           </div>
         </div>

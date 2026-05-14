@@ -174,8 +174,8 @@ export default function WorkoutPage({
     }
   }, []);
 
-  const loadMonth = useCallback(async (year: number, month: number) => {
-    setIsMonthLoading(true);
+  const loadMonth = useCallback(async (year: number, month: number, silent = false) => {
+    if (!silent) setIsMonthLoading(true);
     try {
       const res = await fetch(`/api/planner/month?year=${year}&month=${month + 1}`);
       if (res.ok) {
@@ -185,12 +185,12 @@ export default function WorkoutPage({
     } catch {
       // keep existing
     } finally {
-      setIsMonthLoading(false);
+      if (!silent) setIsMonthLoading(false);
     }
   }, []);
 
-  const loadStats = useCallback(async (days: number) => {
-    setIsStatsLoading(true);
+  const loadStats = useCallback(async (days: number, silent = false) => {
+    if (!silent) setIsStatsLoading(true);
     try {
       let url = '/api/planner/stats';
       if (days > 0) {
@@ -209,7 +209,7 @@ export default function WorkoutPage({
     } catch {
       // keep existing
     } finally {
-      setIsStatsLoading(false);
+      if (!silent) setIsStatsLoading(false);
     }
   }, []);
 
@@ -219,11 +219,15 @@ export default function WorkoutPage({
   }
 
   function handleDayUpdated() {
-    loadDay(selectedDate);
+    loadDay(selectedDate, true); // silent — no loading spinner, widgets stay mounted
+    // Keep other tabs fresh in the background (silent = no spinners)
+    if (monthData)    loadMonth(currentYear, currentMonth, true);
+    if (statsLoaded)  loadStats(statsRangeDays, true);
   }
 
   function handleTabChange(tab: ActiveTab) {
     setActiveTab(tab);
+    // Only load on first visit; subsequent visits are already kept fresh by handleDayUpdated
     if (tab === 'calendar' && !monthData) {
       loadMonth(currentYear, currentMonth);
     }
@@ -244,6 +248,12 @@ export default function WorkoutPage({
     loadDay(dateStr);
   }
 
+  function handleCalendarUpdated() {
+    loadMonth(currentYear, currentMonth); // foreground — user is on calendar tab
+    loadDay(selectedDate, true);          // silently keep today tab in sync
+    if (statsLoaded) loadStats(statsRangeDays, true);
+  }
+
   function handleStatsRangeChange(days: number) {
     setStatsRangeDays(days);
     loadStats(days);
@@ -251,14 +261,13 @@ export default function WorkoutPage({
 
   function handleSettingsSaved(newSettings: DailyPlanSettings) {
     setSettings(newSettings);
-    // Reload current day in case targets changed
     loadDay(selectedDate);
-    // Reload month if on calendar tab
-    if (activeTab === 'calendar') loadMonth(currentYear, currentMonth);
+    if (monthData)   loadMonth(currentYear, currentMonth, true);
+    if (statsLoaded) loadStats(statsRangeDays, true);
   }
 
   return (
-    <Layout pageTitle="Workout">
+    <Layout>
       <Head>
         <title>Daily Planner</title>
       </Head>
@@ -298,6 +307,7 @@ export default function WorkoutPage({
       {activeTab === 'today' && (
         <DayView
           date={selectedDate}
+          today={initDate}
           dayData={dayData}
           isLoading={isDayLoading}
           settings={settings}
@@ -317,6 +327,7 @@ export default function WorkoutPage({
           isLoading={isMonthLoading}
           onDayClick={handleCalendarDayClick}
           onMonthChange={handleMonthChange}
+          onUpdated={handleCalendarUpdated}
         />
       )}
 

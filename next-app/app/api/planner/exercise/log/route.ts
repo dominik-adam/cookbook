@@ -96,3 +96,35 @@ export async function POST(req: Request) {
     return handleApiError(error, { route: '/api/planner/exercise/log' });
   }
 }
+
+export async function DELETE(req: Request) {
+  try {
+    const session = await getServerSession(options);
+    if (!session) throw new AuthenticationError();
+
+    const { scheduleId } = await req.json();
+    if (!scheduleId || typeof scheduleId !== 'string') {
+      return NextResponse.json({ error: 'scheduleId required' }, { status: 400 });
+    }
+
+    const user = await prisma.user.findUniqueOrThrow({
+      where: { email: session.user!.email! },
+    });
+
+    const schedule = await prisma.exerciseSchedule.findUnique({
+      where: { id: scheduleId },
+      include: { exerciseLog: { select: { id: true } } },
+    });
+
+    if (!schedule || schedule.userId !== user.id) throw new ForbiddenError();
+
+    if (!schedule.exerciseLog) {
+      return NextResponse.json({ deleted: false }); // nothing to delete
+    }
+
+    await prisma.exerciseLog.delete({ where: { scheduleId } });
+    return NextResponse.json({ deleted: true });
+  } catch (error) {
+    return handleApiError(error, { route: 'DELETE /api/planner/exercise/log' });
+  }
+}
