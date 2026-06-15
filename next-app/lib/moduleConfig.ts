@@ -12,6 +12,6 @@ export const MODULE_CONFIG: ModuleConfig[] = [
   { title: 'Bag',         url: '/bag',         image: '/icons/shopping-bag.png', publiclyAvailable: true },
   { title: 'Ingredients',  url: '/ingredients',   image: '/icons/ingredients.png',          publiclyAvailable: false },
   { title: 'Workout',     url: '/workout',     image: '/icons/workout.png',      publiclyAvailable: false },
-  { title: 'Subscriptions', url: '/subscriptions', image: '/icons/subscriptions.png', publiclyAvailable: false },
+  { title: 'Subs', url: '/subscriptions', image: '/icons/subscriptions.png', publiclyAvailable: false },
   { title: 'Car',          url: '/car',            image: '/icons/car.png',              publiclyAvailable: false },
 ];

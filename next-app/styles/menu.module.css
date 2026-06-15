@@ -2,7 +2,7 @@
     background-color: #1e1e21;
     border-right: 1px solid #2a2a2d;
     padding: 4rem 20px;
-    width: 100px;
+    width: 130px;
     position: fixed;
     height: 100%;
     top: 0;
@@ -28,6 +28,7 @@
 }
 
 .menuButtonImage {
+    margin: auto;
 }
 
 @media only screen and (max-width: 600px) {
