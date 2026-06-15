@@ -1,0 +1,614 @@
+/* ══════════════════════════════════════════
+   Page shell
+   ══════════════════════════════════════════ */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sectionLabel {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 4px 0 0 4px;
+}
+
+.widgetRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* ══════════════════════════════════════════
+   Overview widget (full-width)
+   ══════════════════════════════════════════ */
+
+.overviewWidget {
+  flex: 1 1 100%;
+  border-radius: 20px;
+  padding: 20px 24px;
+  background: linear-gradient(145deg, #162030 0%, #1e2d40 100%);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  min-height: 130px;
+}
+
+.overviewWidget:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.overviewImage {
+  border-radius: 14px;
+  object-fit: cover;
+  flex-shrink: 0;
+  width: 100px !important;
+  height: 100px !important;
+}
+
+.overviewDetails {
+  flex: 1;
+  min-width: 0;
+}
+
+.carPlate {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.06em;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.carModel {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 6px 0 0 0;
+}
+
+.carYear {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 3px 0 0 0;
+}
+
+.overviewEmpty {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.35);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════
+   Document widgets (insurance / checkups)
+   ══════════════════════════════════════════ */
+
+.docWidget {
+  flex: 1 1 calc(50% - 5px);
+  min-height: 120px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  position: relative;
+  overflow: hidden;
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+
+.docWidget:active {
+  transform: scale(0.98);
+}
+
+/* ---------- Icon ---------- */
+
+.wDocIconWrap {
+  width: 150px;
+  height: 100%;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wDocImage {
+  object-fit: contain;
+  padding: 0% 5%;
+}
+
+.wDocIconEmoji {
+  font-size: 3rem;
+}
+
+/* ---------- Content ---------- */
+
+.wDocContent {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+
+.wLabel {
+  font-size: 0.85rem;
+  font-weight: 700;
+  opacity: 0.95;
+  margin-bottom: 4px;
+}
+
+.wDescription {
+  font-size: 0.95rem;
+  line-height: 1.35;
+  opacity: 0.8;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---------- Expiry badge ---------- */
+
+.wExpiryBadge {
+  align-self: flex-start;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(8px);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════
+   Highway pass widgets
+   ══════════════════════════════════════════ */
+
+.passWidget {
+  flex: 1 1 calc(33.33% - 7px);
+  min-width: 160px;
+  min-height: 120px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  color: white;
+  border: none;
+}
+
+.passWidget:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.addPassWidget {
+  flex: 1 1 calc(33.33% - 7px);
+  min-width: 110px;
+  min-height: 100px;
+  border-radius: 20px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.3);
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.addPassWidget:hover {
+  border-color: #6ec5c5;
+  color: #6ec5c5;
+  background: rgba(110, 197, 197, 0.05);
+}
+
+/* ══════════════════════════════════════════
+   Widget internals
+   ══════════════════════════════════════════ */
+
+.wTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.wIcon {
+  font-size: 1.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.wPassIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.wPassIconPlaceholder {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.wLabel {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1;
+}
+
+.wBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wName {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0 0 4px 0;
+  line-height: 1.3;
+}
+
+/* Large expiry date for doc widgets */
+.wExpiryLarge {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+.wExpiry {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+.wNoDate {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0;
+  font-style: italic;
+}
+
+.wCountry {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.addIcon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.addLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* ══════════════════════════════════════════
+   Hold-to-edit ripple overlay
+   ══════════════════════════════════════════ */
+
+.wHoldRipple {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════
+   Modal
+   ══════════════════════════════════════════ */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background: #141416;
+  border: 1px solid #2a2a2d;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  width: 90%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: 92dvh;
+  overflow-y: auto;
+}
+
+.modalHeader {
+  background: #1e1e21;
+  border-bottom: 1px solid #2a2a2d;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.modalTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #e8e8eb;
+  margin: 0;
+}
+
+.modalClose {
+  background: none;
+  border: none;
+  color: #9a9a9f;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.15s ease;
+}
+
+.modalClose:hover {
+  color: #e8e8eb;
+}
+
+.modalBody {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modalSectionLabel {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #6ec5c5;
+  margin: 6px 0 0 0;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.modalSectionLabel:first-child {
+  margin-top: 0;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+
+.dateRow {
+  display: flex;
+  gap: 10px;
+}
+
+.dateRow .fieldGroup {
+  flex: 1;
+}
+
+.label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #9a9a9f;
+}
+
+.input {
+  padding: 9px 12px;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  border: 2px solid #2a2a2d;
+  background-color: #0a0a0b;
+  color: #e8e8eb;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+  font-family: inherit;
+}
+
+.input:focus-visible {
+  border-color: #6ec5c5;
+  outline: none;
+}
+
+.input[type='date']::-webkit-calendar-picker-indicator {
+  filter: invert(0.6);
+  cursor: pointer;
+}
+
+/* Image upload */
+
+.imageUploadRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.imagePreviewThumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid #2a2a2d;
+  flex-shrink: 0;
+}
+
+.uploadButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #3a3a3f;
+  background: none;
+  color: #9a9a9f;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.uploadButton:hover {
+  border-color: #6ec5c5;
+  color: #6ec5c5;
+}
+
+.uploadButtonUploading {
+  opacity: 0.6;
+  cursor: default;
+  pointer-events: none;
+}
+
+.modalFooter {
+  padding: 14px 20px;
+  border-top: 1px solid #2a2a2d;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: sticky;
+  bottom: 0;
+  background: #141416;
+}
+
+.deleteButton {
+  font-weight: 700;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background-color: transparent;
+  border: 1px solid #cc4a4a;
+  color: #e55a5a;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  font-size: 0.85rem;
+}
+
+.deleteButton:hover {
+  background-color: rgba(229, 90, 90, 0.1);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.cancelButton {
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background-color: #e55a5a;
+  border: none;
+  color: #e8e8eb;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  font-size: 0.9rem;
+}
+
+.cancelButton:hover {
+  background-color: #cc4a4a;
+}
+
+.saveButton {
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background-color: #4aba8a;
+  border: none;
+  color: #0a0a0b;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  font-size: 0.9rem;
+}
+
+.saveButton:hover {
+  background-color: #3da87a;
+}
+
+.saveButton:disabled,
+.cancelButton:disabled {
+  background-color: #2a2a2d;
+  color: #6a6a6f;
+  cursor: not-allowed;
+}
+
+/* ══════════════════════════════════════════
+   Responsive
+   ══════════════════════════════════════════ */
+
+@media only screen and (max-width: 600px) {
+  .docWidget {
+    flex: 1 1 calc(50% - 5px);
+    min-width: 120px;
+  }
+
+  .passWidget,
+  .addPassWidget {
+    flex: 1 1 calc(50% - 5px);
+    min-width: 140px;
+  }
+
+  .dateRow {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .modal {
+    max-width: 100%;
+    border-radius: 0;
+    height: 100%;
+    max-height: 100dvh;
+  }
+
+  .overlay {
+    align-items: flex-end;
+  }
+}

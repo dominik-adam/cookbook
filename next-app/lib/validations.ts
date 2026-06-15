@@ -329,3 +329,36 @@ export const UpdateSubscriptionSchema = AddSubscriptionSchema.extend({
 export const RemoveSubscriptionSchema = z.object({
   id: cuidSchema,
 });
+
+// ============================================================================
+// Car Schemas
+// ============================================================================
+
+const isoDateString = z.string().datetime({ offset: true }).nullable().optional();
+const optionalUrl = z.string().max(500, 'Link must be less than 500 characters').nullable().optional();
+
+export const UpdateCarSchema = z.object({
+  licensePlate:  z.string().max(20, 'License plate too long').nullable().optional(),
+  model:         z.string().max(100, 'Model too long').nullable().optional(),
+  year:          z.number().int().min(1900).max(2100).nullable().optional(),
+  image:         optionalUrl,
+  pzpExpiry:     isoDateString,
+  pzpLink:       optionalUrl,
+  havarijExpiry: isoDateString,
+  havarijLink:   optionalUrl,
+  stkExpiry:     isoDateString,
+  stkLink:       optionalUrl,
+  ekExpiry:      isoDateString,
+  ekLink:        optionalUrl,
+});
+
+export const AddHighwayPassSchema = z.object({
+  country: z.string().min(1, 'Country is required').max(100, 'Country too long'),
+  expiry:  isoDateString,
+  link:    optionalUrl,
+  image:   optionalUrl,
+});
+
+export const UpdateHighwayPassSchema = AddHighwayPassSchema;
+
+export const DeleteHighwayPassSchema = z.object({ id: cuidSchema });

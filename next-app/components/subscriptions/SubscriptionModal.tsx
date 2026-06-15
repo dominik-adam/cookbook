@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import styles from '@/styles/subscriptions.module.css';
 
@@ -40,12 +40,12 @@ export default function SubscriptionModal({
   const [form, setForm] = useState<SubscriptionFormData>(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [imgError, setImgError] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (open) {
       setForm(initialData ?? EMPTY_FORM);
-      setImgError(false);
     }
   }, [open, initialData]);
 
@@ -53,10 +53,24 @@ export default function SubscriptionModal({
 
   const set = (field: keyof SubscriptionFormData) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    if (field === 'image') setImgError(false);
-    setForm(prev => ({ ...prev, [field]: e.target.value }));
-  };
+  ) => setForm(prev => ({ ...prev, [field]: e.target.value }));
+
+  async function handleImagePick(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/car/upload-image', { method: 'POST', body: fd });
+      if (res.ok) {
+        const { filepath } = await res.json();
+        setForm(prev => ({ ...prev, image: filepath }));
+      }
+    } finally {
+      setUploading(false);
+    }
+  }
 
   const handleSave = async () => {
     if (!form.title.trim() || !form.price) return;
@@ -80,7 +94,7 @@ export default function SubscriptionModal({
     }
   };
 
-  const imageUrl = (!imgError && form.image.trim()) ? form.image.trim() : '/icons/subscriptions.png';
+  const imageUrl = form.image.trim() || '/icons/subscriptions.png';
   const isEditing = editingId !== null;
   const canSave = form.title.trim() !== '' && form.price !== '' && !isNaN(parseFloat(form.price)) && parseFloat(form.price) > 0;
 
@@ -93,24 +107,29 @@ export default function SubscriptionModal({
         </div>
 
         <div className={styles.modalBody}>
-          <div className={styles.imagePreviewRow}>
-            <Image
-              className={styles.imagePreview}
-              src={imageUrl}
-              width={60}
-              height={60}
-              alt="Subscription icon"
-              onError={() => setImgError(true)}
-            />
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>Image URL (optional)</label>
-              <input
-                className={styles.input}
-                type="text"
-                placeholder="https://..."
-                value={form.image}
-                onChange={set('image')}
-              />
+          <div className={styles.fieldGroup}>
+            <label className={styles.label}>Icon</label>
+            <div className={styles.imageUploadRow}>
+              {form.image && (
+                <Image
+                  className={styles.imagePreviewThumb}
+                  src={imageUrl}
+                  width={56}
+                  height={56}
+                  alt="Subscription icon"
+                />
+              )}
+              <label className={`${styles.uploadButton} ${uploading ? styles.uploadButtonUploading : ''}`}>
+                {uploading ? 'Uploading…' : form.image ? 'Change icon' : 'Upload icon'}
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  onChange={handleImagePick}
+                  disabled={uploading}
+                />
+              </label>
             </div>
           </div>
 
@@ -180,7 +199,7 @@ export default function SubscriptionModal({
           <button className={styles.cancelButton} onClick={onClose} disabled={saving || deleting}>
             Cancel
           </button>
-          <button className={styles.saveButton} onClick={handleSave} disabled={!canSave || saving || deleting}>
+          <button className={styles.saveButton} onClick={handleSave} disabled={!canSave || saving || deleting || uploading}>
             {saving ? 'Saving...' : 'Save'}
           </button>
         </div>
