@@ -4,6 +4,9 @@ import menuStyles from '@/styles/menu.module.css';
 import utilStyles from '@/styles/utils.module.css';
 import MenuButton from './menuButton';
 import { ReactNode, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { isAdmin as checkIsAdmin } from '../utils/auth';
+import { MODULE_CONFIG } from '../lib/moduleConfig';
 
 interface LayoutProps {
   children: ReactNode;
@@ -14,6 +17,8 @@ interface LayoutProps {
 
 export default function Layout({ children, pageTitle, sidebarContent, isAdmin }: LayoutProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { data: session } = useSession();
+  const userIsAdmin = session?.user?.email ? checkIsAdmin(session.user.email) : false;
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
   return (
@@ -50,14 +55,12 @@ export default function Layout({ children, pageTitle, sidebarContent, isAdmin }:
 
         {/* Menu */}
         <div className={menuStyles.menu}>
-          <MenuButton title="Profile" url="/profile" image="/icons/profile.png" />
-          <MenuButton title="Recipes" url="/" image="/icons/recipes.png" />
-          <MenuButton title="Drinks" url="/drinks" image="/icons/drinks.png" />
-          <MenuButton title="Bag" url="/bag" image="/icons/shopping-bag.png" />
-          <MenuButton title="Workout" url="/workout" image="/icons/workout.png" />
-          {isAdmin && (
-            <MenuButton title="Ingredients" url="/ingredients" image="/icons/recipes.png" />
-          )}
+          {MODULE_CONFIG
+            .filter(m => m.publiclyAvailable || userIsAdmin)
+            .map(m => (
+              <MenuButton key={m.url} title={m.title} url={m.url} image={m.image} />
+            ))
+          }
         </div>
       </div>
     </div>
