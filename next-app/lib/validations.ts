@@ -307,3 +307,25 @@ export const PlannerSettingsUpdateSchema = z.object({
   pullupStartDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
   dipStartDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
 });
+
+// ============================================================================
+// Subscription Schemas
+// ============================================================================
+
+export const AddSubscriptionSchema = z.object({
+  title: z.string().min(1, 'Title is required').max(100, 'Title must be less than 100 characters'),
+  description: z.string().max(500, 'Description must be less than 500 characters').optional(),
+  price: z.number().positive('Price must be positive'),
+  periodicity: z.enum(['weekly', 'monthly', 'quarterly', 'yearly'], {
+    message: 'Periodicity must be weekly, monthly, quarterly, or yearly',
+  }),
+  image: z.string().max(500, 'Image URL must be less than 500 characters').optional().nullable(),
+});
+
+export const UpdateSubscriptionSchema = AddSubscriptionSchema.extend({
+  id: cuidSchema,
+});
+
+export const RemoveSubscriptionSchema = z.object({
+  id: cuidSchema,
+});

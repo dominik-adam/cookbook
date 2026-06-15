@@ -11,5 +11,6 @@ export const MODULE_CONFIG: ModuleConfig[] = [
   { title: 'Drinks',      url: '/drinks',      image: '/icons/drinks.png',       publiclyAvailable: true },
   { title: 'Bag',         url: '/bag',         image: '/icons/shopping-bag.png', publiclyAvailable: true },
   { title: 'Workout',     url: '/workout',     image: '/icons/workout.png',      publiclyAvailable: false },
-  { title: 'Ingredients', url: '/ingredients', image: '/icons/recipes.png',      publiclyAvailable: false },
+  { title: 'Subscriptions', url: '/subscriptions', image: '/icons/subscriptions.png', publiclyAvailable: false },
+  { title: 'Ingredients',  url: '/ingredients',   image: '/icons/recipes.png',          publiclyAvailable: false },
 ];
