@@ -3,30 +3,38 @@
 .submitButton {
     font-weight: 700;
     padding: 15px 20px;
-    border-radius: 7px;
-    
-    background-color: rgb(13, 165, 20);
+    border-radius: 6px;
+    background-color: #4aba8a;
     border: none;
-    color: white;
-
+    color: #0a0a0b;
     cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.submitButton:hover {
+    background-color: #3da87a;
 }
 
 .deleteButton {
     font-weight: 700;
     padding: 15px 20px;
-    border-radius: 7px;
-    
-    background-color: rgb(165, 13, 13);
+    border-radius: 6px;
+    background-color: #e55a5a;
     border: none;
-    color: white;
-
+    color: #e8e8eb;
     cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.deleteButton:hover {
+    background-color: #cc4a4a;
 }
 
 .submitButton:disabled, .deleteButton:disabled {
-    background-color: rgb(32, 41, 41);
+    background-color: #2a2a2d;
     border: none;
+    color: #6a6a6f;
+    cursor: not-allowed;
 }
 
 .submitButtonWrapper {

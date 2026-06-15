@@ -4,10 +4,12 @@
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  border-radius: 5px;
+  border-radius: 8px;
   bottom: -50px;
   opacity: 0;
   animation: slideIn 0.5s ease forwards;
+  color: #e8e8eb;
+  border: 1px solid #2a2a2d;
 }
 
 .inactive {
@@ -15,30 +17,30 @@
 }
 
 .success {
-  background-color: #5cb85c;
-  color: white;
+  background-color: #4aba8a;
+  color: #0a0a0b;
 }
 
 .error {
-  background-color: #d9534f;
-  color: white;
+  background-color: #e55a5a;
+  color: #e8e8eb;
 }
 
 .warning {
-  background-color: #f0ad4e;
-  color: white;
+  background-color: #d4a04a;
+  color: #0a0a0b;
 }
 
 @keyframes slideIn {
   0% {
     bottom: -50px;
     opacity: 0;
-    transform: translateX(-50%) scale(0.8); /* Start slightly smaller */
+    transform: translateX(-50%) scale(0.8);
   }
   50% {
     bottom: 20px;
     opacity: 1;
-    transform: translateX(-50%) scale(1.05); /* Enlarge slightly */
+    transform: translateX(-50%) scale(1.05);
   }
   100% {
     bottom: 20px;
@@ -51,17 +53,17 @@
   0% {
     bottom: 20px;
     opacity: 1;
-    transform: translateX(-50%) scale(1); /* Start at normal size */
+    transform: translateX(-50%) scale(1);
   }
   50% {
     bottom: 20px;
     opacity: 1;
-    transform: translateX(-50%) scale(1.05); /* Enlarge slightly */
+    transform: translateX(-50%) scale(1.05);
   }
   100% {
     bottom: -50px;
     opacity: 0;
-    transform: translateX(-50%) scale(0.8); /* End slightly smaller */
+    transform: translateX(-50%) scale(0.8);
   }
 }
 
@@ -78,17 +80,17 @@
   .inactive {
     animation: slideOutToTop 0.5s ease forwards;
   }
-  
+
 @keyframes slideInFromTop {
   0% {
     top: -50px;
     opacity: 0;
-    transform: translateX(-50%) scale(0.8); /* Start slightly smaller */
+    transform: translateX(-50%) scale(0.8);
   }
   50% {
     top: 20px;
     opacity: 1;
-    transform: translateX(-50%) scale(1.05); /* Enlarge slightly */
+    transform: translateX(-50%) scale(1.05);
   }
   100% {
     top: 20px;
@@ -101,17 +103,17 @@
   0% {
     top: 20px;
     opacity: 1;
-    transform: translateX(-50%) scale(1); /* Start at normal size */
+    transform: translateX(-50%) scale(1);
   }
   50% {
     top: 20px;
     opacity: 1;
-    transform: translateX(-50%) scale(1.05); /* Enlarge slightly */
+    transform: translateX(-50%) scale(1.05);
   }
   100% {
     top: -50px;
     opacity: 0;
-    transform: translateX(-50%) scale(0.8); /* End slightly smaller */
+    transform: translateX(-50%) scale(0.8);
   }
 }
 }

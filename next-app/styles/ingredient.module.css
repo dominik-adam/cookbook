@@ -3,14 +3,18 @@
     align-items: center;
     gap: 20px;
     border-radius: 50px;
-    transition: background-color 0.2s;
+    transition: background-color 0.15s ease;
     margin-bottom: 20px;
 }
 
 .ingredientCanUpdate {
-    transition: background-color 0.2s;
-    background-color: white;
+    transition: background-color 0.15s ease;
+    background-color: #141416;
     cursor: pointer;
+}
+
+.ingredientCanUpdate:hover {
+    background-color: #1c1c1f;
 }
 
 .ingredientImage {
@@ -30,22 +34,23 @@
     font-size: 1.2rem;
     line-height: 1.5;
     font-weight: 700;
+    color: #e8e8eb;
 }
 
 .ingredientAmount {
-
+    color: #9a9a9f;
 }
 
 .ingredientCalories {
-    color: #3aa46c;
+    color: #6ec5c5;
     font-weight: 600;
     font-size: 0.9rem;
 }
 
 .addIngredient {
-    background-color: white;
+    background-color: #141416;
     border-radius: 50px;
-    border: 5px solid white;
+    border: 2px solid #2a2a2d;
     cursor: pointer;
 
     display: flex;
@@ -55,12 +60,12 @@
     width: 100%;
     margin-bottom: 20px;
     padding: 0;
-    transition: .2s;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .addIngredient:focus, .addIngredient:hover {
-    border: 5px solid black;
-    transition: .2s;
+    border: 2px solid #6ec5c5;
+    background-color: #1c1c1f;
 }
 
 .addToBagWrapper {
@@ -68,10 +73,10 @@
 }
 
 .addToBagButton {
-    background-color: black;
-    border: 2px solid black;
+    background-color: #6ec5c5;
+    border: 2px solid #6ec5c5;
     border-radius: 50%;
-    color: white;
+    color: #0a0a0b;
     cursor: pointer;
     font-size: 30px;
     height: 50px;
@@ -79,7 +84,30 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.3s;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.addToBagButton:hover {
+    background-color: #5ab3b3;
+    border-color: #5ab3b3;
+}
+
+.addToBagPopup {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    background: #1c1c1f;
+    border: 1px solid #2a2a2d;
+    color: #e8e8eb;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: opacity 0.15s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .addToBagButtonWrapper:hover .addToBagPopup {
@@ -101,31 +129,31 @@
 
 @keyframes brightenAndDarken {
     0% {
-      background-color: black;
-      color: white
+      background-color: #6ec5c5;
+      color: #0a0a0b;
     }
     5% {
-      background-color: white;
-      color: black
+      background-color: #e8e8eb;
+      color: #0a0a0b;
     }
     100% {
-      background-color: black;
-      color: white;
+      background-color: #6ec5c5;
+      color: #0a0a0b;
     }
 }
 
 @keyframes darkenAndBrighten {
     0% {
-      background-color: white;
-      color: black
+      background-color: #141416;
+      color: #e8e8eb;
     }
     5% {
-      background-color: black;
-      color: white
+      background-color: #6ec5c5;
+      color: #0a0a0b;
     }
     100% {
-      background-color: white;
-      color: black;
+      background-color: #141416;
+      color: #e8e8eb;
     }
 }
 
@@ -149,7 +177,8 @@
 
     .ingredient {
         border-radius: 10px;
-        background-color: white;
+        background-color: #141416;
+        border: 1px solid #2a2a2d;
         margin-bottom: 10px;
     }
 
@@ -157,7 +186,7 @@
         font-size: 0.8rem;
         line-height: 1;
     }
-    
+
     .ingredientAmount {
         line-height: 1;
         font-size: 0.6rem;
@@ -168,7 +197,7 @@
     }
 
     .ingredientInfo {
-        color: black;
+        color: #e8e8eb;
         display: flex;
         justify-content: center;
         flex-direction: column;
@@ -176,10 +205,10 @@
     }
 
     .addToBagButton {
-        background-color: white;
-        border: 2px solid white;
+        background-color: #141416;
+        border: 2px solid #2a2a2d;
         border-radius: 10px;
-        color: black;
+        color: #e8e8eb;
         cursor: pointer;
         font-size: 30px;
         height: 60px;

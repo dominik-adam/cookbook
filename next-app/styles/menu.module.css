@@ -1,5 +1,6 @@
 .menu {
-    background-color: rgb(41, 41, 41);
+    background-color: #1e1e21;
+    border-right: 1px solid #2a2a2d;
     padding: 4rem 20px;
     width: 100px;
     position: fixed;
@@ -13,8 +14,13 @@
     cursor: pointer;
     text-align: center;
     text-decoration: none;
-    color: white;
+    color: #e8e8eb;
     font-weight: 500;
+    transition: color 0.15s ease;
+}
+
+.menuButton:hover {
+    color: #6ec5c5;
 }
 
 .menuButtonLink:hover {
@@ -35,5 +41,7 @@
         display: flex;
         justify-content: center;
         gap: 30px;
+        border-right: none;
+        border-top: 1px solid #2a2a2d;
     }
   }

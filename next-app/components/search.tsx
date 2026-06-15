@@ -24,7 +24,7 @@ export default function SearchBar({ fetchResults }: SearchBarProps) {
         <span>
           <Image
             className={styles.searchIcon}
-            src={`/images/searchIcon.jpg`}
+            src={`/icons/search-icon.svg`}
             alt='search icon'
             width={50}
             height={50}

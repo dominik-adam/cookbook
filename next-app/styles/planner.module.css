@@ -1,7 +1,7 @@
-/* ── Tab bar (reuse workout.module.css .tabBar pattern) ── */
+/* ── Tab bar ── */
 .tabBar {
   display: flex;
-  border-bottom: 2px solid rgb(179, 228, 228);
+  border-bottom: 2px solid #2a2a2d;
   margin-bottom: 0;
   align-items: center;
 }
@@ -13,14 +13,15 @@
   border: none;
   font-size: 1rem;
   font-weight: 500;
-  color: #444;
+  color: #9a9a9f;
   border-bottom: 3px solid transparent;
   margin-bottom: -2px;
+  transition: color 0.15s ease;
 }
 
 .tabActive {
-  border-bottom: 3px solid #3aa46c;
-  color: #3aa46c;
+  border-bottom: 3px solid #6ec5c5;
+  color: #6ec5c5;
   font-weight: 700;
 }
 
@@ -34,13 +35,14 @@
   font-size: 1.3rem;
   cursor: pointer;
   padding: 8px 12px;
-  color: #888;
+  color: #9a9a9f;
   border-radius: 6px;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .gearButton:hover {
-  background-color: rgb(230, 248, 248);
-  color: #3aa46c;
+  background-color: rgba(110, 197, 197, 0.12);
+  color: #6ec5c5;
 }
 
 /* ── Day nav bar ── */
@@ -58,12 +60,13 @@
   cursor: pointer;
   padding: 4px 10px;
   border-radius: 6px;
-  color: #3aa46c;
+  color: #6ec5c5;
   line-height: 1;
+  transition: background-color 0.15s ease;
 }
 
 .dayNavArrow:hover {
-  background-color: rgb(179, 228, 228);
+  background-color: rgba(110, 197, 197, 0.12);
 }
 
 .dayNavDate {
@@ -71,22 +74,24 @@
   text-align: center;
   font-size: 1rem;
   font-weight: 700;
-  color: rgb(41, 41, 41);
+  color: #e8e8eb;
 }
 
 .dayNavToday {
   padding: 5px 12px;
   background: none;
-  border: 1px solid rgb(179, 228, 228);
+  border: 1px solid #2a2a2d;
   border-radius: 6px;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  color: #3aa46c;
+  color: #6ec5c5;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .dayNavToday:hover {
-  background-color: rgb(230, 248, 248);
+  background-color: rgba(110, 197, 197, 0.12);
+  border-color: #6ec5c5;
 }
 
 /* ── Widget grid ── */
@@ -99,15 +104,15 @@
 
 /* ── Widget card (shared base) ── */
 .widgetCard {
-  background: #fff;
-  border: 1px solid rgb(179, 228, 228);
+  background: #141416;
+  border: 1px solid #2a2a2d;
   border-radius: 12px;
   padding: 14px 16px;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s ease;
 }
 
 .widgetCardComplete {
-  border-color: #3aa46c;
+  border-color: #6ec5c5;
 }
 
 .widgetHeader {
@@ -120,12 +125,12 @@
 .widgetTitle {
   font-size: 0.95rem;
   font-weight: 700;
-  color: rgb(41, 41, 41);
+  color: #e8e8eb;
 }
 
 .widgetSubtitle {
   font-size: 0.8rem;
-  color: #888;
+  color: #9a9a9f;
   margin-left: 6px;
   font-weight: 400;
 }
@@ -133,13 +138,13 @@
 .widgetValue {
   font-size: 0.9rem;
   font-weight: 700;
-  color: #3aa46c;
+  color: #6ec5c5;
 }
 
 /* ── Progress bar ── */
 .progressBarOuter {
   width: 100%;
-  background: #f0f0f0;
+  background: #2a2a2d;
   border-radius: 8px;
   height: 10px;
   overflow: hidden;
@@ -162,18 +167,19 @@
 
 .quickAddBtn {
   padding: 5px 12px;
-  border: 1px solid rgb(179, 228, 228);
+  border: 1px solid #2a2a2d;
   border-radius: 20px;
   background: none;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  color: #3aa46c;
-  transition: background 0.15s;
+  color: #6ec5c5;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .quickAddBtn:hover {
-  background-color: rgb(230, 248, 248);
+  background-color: rgba(110, 197, 197, 0.12);
+  border-color: #6ec5c5;
 }
 
 .quickAddBtn:disabled {
@@ -191,29 +197,38 @@
 .waterInput {
   width: 80px;
   padding: 6px 10px;
-  border: 2px solid rgb(179, 228, 228);
+  border: 2px solid #2a2a2d;
   border-radius: 6px;
   font-size: 0.9rem;
+  background: #141416;
+  color: #e8e8eb;
+  transition: border-color 0.15s ease;
 }
 
 .waterInput:focus {
   outline: none;
-  border-color: #3aa46c;
+  border-color: #6ec5c5;
 }
 
 .waterAddBtn {
   padding: 6px 14px;
-  background-color: #3aa46c;
-  color: white;
+  background-color: #6ec5c5;
+  color: #0a0a0b;
   border: none;
   border-radius: 6px;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.waterAddBtn:hover {
+  background-color: #5ab3b3;
 }
 
 .waterAddBtn:disabled {
-  background-color: #999;
+  background-color: #2a2a2d;
+  color: #6a6a6f;
   cursor: not-allowed;
 }
 
@@ -226,34 +241,37 @@
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .creatineToggleDone {
-  background-color: #3aa46c;
-  color: white;
+  background-color: #4aba8a;
+  color: #0a0a0b;
 }
 
 .creatineToggleUndone {
-  background-color: #f0f0f0;
-  color: #555;
+  background-color: #1c1c1f;
+  border: 1px solid #2a2a2d;
+  color: #9a9a9f;
 }
 
 .creatineToggleUndone:hover {
-  background-color: rgb(179, 228, 228);
+  background-color: rgba(110, 197, 197, 0.12);
+  border-color: #6ec5c5;
+  color: #6ec5c5;
 }
 
 /* ── Weight widget ── */
 .weightDisplay {
   font-size: 1.4rem;
   font-weight: 800;
-  color: #3aa46c;
+  color: #6ec5c5;
   margin-bottom: 8px;
 }
 
 .weightNotLogged {
   font-size: 0.9rem;
-  color: #aaa;
+  color: #6a6a6f;
   margin-bottom: 8px;
 }
 
@@ -266,47 +284,62 @@
 .weightInput {
   width: 90px;
   padding: 7px 10px;
-  border: 2px solid rgb(179, 228, 228);
+  border: 2px solid #2a2a2d;
   border-radius: 6px;
   font-size: 0.95rem;
+  background: #141416;
+  color: #e8e8eb;
+  transition: border-color 0.15s ease;
 }
 
 .weightInput:focus {
   outline: none;
-  border-color: #3aa46c;
+  border-color: #6ec5c5;
 }
 
 .weightSaveBtn {
   padding: 7px 16px;
-  background-color: #3aa46c;
-  color: white;
+  background-color: #6ec5c5;
+  color: #0a0a0b;
   border: none;
   border-radius: 6px;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.weightSaveBtn:hover {
+  background-color: #5ab3b3;
 }
 
 .weightSaveBtn:disabled {
-  background-color: #999;
+  background-color: #2a2a2d;
+  color: #6a6a6f;
   cursor: not-allowed;
 }
 
 .weightEditBtn {
   padding: 4px 10px;
   background: none;
-  border: 1px solid rgb(179, 228, 228);
+  border: 1px solid #2a2a2d;
   border-radius: 6px;
   font-size: 0.8rem;
   cursor: pointer;
-  color: #666;
+  color: #9a9a9f;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.weightEditBtn:hover {
+  background-color: #1c1c1f;
+  border-color: #3a3a3f;
 }
 
 /* ── Calorie widget ── */
 .calorieTotal {
   font-size: 1rem;
   font-weight: 700;
-  color: rgb(41, 41, 41);
+  color: #6ec5c5;
   margin-bottom: 4px;
 }
 
@@ -314,16 +347,18 @@
   margin-top: 8px;
   padding: 6px 14px;
   background: none;
-  border: 1px solid rgb(179, 228, 228);
+  border: 1px solid #2a2a2d;
   border-radius: 6px;
   font-size: 0.85rem;
   cursor: pointer;
-  color: #3aa46c;
+  color: #6ec5c5;
   font-weight: 600;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .calorieOpenBtn:hover {
-  background-color: rgb(230, 248, 248);
+  background-color: rgba(110, 197, 197, 0.12);
+  border-color: #6ec5c5;
 }
 
 /* ── Exercise widget ── */
@@ -336,7 +371,7 @@
 
 .exercisePlan {
   font-size: 0.85rem;
-  color: #666;
+  color: #9a9a9f;
   margin-bottom: 10px;
 }
 
@@ -350,22 +385,25 @@
 
 .setLabel {
   font-size: 0.75rem;
-  color: #888;
+  color: #9a9a9f;
   min-width: 38px;
 }
 
 .setInput {
   width: 52px;
   padding: 6px 8px;
-  border: 2px solid rgb(179, 228, 228);
+  border: 2px solid #2a2a2d;
   border-radius: 6px;
   font-size: 0.9rem;
   text-align: center;
+  background: #141416;
+  color: #e8e8eb;
+  transition: border-color 0.15s ease;
 }
 
 .setInput:focus {
   outline: none;
-  border-color: #3aa46c;
+  border-color: #6ec5c5;
 }
 
 .weightRow {
@@ -377,20 +415,23 @@
 }
 
 .weightRowLabel {
-  color: #666;
+  color: #9a9a9f;
 }
 
 .weightRowInput {
   width: 72px;
   padding: 6px 8px;
-  border: 2px solid rgb(179, 228, 228);
+  border: 2px solid #2a2a2d;
   border-radius: 6px;
   font-size: 0.9rem;
+  background: #141416;
+  color: #e8e8eb;
+  transition: border-color 0.15s ease;
 }
 
 .weightRowInput:focus {
   outline: none;
-  border-color: #3aa46c;
+  border-color: #6ec5c5;
 }
 
 .sprintRow {
@@ -403,15 +444,18 @@
 .sprintInput {
   width: 70px;
   padding: 7px 10px;
-  border: 2px solid rgb(179, 228, 228);
+  border: 2px solid #2a2a2d;
   border-radius: 6px;
   font-size: 1rem;
   text-align: center;
+  background: #141416;
+  color: #e8e8eb;
+  transition: border-color 0.15s ease;
 }
 
 .sprintInput:focus {
   outline: none;
-  border-color: #3aa46c;
+  border-color: #6ec5c5;
 }
 
 .checkboxRow {
@@ -420,19 +464,19 @@
   gap: 8px;
   margin-bottom: 10px;
   font-size: 0.85rem;
-  color: #555;
+  color: #9a9a9f;
 }
 
 .checkboxRow input[type='checkbox'] {
   width: 16px;
   height: 16px;
-  accent-color: #3aa46c;
+  accent-color: #6ec5c5;
 }
 
 .notesInput {
   width: 100%;
   padding: 7px 10px;
-  border: 2px solid rgb(179, 228, 228);
+  border: 2px solid #2a2a2d;
   border-radius: 6px;
   font-size: 0.85rem;
   font-family: inherit;
@@ -440,22 +484,34 @@
   min-height: 50px;
   margin-bottom: 10px;
   box-sizing: border-box;
+  background: #141416;
+  color: #e8e8eb;
+  transition: border-color 0.15s ease;
+}
+
+.notesInput::placeholder {
+  color: #6a6a6f;
 }
 
 .notesInput:focus {
   outline: none;
-  border-color: #3aa46c;
+  border-color: #6ec5c5;
 }
 
 .notesToggle {
   background: none;
   border: none;
-  color: #888;
+  color: #9a9a9f;
   font-size: 0.8rem;
   cursor: pointer;
   padding: 0;
   margin-bottom: 8px;
   text-decoration: underline;
+  transition: color 0.15s ease;
+}
+
+.notesToggle:hover {
+  color: #6ec5c5;
 }
 
 .exerciseFooter {
@@ -467,32 +523,40 @@
 
 .saveExerciseBtn {
   padding: 8px 20px;
-  background-color: #3aa46c;
-  color: white;
+  background-color: #6ec5c5;
+  color: #0a0a0b;
   border: none;
   border-radius: 6px;
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.saveExerciseBtn:hover {
+  background-color: #5ab3b3;
 }
 
 .saveExerciseBtn:disabled {
-  background-color: #999;
+  background-color: #2a2a2d;
+  color: #6a6a6f;
   cursor: not-allowed;
 }
 
 .rescheduleBtn {
   padding: 6px 10px;
   background: none;
-  border: 1px solid rgb(179, 228, 228);
+  border: 1px solid #2a2a2d;
   border-radius: 6px;
   font-size: 0.9rem;
   cursor: pointer;
-  color: #666;
+  color: #9a9a9f;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .rescheduleBtn:hover {
-  background-color: rgb(230, 248, 248);
+  background-color: #1c1c1f;
+  border-color: #3a3a3f;
 }
 
 .rescheduleBtn:disabled {
@@ -502,8 +566,8 @@
 
 /* ── Progression banner ── */
 .progressionBanner {
-  background: linear-gradient(135deg, #e8f7ef, #d0f0e0);
-  border: 1px solid #3aa46c;
+  background: rgba(110, 197, 197, 0.08);
+  border: 1px solid #6ec5c5;
   border-radius: 8px;
   padding: 12px 14px;
   margin-top: 10px;
@@ -512,7 +576,7 @@
 .progressionMessage {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #2d8558;
+  color: #6ec5c5;
   margin-bottom: 8px;
 }
 
@@ -524,23 +588,33 @@
 
 .progressionBtn {
   padding: 5px 12px;
-  background-color: #3aa46c;
-  color: white;
+  background-color: #6ec5c5;
+  color: #0a0a0b;
   border: none;
   border-radius: 6px;
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.progressionBtn:hover {
+  background-color: #5ab3b3;
 }
 
 .progressionDismiss {
   padding: 5px 10px;
   background: none;
-  border: 1px solid #3aa46c;
+  border: 1px solid #6ec5c5;
   border-radius: 6px;
   font-size: 0.8rem;
-  color: #3aa46c;
+  color: #6ec5c5;
   cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.progressionDismiss:hover {
+  background-color: rgba(110, 197, 197, 0.12);
 }
 
 /* ── Auto-save status indicator ── */
@@ -551,21 +625,21 @@
   transition: color 0.2s;
 }
 .autoSaveStatus[data-status='idle']    { color: transparent; }
-.autoSaveStatus[data-status='pending'] { color: #bbb; }
-.autoSaveStatus[data-status='saving']  { color: #999; }
-.autoSaveStatus[data-status='saved']   { color: #3aa46c; }
-.autoSaveStatus[data-status='error']   { color: rgb(165, 13, 13); }
+.autoSaveStatus[data-status='pending'] { color: #6a6a6f; }
+.autoSaveStatus[data-status='saving']  { color: #9a9a9f; }
+.autoSaveStatus[data-status='saved']   { color: #6ec5c5; }
+.autoSaveStatus[data-status='error']   { color: #e55a5a; }
 
 /* ── Error / success messages ── */
 .errorMsg {
   font-size: 0.82rem;
-  color: rgb(165, 13, 13);
+  color: #e55a5a;
   margin-top: 6px;
 }
 
 .successMsg {
   font-size: 0.82rem;
-  color: #3aa46c;
+  color: #6ec5c5;
   margin-top: 6px;
 }
 
@@ -589,22 +663,25 @@
 }
 
 .modalBox {
-  background: #fefefe;
+  background: #141416;
+  border: 1px solid #2a2a2d;
   width: 640px;
   max-width: 96vw;
   max-height: 90vh;
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
 .modalHead {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgb(41, 41, 41);
-  color: white;
+  background-color: #1e1e21;
+  border-bottom: 1px solid #2a2a2d;
+  color: #e8e8eb;
   padding: 0 24px;
   height: 60px;
   flex-shrink: 0;
@@ -618,15 +695,16 @@
 .modalCloseBtn {
   background: none;
   border: none;
-  color: white;
+  color: #e8e8eb;
   font-size: 1.4rem;
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 4px;
+  transition: background-color 0.15s ease;
 }
 
 .modalCloseBtn:hover {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .modalBody {
@@ -644,10 +722,10 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #888;
+  color: #9a9a9f;
   margin-bottom: 12px;
   padding-bottom: 6px;
-  border-bottom: 1px solid rgb(179, 228, 228);
+  border-bottom: 1px solid #2a2a2d;
 }
 
 .settingsGrid {
@@ -665,19 +743,22 @@
 .settingsLabel {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #555;
+  color: #9a9a9f;
 }
 
 .settingsInput {
   padding: 8px 10px;
-  border: 2px solid rgb(179, 228, 228);
+  border: 2px solid #2a2a2d;
   border-radius: 6px;
   font-size: 0.9rem;
+  background: #141416;
+  color: #e8e8eb;
+  transition: border-color 0.15s ease;
 }
 
 .settingsInput:focus {
   outline: none;
-  border-color: #3aa46c;
+  border-color: #6ec5c5;
 }
 
 .modalFooter {
@@ -685,35 +766,47 @@
   gap: 8px;
   justify-content: flex-end;
   padding: 16px 24px;
-  border-top: 1px solid rgb(179, 228, 228);
+  border-top: 1px solid #2a2a2d;
   flex-shrink: 0;
 }
 
 .saveBtn {
   padding: 10px 24px;
-  background-color: #3aa46c;
-  color: white;
+  background-color: #6ec5c5;
+  color: #0a0a0b;
   border: none;
   border-radius: 8px;
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.saveBtn:hover {
+  background-color: #5ab3b3;
 }
 
 .saveBtn:disabled {
-  background-color: #999;
+  background-color: #2a2a2d;
+  color: #6a6a6f;
   cursor: not-allowed;
 }
 
 .cancelBtn {
   padding: 10px 20px;
-  background-color: rgb(165, 13, 13);
-  color: white;
-  border: none;
+  background-color: transparent;
+  color: #e8e8eb;
+  border: 1px solid #2a2a2d;
   border-radius: 8px;
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.cancelBtn:hover {
+  background-color: #1c1c1f;
+  border-color: #3a3a3f;
 }
 
 /* ── Calorie modal ── */
@@ -730,33 +823,34 @@
   align-items: center;
   justify-content: space-between;
   padding: 8px 0;
-  border-bottom: 1px solid rgb(230, 248, 248);
+  border-bottom: 1px solid #2a2a2d;
   font-size: 0.9rem;
 }
 
 .calorieEntryLabel {
-  color: #555;
+  color: #9a9a9f;
   flex: 1;
 }
 
 .calorieEntryAmt {
   font-weight: 700;
   margin-left: 12px;
-  color: rgb(41, 41, 41);
+  color: #e8e8eb;
 }
 
 .calorieEntryDelete {
   background: none;
   border: none;
-  color: rgb(165, 13, 13);
+  color: #e55a5a;
   font-size: 1rem;
   cursor: pointer;
   padding: 2px 6px;
   border-radius: 4px;
+  transition: background-color 0.15s ease;
 }
 
 .calorieEntryDelete:hover {
-  background-color: rgb(255, 230, 230);
+  background-color: rgba(229, 90, 90, 0.15);
 }
 
 .calorieAddForm {
@@ -765,61 +859,76 @@
   flex-wrap: wrap;
   align-items: center;
   padding-top: 12px;
-  border-top: 1px solid rgb(179, 228, 228);
+  border-top: 1px solid #2a2a2d;
 }
 
 .calorieAmtInput {
   width: 90px;
   padding: 8px 10px;
-  border: 2px solid rgb(179, 228, 228);
+  border: 2px solid #2a2a2d;
   border-radius: 6px;
   font-size: 0.9rem;
+  background: #141416;
+  color: #e8e8eb;
+  transition: border-color 0.15s ease;
 }
 
 .calorieAmtInput:focus {
   outline: none;
-  border-color: #3aa46c;
+  border-color: #6ec5c5;
 }
 
 .calorieLabelInput {
   flex: 1;
   min-width: 120px;
   padding: 8px 10px;
-  border: 2px solid rgb(179, 228, 228);
+  border: 2px solid #2a2a2d;
   border-radius: 6px;
   font-size: 0.9rem;
+  background: #141416;
+  color: #e8e8eb;
+  transition: border-color 0.15s ease;
+}
+
+.calorieLabelInput::placeholder {
+  color: #6a6a6f;
 }
 
 .calorieLabelInput:focus {
   outline: none;
-  border-color: #3aa46c;
+  border-color: #6ec5c5;
 }
 
 .calorieAddBtn {
   padding: 8px 18px;
-  background-color: #3aa46c;
-  color: white;
+  background-color: #6ec5c5;
+  color: #0a0a0b;
   border: none;
   border-radius: 6px;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.calorieAddBtn:hover {
+  background-color: #5ab3b3;
 }
 
 .calorieAddBtn:disabled {
-  background-color: #999;
+  background-color: #2a2a2d;
+  color: #6a6a6f;
   cursor: not-allowed;
 }
 
 .emptyEntries {
-  color: #aaa;
+  color: #6a6a6f;
   font-size: 0.85rem;
   text-align: center;
   padding: 12px 0;
 }
 
 /* ── Calendar (month view) ── */
-/* ── Calendar ── */
 .calendarWrap {
   display: flex;
   flex-direction: column;
@@ -838,6 +947,7 @@
 .calMonthTitle {
   font-size: 1.2rem;
   font-weight: 700;
+  color: #e8e8eb;
 }
 
 .calNavBtn {
@@ -847,11 +957,12 @@
   cursor: pointer;
   padding: 4px 12px;
   border-radius: 6px;
-  color: #3aa46c;
+  color: #6ec5c5;
+  transition: background-color 0.15s ease;
 }
 
 .calNavBtn:hover {
-  background-color: rgb(179, 228, 228);
+  background-color: rgba(110, 197, 197, 0.12);
 }
 
 /* Flex column that fills remaining height */
@@ -860,13 +971,13 @@
   flex-direction: column;
   flex: 1;
   min-height: 0;
-  background: #fff;
-  border: 1px solid rgb(179, 228, 228);
+  background: #141416;
+  border: 1px solid #2a2a2d;
   border-radius: 12px;
   padding: 8px;
 }
 
-/* Day-of-week header row (separate from the day grid) */
+/* Day-of-week header row */
 .calDayHeaderRow {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -879,11 +990,11 @@
   text-align: center;
   font-size: 0.7rem;
   font-weight: 700;
-  color: #888;
+  color: #6a6a6f;
   padding: 2px 0 4px;
 }
 
-/* Day cells grid — fills the remaining calendar body height */
+/* Day cells grid */
 .calDayGrid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -905,7 +1016,7 @@
 }
 
 .calDayCell:hover {
-  background-color: rgb(230, 248, 248);
+  background-color: #1c1c1f;
 }
 
 .calDayCellEmpty {
@@ -917,12 +1028,13 @@
 }
 
 .calDayCellToday .calDayNum {
-  color: #3aa46c;
+  color: #6ec5c5;
   font-weight: 800;
 }
 
 .calDayCellSelected {
-  background-color: rgb(179, 228, 228) !important;
+  background-color: rgba(110, 197, 197, 0.12) !important;
+  outline: 1px solid #6ec5c5;
 }
 
 .calDayNum {
@@ -930,7 +1042,7 @@
   align-self: flex-end;
   line-height: 1;
   margin-bottom: 2px;
-  color: #555;
+  color: #9a9a9f;
 }
 
 /* ── Calendar exercise mini-cards ── */
@@ -941,7 +1053,7 @@
   padding: 5px 6px 6px;
   margin-top: 3px;
   color: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 .calExCardHead {
@@ -967,34 +1079,31 @@
 .calExCardBtn {
   background: none;
   border: none;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255, 255, 255, 0.4);
   cursor: pointer;
   font-size: 0.65rem;
   padding: 0 2px;
   line-height: 1;
 }
 
-.calExCardBtn:hover:not(:disabled) { color: rgba(255,255,255,0.95); }
+.calExCardBtn:hover:not(:disabled) { color: rgba(255, 255, 255, 0.95); }
 .calExCardBtn:disabled { opacity: 0.25; cursor: not-allowed; }
 
-/* Big number — sprints count or sets×reps */
 .calExCardBigNum {
   font-size: 1.05rem;
   font-weight: 800;
   line-height: 1.1;
-  color: rgba(255,255,255,0.95);
+  color: rgba(255, 255, 255, 0.95);
   letter-spacing: -0.02em;
 }
 
-/* Smaller subtitle — e.g. "+10 kg" */
 .calExCardSub {
   font-size: 0.55rem;
-  color: rgba(255,255,255,0.5);
+  color: rgba(255, 255, 255, 0.5);
   margin-top: 2px;
   font-weight: 600;
 }
 
-/* Set boxes for logged strength */
 .calExSetRow {
   display: flex;
   gap: 3px;
@@ -1002,12 +1111,12 @@
 }
 
 .calExSetBox {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 4px;
   padding: 2px 5px;
   font-size: 0.62rem;
   font-weight: 700;
-  color: rgba(255,255,255,0.95);
+  color: rgba(255, 255, 255, 0.95);
   text-align: center;
   white-space: nowrap;
   line-height: 1.3;
@@ -1032,10 +1141,10 @@
   flex: 1;
   min-width: 120px;
   padding: 16px;
-  background: linear-gradient(135deg, #3aa46c 0%, #2d8558 100%);
+  background: #141416;
+  border: 1px solid #2a2a2d;
   border-radius: 12px;
   text-align: center;
-  color: white;
 }
 
 .statNumber {
@@ -1043,11 +1152,12 @@
   font-weight: 800;
   line-height: 1;
   margin-bottom: 4px;
+  color: #6ec5c5;
 }
 
 .statLabel {
   font-size: 0.8rem;
-  opacity: 0.9;
+  color: #9a9a9f;
 }
 
 .chartSection {
@@ -1058,15 +1168,16 @@
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 10px;
-  color: rgb(41, 41, 41);
+  color: #e8e8eb;
 }
 
 .chartPlaceholder {
   text-align: center;
   padding: 24px;
-  color: #aaa;
+  color: #6a6a6f;
   font-size: 0.9rem;
-  background: #f8f8f8;
+  background: #1c1c1f;
+  border: 1px solid #2a2a2d;
   border-radius: 8px;
 }
 
@@ -1078,32 +1189,38 @@
 
 .statsRangeBtn {
   padding: 5px 14px;
-  border: 1px solid rgb(179, 228, 228);
+  border: 1px solid #2a2a2d;
   border-radius: 20px;
   background: none;
   font-size: 0.85rem;
   cursor: pointer;
-  color: #555;
+  color: #9a9a9f;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.statsRangeBtn:hover {
+  background-color: #1c1c1f;
+  border-color: #3a3a3f;
 }
 
 .statsRangeBtnActive {
-  background-color: #3aa46c;
-  border-color: #3aa46c;
-  color: white;
+  background-color: rgba(110, 197, 197, 0.12);
+  border-color: #6ec5c5;
+  color: #6ec5c5;
   font-weight: 600;
 }
 
 .noData {
   text-align: center;
   padding: 40px;
-  color: #aaa;
+  color: #6a6a6f;
   font-size: 0.9rem;
 }
 
 .loadingSpinner {
   text-align: center;
   padding: 40px;
-  color: #888;
+  color: #6a6a6f;
 }
 
 /* ── Mobile ── */
@@ -1131,7 +1248,7 @@
   }
 
   .modalBox {
-    border-radius: 16px 16px 0 0;
+    border-radius: 12px 12px 0 0;
     max-height: 95vh;
   }
 
@@ -1188,13 +1305,13 @@
   flex-direction: column !important;
   justify-content: space-between !important;
   position: relative;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
   transition: transform 0.1s ease, box-shadow 0.1s ease;
   overflow: hidden;
 }
 .widgetHabit:active {
   transform: scale(0.96);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Exercise widgets: full width by default */
@@ -1205,13 +1322,13 @@
   padding: 16px !important;
   background: none;
   color: white;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
   overflow: hidden;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 .widgetExercise:active {
   transform: scale(0.98);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Strength widgets (Pullups / Dips): half-width, side by side */
@@ -1226,7 +1343,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.65);
+  color: rgba(255, 255, 255, 0.65);
   margin-bottom: 4px;
 }
 
@@ -1243,12 +1360,12 @@
 .wUnit {
   font-size: 0.95rem;
   font-weight: 600;
-  color: rgba(255,255,255,0.75);
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .wSubLabel {
   font-size: 0.63rem;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255, 255, 255, 0.45);
   margin-top: 3px;
 }
 
@@ -1256,7 +1373,7 @@
 .wProgressBar {
   width: 100%;
   height: 4px;
-  background: rgba(255,255,255,0.18);
+  background: rgba(255, 255, 255, 0.18);
   border-radius: 2px;
   overflow: hidden;
   margin: 6px 0 2px;
@@ -1264,7 +1381,7 @@
 .wProgressFill {
   height: 100%;
   border-radius: 2px;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.9);
   transition: width 0.35s ease;
 }
 
@@ -1272,7 +1389,7 @@
 .wHoldRipple {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.35);
+  background: rgba(0, 0, 0, 0.35);
   border-radius: inherit;
   pointer-events: none;
   transition: opacity 0.15s;
@@ -1295,12 +1412,12 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.65);
+  color: rgba(255, 255, 255, 0.65);
 }
 .wExerciseWeight {
   font-size: 0.95rem;
   font-weight: 700;
-  color: rgba(255,255,255,0.9);
+  color: rgba(255, 255, 255, 0.9);
 }
 .wExerciseActions {
   display: flex;
@@ -1330,18 +1447,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255,255,255,0.13);
+  background: rgba(255, 255, 255, 0.13);
   border: none;
   cursor: pointer;
   font-size: 1rem;
   font-weight: 800;
-  color: rgba(255,255,255,0.8);
+  color: rgba(255, 255, 255, 0.8);
   transition: background 0.12s;
   line-height: 1;
   flex-shrink: 0;
 }
-.wSetBoxBtn:hover { background: rgba(255,255,255,0.23); }
-.wSetBoxBtn:active { background: rgba(255,255,255,0.33); }
+.wSetBoxBtn:hover { background: rgba(255, 255, 255, 0.23); }
+.wSetBoxBtn:active { background: rgba(255, 255, 255, 0.33); }
 .wSetBoxCenter {
   height: 40px;
   display: flex;
@@ -1367,7 +1484,7 @@
   -moz-appearance: textfield;
 }
 .wSeamlessInput::placeholder {
-  color: rgba(255,255,255,0.4);
+  color: rgba(255, 255, 255, 0.4);
 }
 .wSeamlessInput::-webkit-inner-spin-button,
 .wSeamlessInput::-webkit-outer-spin-button {
@@ -1376,28 +1493,28 @@
 
 /* Subtle reschedule buttons inside exercise widgets */
 .wRescheduleBtn {
-  background: rgba(255,255,255,0.13);
+  background: rgba(255, 255, 255, 0.13);
   border: none;
   border-radius: 7px;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 0.8rem;
   padding: 5px 9px;
   cursor: pointer;
   transition: background 0.12s;
 }
-.wRescheduleBtn:hover { background: rgba(255,255,255,0.23); }
+.wRescheduleBtn:hover { background: rgba(255, 255, 255, 0.23); }
 .wRescheduleBtn:disabled { opacity: 0.3; cursor: not-allowed; }
 
 /* Auto-save status inside exercise widgets */
 .wSaveStatus {
   font-size: 0.62rem;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255, 255, 255, 0.45);
   margin-left: auto;
 }
-.wSaveStatus[data-status='pending'] { color: rgba(255,255,255,0.35); }
-.wSaveStatus[data-status='saving']  { color: rgba(255,255,255,0.5);  }
-.wSaveStatus[data-status='saved']   { color: rgba(100,220,150,0.8);  }
-.wSaveStatus[data-status='error']   { color: rgba(255,100,100,0.9);  }
+.wSaveStatus[data-status='pending'] { color: rgba(255, 255, 255, 0.35); }
+.wSaveStatus[data-status='saving']  { color: rgba(255, 255, 255, 0.5); }
+.wSaveStatus[data-status='saved']   { color: rgba(100, 220, 150, 0.8); }
+.wSaveStatus[data-status='error']   { color: rgba(255, 100, 100, 0.9); }
 
 /* Exercise section heading in DayView */
 .wSectionLabel {
@@ -1406,6 +1523,6 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #aaa;
+  color: #9a9a9f;
   padding: 4px 2px 0;
 }

@@ -125,7 +125,6 @@ export default function MonthCalendar({
                         key={ex.scheduleId}
                         className={styles.calExCard}
                         style={{ background: cardBg(ex) }}
-                        onClick={(e) => e.stopPropagation()}
                       >
                         {/* Title row + reschedule buttons */}
                         <div className={styles.calExCardHead}>
@@ -137,13 +136,13 @@ export default function MonthCalendar({
                               <button
                                 className={styles.calExCardBtn}
                                 disabled={isBusy}
-                                onClick={() => handleReschedule(ex.scheduleId, 'prev')}
+                                onClick={(e) => { e.stopPropagation(); handleReschedule(ex.scheduleId, 'prev'); }}
                                 title="Move to previous day"
                               >←</button>
                               <button
                                 className={styles.calExCardBtn}
                                 disabled={isBusy}
-                                onClick={() => handleReschedule(ex.scheduleId, 'next')}
+                                onClick={(e) => { e.stopPropagation(); handleReschedule(ex.scheduleId, 'next'); }}
                                 title="Move to next day"
                               >→</button>
                             </div>
@@ -160,15 +159,22 @@ export default function MonthCalendar({
                           </div>
                         ) : ex.logged ? (
                           /* Strength done: one box per set showing done / planned */
-                          <div className={styles.calExSetRow}>
-                            {(ex.setResults ?? []).map((reps, idx) => (
-                              <div key={idx} className={styles.calExSetBox}>
-                                {reps}
-                                <span className={styles.calExSetSep}>/</span>
-                                {ex.repsPerSetPlanned ?? '?'}
+                          <>
+                            <div className={styles.calExSetRow}>
+                              {(ex.setResults ?? []).map((reps, idx) => (
+                                <div key={idx} className={styles.calExSetBox}>
+                                  {reps}
+                                  <span className={styles.calExSetSep}>/</span>
+                                  {ex.repsPerSetPlanned ?? '?'}
+                                </div>
+                              ))}
+                            </div>
+                            {(ex.weightKgUsed ?? ex.weightKgPlanned) !== null && (
+                              <div className={styles.calExCardSub}>
+                                +{ex.weightKgUsed ?? ex.weightKgPlanned} kg
                               </div>
-                            ))}
-                          </div>
+                            )}
+                          </>
                         ) : (
                           /* Strength planned: sets×reps + weight */
                           <>

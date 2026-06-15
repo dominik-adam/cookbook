@@ -6,6 +6,8 @@ body {
     Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   line-height: 1.6;
   font-size: 18px;
+  background-color: #0a0a0b;
+  color: #e8e8eb;
 }
 
 * {
@@ -13,7 +15,7 @@ body {
 }
 
 a {
-  color: #0070f3;
+  color: #6ec5c5;
   text-decoration: none;
 }
 
@@ -28,4 +30,27 @@ img {
 
 img, button, div {
   -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: rgba(110, 197, 197, 0.3);
+  color: #e8e8eb;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #141416;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a2d;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a3f;
 }

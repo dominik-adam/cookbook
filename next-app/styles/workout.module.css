@@ -1,7 +1,7 @@
 /* ── Tab bar ── */
 .tabBar {
   display: flex;
-  border-bottom: 2px solid rgb(179, 228, 228);
+  border-bottom: 2px solid #2a2a2d;
   margin-bottom: 24px;
 }
 
@@ -12,14 +12,15 @@
   border: none;
   font-size: 1rem;
   font-weight: 500;
-  color: #444;
+  color: #9a9a9f;
   border-bottom: 3px solid transparent;
   margin-bottom: -2px;
+  transition: color 0.15s ease;
 }
 
 .tabActive {
-  border-bottom: 3px solid #3aa46c;
-  color: #3aa46c;
+  border-bottom: 3px solid #6ec5c5;
+  color: #6ec5c5;
   font-weight: 700;
 }
 
@@ -32,23 +33,24 @@
 
 .logButton {
   padding: 10px 22px;
-  background-color: #3aa46c;
-  color: white;
+  background-color: #6ec5c5;
+  color: #0a0a0b;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
+  transition: background-color 0.15s ease;
 }
 
 .logButton:hover {
-  background-color: #2d8558;
+  background-color: #5ab3b3;
 }
 
 /* ── Calendar ── */
 .calendar {
-  background: #fff;
-  border: 1px solid rgb(179, 228, 228);
+  background: #141416;
+  border: 1px solid #2a2a2d;
   border-radius: 12px;
   padding: 16px;
 }
@@ -63,6 +65,7 @@
 .monthTitle {
   font-size: 1.3rem;
   font-weight: 700;
+  color: #e8e8eb;
 }
 
 .navButton {
@@ -72,11 +75,12 @@
   cursor: pointer;
   padding: 4px 12px;
   border-radius: 6px;
-  color: #3aa46c;
+  color: #6ec5c5;
+  transition: background-color 0.15s ease;
 }
 
 .navButton:hover {
-  background-color: rgb(179, 228, 228);
+  background-color: rgba(110, 197, 197, 0.12);
 }
 
 .calendarGrid {
@@ -89,7 +93,7 @@
   text-align: center;
   font-size: 0.75rem;
   font-weight: 700;
-  color: #888;
+  color: #6a6a6f;
   padding: 4px 0;
 }
 
@@ -103,11 +107,12 @@
   cursor: pointer;
   font-size: 0.9rem;
   padding: 4px 0;
-  transition: background-color 0.15s;
+  color: #e8e8eb;
+  transition: background-color 0.15s ease;
 }
 
 .dayCell:hover {
-  background-color: rgb(230, 248, 248);
+  background-color: #1c1c1f;
 }
 
 .dayCellEmpty {
@@ -120,11 +125,12 @@
 
 .dayCellToday .dayNumber {
   font-weight: 800;
-  color: #3aa46c;
+  color: #6ec5c5;
 }
 
 .dayCellSelected {
-  background-color: rgb(179, 228, 228) !important;
+  background-color: rgba(110, 197, 197, 0.12) !important;
+  border: 1px solid #6ec5c5;
 }
 
 .dayNumber {
@@ -135,17 +141,17 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: #3aa46c;
+  background-color: #6ec5c5;
   margin-top: 2px;
 }
 
 /* ── Day detail panel ── */
 .dayDetail {
   margin-top: 20px;
-  border: 1px solid rgb(179, 228, 228);
+  border: 1px solid #2a2a2d;
   border-radius: 12px;
   padding: 20px;
-  background: #fff;
+  background: #141416;
 }
 
 .dayDetailHeader {
@@ -158,6 +164,7 @@
 .dayDetailTitle {
   font-size: 1.1rem;
   font-weight: 700;
+  color: #e8e8eb;
 }
 
 .dayDetailActions {
@@ -167,27 +174,39 @@
 
 .editButton {
   padding: 6px 16px;
-  background-color: rgb(41, 41, 41);
-  color: white;
-  border: none;
+  background-color: transparent;
+  color: #e8e8eb;
+  border: 1px solid #2a2a2d;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.editButton:hover {
+  background-color: #1c1c1f;
+  border-color: #3a3a3f;
 }
 
 .deleteButton {
   padding: 6px 16px;
-  background-color: rgb(165, 13, 13);
-  color: white;
+  background-color: #e55a5a;
+  color: #e8e8eb;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
+  transition: background-color 0.15s ease;
+}
+
+.deleteButton:hover {
+  background-color: #cc4a4a;
 }
 
 .exerciseCard {
   padding: 12px 16px;
-  background-color: rgb(179, 228, 228);
+  background-color: #1c1c1f;
+  border: 1px solid #2a2a2d;
   border-radius: 8px;
   margin-bottom: 8px;
 }
@@ -196,26 +215,28 @@
   font-weight: 700;
   font-size: 1rem;
   margin-bottom: 4px;
+  color: #e8e8eb;
 }
 
 .exerciseMeta {
   font-size: 0.85rem;
-  color: #444;
+  color: #9a9a9f;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
 .exerciseMetaItem {
-  background: rgba(255, 255, 255, 0.7);
+  background: #2a2a2d;
   padding: 2px 8px;
   border-radius: 12px;
+  color: #e8e8eb;
 }
 
 .noWorkoutMessage {
   text-align: center;
   padding: 20px;
-  color: #666;
+  color: #9a9a9f;
 }
 
 .noWorkoutMessage p {
@@ -224,17 +245,22 @@
 
 .noWorkoutLogButton {
   padding: 8px 20px;
-  background-color: #3aa46c;
-  color: white;
+  background-color: #6ec5c5;
+  color: #0a0a0b;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
+  transition: background-color 0.15s ease;
+}
+
+.noWorkoutLogButton:hover {
+  background-color: #5ab3b3;
 }
 
 .sessionNotes {
   font-size: 0.9rem;
-  color: #555;
+  color: #9a9a9f;
   margin-bottom: 12px;
   font-style: italic;
 }
@@ -242,7 +268,7 @@
 .loadingSpinner {
   text-align: center;
   padding: 40px;
-  color: #888;
+  color: #6a6a6f;
 }
 
 /* ── Log Workout Modal ── */
@@ -265,22 +291,25 @@
 }
 
 .modalContent {
-  background-color: #fefefe;
+  background-color: #141416;
+  border: 1px solid #2a2a2d;
   width: 700px;
   max-width: 96vw;
   max-height: 90vh;
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
 .modalHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgb(41, 41, 41);
-  color: white;
+  background-color: #1e1e21;
+  border-bottom: 1px solid #2a2a2d;
+  color: #e8e8eb;
   padding: 0 24px;
   height: 64px;
   flex-shrink: 0;
@@ -294,15 +323,16 @@
 .modalCloseButton {
   background: none;
   border: none;
-  color: white;
+  color: #e8e8eb;
   font-size: 1.5rem;
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 4px;
+  transition: background-color 0.15s ease;
 }
 
 .modalCloseButton:hover {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .modalBody {
@@ -320,36 +350,50 @@
   font-weight: 700;
   margin-bottom: 6px;
   font-size: 0.9rem;
+  color: #9a9a9f;
 }
 
 .formInput {
   width: 100%;
   padding: 10px 14px;
-  border: 2px solid rgb(179, 228, 228);
+  border: 2px solid #2a2a2d;
   border-radius: 8px;
   font-size: 1rem;
-  background: white;
+  background: #141416;
+  color: #e8e8eb;
+  transition: border-color 0.15s ease;
+}
+
+.formInput::placeholder {
+  color: #6a6a6f;
 }
 
 .formInput:focus {
   outline: none;
-  border-color: #3aa46c;
+  border-color: #6ec5c5;
 }
 
 .formTextarea {
   width: 100%;
   padding: 10px 14px;
-  border: 2px solid rgb(179, 228, 228);
+  border: 2px solid #2a2a2d;
   border-radius: 8px;
   font-size: 0.95rem;
   resize: vertical;
   min-height: 70px;
   font-family: inherit;
+  background: #141416;
+  color: #e8e8eb;
+  transition: border-color 0.15s ease;
+}
+
+.formTextarea::placeholder {
+  color: #6a6a6f;
 }
 
 .formTextarea:focus {
   outline: none;
-  border-color: #3aa46c;
+  border-color: #6ec5c5;
 }
 
 /* ── Exercise rows in modal ── */
@@ -360,11 +404,13 @@
 .exercisesSectionTitle {
   font-weight: 700;
   margin-bottom: 10px;
+  color: #e8e8eb;
 }
 
 .exerciseRow {
-  border: 1px solid rgb(179, 228, 228);
-  border-radius: 10px;
+  border: 1px solid #2a2a2d;
+  background-color: #1c1c1f;
+  border-radius: 8px;
   padding: 14px;
   margin-bottom: 10px;
   position: relative;
@@ -386,14 +432,21 @@
 .exerciseNameInput {
   width: 100%;
   padding: 9px 14px;
-  border: 2px solid rgb(179, 228, 228);
+  border: 2px solid #2a2a2d;
   border-radius: 8px;
   font-size: 1rem;
+  background: #141416;
+  color: #e8e8eb;
+  transition: border-color 0.15s ease;
+}
+
+.exerciseNameInput::placeholder {
+  color: #6a6a6f;
 }
 
 .exerciseNameInput:focus {
   outline: none;
-  border-color: #3aa46c;
+  border-color: #6ec5c5;
 }
 
 .suggestionDropdown {
@@ -401,28 +454,31 @@
   top: 100%;
   left: 0;
   right: 0;
-  background: white;
-  border: 2px solid rgb(179, 228, 228);
+  background: #1c1c1f;
+  border: 1px solid #2a2a2d;
   border-top: none;
   border-radius: 0 0 8px 8px;
   max-height: 160px;
   overflow-y: auto;
   z-index: 300;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .suggestionItem {
   padding: 8px 14px;
   cursor: pointer;
   font-size: 0.95rem;
+  color: #e8e8eb;
+  transition: background-color 0.15s ease;
 }
 
 .suggestionItem:hover {
-  background-color: rgb(179, 228, 228);
+  background-color: rgba(110, 197, 197, 0.12);
 }
 
 .removeExerciseButton {
-  background-color: rgb(165, 13, 13);
-  color: white;
+  background-color: #e55a5a;
+  color: #e8e8eb;
   border: none;
   border-radius: 6px;
   padding: 6px 12px;
@@ -430,6 +486,11 @@
   font-weight: 600;
   white-space: nowrap;
   flex-shrink: 0;
+  transition: background-color 0.15s ease;
+}
+
+.removeExerciseButton:hover {
+  background-color: #cc4a4a;
 }
 
 .exerciseFields {
@@ -446,51 +507,63 @@
 .exerciseFieldLabel {
   font-size: 0.75rem;
   font-weight: 700;
-  color: #666;
+  color: #9a9a9f;
   margin-bottom: 4px;
 }
 
 .exerciseFieldInput {
   padding: 7px 10px;
-  border: 2px solid rgb(179, 228, 228);
+  border: 2px solid #2a2a2d;
   border-radius: 6px;
   font-size: 0.9rem;
   width: 100%;
+  background: #141416;
+  color: #e8e8eb;
+  transition: border-color 0.15s ease;
 }
 
 .exerciseFieldInput:focus {
   outline: none;
-  border-color: #3aa46c;
+  border-color: #6ec5c5;
 }
 
 .exerciseNotesInput {
   padding: 7px 10px;
-  border: 2px solid rgb(179, 228, 228);
+  border: 2px solid #2a2a2d;
   border-radius: 6px;
   font-size: 0.9rem;
   width: 100%;
+  background: #141416;
+  color: #e8e8eb;
+  transition: border-color 0.15s ease;
+}
+
+.exerciseNotesInput::placeholder {
+  color: #6a6a6f;
 }
 
 .exerciseNotesInput:focus {
   outline: none;
-  border-color: #3aa46c;
+  border-color: #6ec5c5;
 }
 
 .addExerciseButton {
   width: 100%;
   padding: 10px;
   background: none;
-  border: 2px dashed rgb(179, 228, 228);
-  border-radius: 10px;
+  border: 2px dashed #2a2a2d;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 0.95rem;
-  color: #3aa46c;
+  color: #6ec5c5;
   font-weight: 600;
   margin-top: 4px;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .addExerciseButton:hover {
-  background-color: rgb(230, 248, 248);
+  background-color: rgba(110, 197, 197, 0.08);
+  border-color: #6ec5c5;
 }
 
 .modalFooter {
@@ -502,33 +575,45 @@
 
 .saveButton {
   padding: 12px 28px;
-  background-color: rgb(13, 165, 20);
-  color: white;
+  background-color: #4aba8a;
+  color: #0a0a0b;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.saveButton:hover {
+  background-color: #3da87a;
 }
 
 .saveButton:disabled {
-  background-color: #999;
+  background-color: #2a2a2d;
+  color: #6a6a6f;
   cursor: not-allowed;
 }
 
 .cancelButton {
   padding: 12px 28px;
-  background-color: rgb(165, 13, 13);
-  color: white;
-  border: none;
+  background-color: transparent;
+  color: #e8e8eb;
+  border: 1px solid #2a2a2d;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.cancelButton:hover {
+  background-color: #1c1c1f;
+  border-color: #3a3a3f;
 }
 
 .errorMessage {
-  color: rgb(165, 13, 13);
+  color: #e55a5a;
   font-size: 0.9rem;
   margin-top: 12px;
 }
@@ -545,10 +630,10 @@
   flex: 1;
   min-width: 140px;
   padding: 20px;
-  background: linear-gradient(135deg, #3aa46c 0%, #2d8558 100%);
+  background: #141416;
+  border: 1px solid #2a2a2d;
   border-radius: 12px;
   text-align: center;
-  color: white;
 }
 
 .statNumber {
@@ -556,11 +641,12 @@
   font-weight: 800;
   line-height: 1;
   margin-bottom: 6px;
+  color: #6ec5c5;
 }
 
 .statLabel {
   font-size: 0.85rem;
-  opacity: 0.9;
+  color: #9a9a9f;
 }
 
 .heatmapSection {
@@ -571,6 +657,7 @@
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 12px;
+  color: #e8e8eb;
 }
 
 .heatmapScroll {
@@ -590,15 +677,15 @@
   width: 14px;
   height: 14px;
   border-radius: 2px;
-  background-color: rgb(220, 220, 220);
+  background-color: #2a2a2d;
 }
 
 .heatmapCellActive {
-  background-color: #3aa46c;
+  background-color: #6ec5c5;
 }
 
 .heatmapCellToday {
-  outline: 2px solid rgb(41, 41, 41);
+  outline: 2px solid #5ab3b3;
   outline-offset: 1px;
 }
 
@@ -608,7 +695,7 @@
   gap: 6px;
   margin-top: 8px;
   font-size: 0.8rem;
-  color: #666;
+  color: #9a9a9f;
 }
 
 .heatmapLegendCell {
@@ -625,6 +712,7 @@
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 16px;
+  color: #e8e8eb;
 }
 
 .exerciseBlock {
@@ -634,10 +722,10 @@
 .exerciseBlockTitle {
   font-size: 1rem;
   font-weight: 700;
-  color: #3aa46c;
+  color: #6ec5c5;
   margin-bottom: 8px;
   padding-bottom: 4px;
-  border-bottom: 2px solid rgb(179, 228, 228);
+  border-bottom: 1px solid #2a2a2d;
 }
 
 .progressTable {
@@ -649,24 +737,26 @@
 .progressTable th {
   text-align: left;
   padding: 6px 10px;
-  background-color: rgb(41, 41, 41);
-  color: white;
+  background-color: #1e1e21;
+  color: #e8e8eb;
   font-weight: 600;
+  border-bottom: 1px solid #2a2a2d;
 }
 
 .progressTable td {
   padding: 7px 10px;
-  border-bottom: 1px solid rgb(220, 220, 220);
+  border-bottom: 1px solid #2a2a2d;
+  color: #e8e8eb;
 }
 
 .progressTable tr:nth-child(even) td {
-  background-color: rgb(245, 253, 253);
+  background-color: #1c1c1f;
 }
 
 .noHistory {
   text-align: center;
   padding: 40px;
-  color: #888;
+  color: #6a6a6f;
   font-size: 1rem;
 }
 
@@ -735,7 +825,7 @@
   }
 
   .modalContent {
-    border-radius: 16px 16px 0 0;
+    border-radius: 12px 12px 0 0;
     max-height: 95vh;
   }
 

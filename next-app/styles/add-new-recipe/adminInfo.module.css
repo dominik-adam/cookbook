@@ -11,6 +11,7 @@
 .inputLabel {
     font-weight: 700;
     padding-bottom: 5px;
+    color: #9a9a9f;
 }
 
 /* Title */
@@ -18,12 +19,15 @@
 .recipeTitleInput {
     padding: 10px 20px;
     font-size: 1.2rem;
-    border-radius: 7px;
-    border: 3px solid rgb(179, 228, 228);
+    border-radius: 6px;
+    border: 2px solid #2a2a2d;
+    background-color: #141416;
+    color: #e8e8eb;
+    transition: border-color 0.15s ease;
 }
 
 .recipeTitleInput:focus-visible {
-    border: 3px solid rgb(179, 228, 228);
+    border: 2px solid #6ec5c5;
     outline: none;
 }
 
@@ -38,12 +42,15 @@
 .recipeSlugInput {
     padding: 10px 20px;
     font-size: 1.2rem;
-    border-radius: 7px;
-    border: 3px solid rgb(179, 228, 228);
+    border-radius: 6px;
+    border: 2px solid #2a2a2d;
+    background-color: #141416;
+    color: #e8e8eb;
+    transition: border-color 0.15s ease;
 }
 
 .recipeSlugInput:focus-visible {
-    border: 3px solid rgb(179, 228, 228);
+    border: 2px solid #6ec5c5;
     outline: none;
 }
 
@@ -76,14 +83,21 @@
 }
 
 .recipeThumbnailDragAndDrop {
-    border-radius: 7px;
-    border: 3px solid rgb(179, 228, 228);
+    border-radius: 6px;
+    border: 2px solid #2a2a2d;
+    background-color: #141416;
     position: relative;
     height: 100%;
+    transition: border-color 0.15s ease;
 }
 
 .recipeThumbnailDragAndDrop:focus-within {
-    border: 3px solid black;
+    border: 2px solid #6ec5c5;
+}
+
+.recipeThumbnailDragAndDrop:hover {
+    border-color: #3a3a3f;
+    background-color: #1c1c1f;
 }
 
 .recipeThumbnailPlaceholder {
@@ -94,6 +108,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    color: #6a6a6f;
 }
 
 .recipeThumbnailPlaceholder span {
@@ -126,9 +141,11 @@
     align-items: center;
     gap: 6px;
     padding: 6px 12px;
-    background-color: rgb(179, 228, 228);
+    background-color: rgba(110, 197, 197, 0.12);
+    border: 1px solid #6ec5c5;
     border-radius: 20px;
     font-size: 0.9rem;
+    color: #6ec5c5;
 }
 
 .tagRemoveButton {
@@ -138,12 +155,12 @@
     font-size: 1.3rem;
     line-height: 1;
     padding: 0;
-    color: #666;
-    transition: color 0.2s;
+    color: #9a9a9f;
+    transition: color 0.15s ease;
 }
 
 .tagRemoveButton:hover {
-    color: #000;
+    color: #e55a5a;
 }
 
 .addTagWrapper {
@@ -155,27 +172,33 @@
     flex: 1;
     padding: 8px 16px;
     font-size: 1rem;
-    border-radius: 7px;
-    border: 3px solid rgb(179, 228, 228);
+    border-radius: 6px;
+    border: 2px solid #2a2a2d;
+    background-color: #141416;
+    color: #e8e8eb;
+    transition: border-color 0.15s ease;
 }
 
 .tagInput:focus-visible {
-    border: 3px solid rgb(179, 228, 228);
+    border: 2px solid #6ec5c5;
     outline: none;
 }
 
 .addTagButton {
     padding: 8px 20px;
-    background-color: rgb(179, 228, 228);
-    border: none;
-    border-radius: 7px;
+    background-color: transparent;
+    border: 1px solid #2a2a2d;
+    border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
-    transition: background-color 0.2s;
+    color: #e8e8eb;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .addTagButton:hover {
-    background-color: rgb(150, 210, 210);
+    background-color: rgba(110, 197, 197, 0.12);
+    border-color: #6ec5c5;
+    color: #6ec5c5;
 }
 
 @media only screen and (max-width: 600px) {

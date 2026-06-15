@@ -12,8 +12,15 @@
     width: 100%;
     padding-top: 70%;
 
-    background-color: #f2f2f2;
-    border-radius: 5px;
+    background-color: #141416;
+    border-radius: 8px;
+    border: 1px solid #2a2a2d;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.tile:hover {
+    background-color: #1c1c1f;
+    border-color: #3a3a3f;
 }
 
 .tileTitle {
@@ -23,20 +30,20 @@
     left: 0px;
 
     padding: 15px 20px;
-    
-    color: white;
+
+    color: #e8e8eb;
     font-size: 1.2rem;
     line-height: 1.5;
     font-weight: 700;
 }
 
 .tileImage {
-    border-radius: 5px;
+    border-radius: 8px;
 }
 
 .tileOverlay {
     z-index: 1;
-    border-radius: 5px;
+    border-radius: 8px;
     position: absolute;
     top: 0;
     left: 0;
@@ -47,7 +54,7 @@
 
 .selectedTile {
     position: relative;
-    outline: 6px solid #3aa46c;
+    outline: 6px solid #6ec5c5;
 }
 
 .selectedTile::after {
@@ -88,8 +95,8 @@
     position: absolute;
     top: 8px;
     left: 8px;
-    background: rgba(58, 164, 108, 0.9);
-    color: white;
+    background: rgba(110, 197, 197, 0.85);
+    color: #0a0a0b;
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 0.8rem;
@@ -100,15 +107,22 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: white;
-    border: 1px solid #ccc;
+    background: #1e1e21;
+    border: 1px solid #2a2a2d;
     border-radius: 8px;
     padding: 8px 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     font-size: 14px;
     cursor: pointer;
     z-index: 1101;
+    color: #e8e8eb;
+    transition: background-color 0.15s ease;
 }
+
+.floatingToggle:hover {
+    background-color: #2a2a2d;
+}
+
 .floatingToggle input {
     margin-right: 6px;
 }
@@ -116,7 +130,8 @@
 .tagFilters {
     margin-bottom: 20px;
     padding: 15px;
-    background-color: #f9f9f9;
+    background-color: #141416;
+    border: 1px solid #2a2a2d;
     border-radius: 8px;
 }
 
@@ -124,7 +139,7 @@
     font-weight: 600;
     margin-bottom: 10px;
     font-size: 0.95rem;
-    color: #333;
+    color: #e8e8eb;
 }
 
 .tagFilterButtons {
@@ -135,22 +150,24 @@
 
 .tagFilterButton {
     padding: 6px 14px;
-    background-color: white;
-    border: 2px solid rgb(179, 228, 228);
+    background-color: #1e1e21;
+    border: 2px solid #2a2a2d;
     border-radius: 20px;
     cursor: pointer;
     font-size: 0.9rem;
-    transition: all 0.2s;
-    color: #333;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    color: #e8e8eb;
 }
 
 .tagFilterButton:hover {
-    background-color: rgb(220, 242, 242);
+    background-color: #1c1c1f;
+    border-color: #3a3a3f;
 }
 
 .tagFilterButtonActive {
-    background-color: rgb(179, 228, 228);
-    border-color: rgb(150, 210, 210);
+    background-color: rgba(110, 197, 197, 0.12);
+    border-color: #6ec5c5;
+    color: #6ec5c5;
     font-weight: 600;
 }
 

@@ -19,50 +19,64 @@
     line-height: 1.5;
     font-weight: 700;
     text-align: center;
-    background-color: black;
-    color: white;
+    background-color: #1e1e21;
+    color: #e8e8eb;
     padding: 20px;
     border-radius: 0 0 7px 7px;
+    border-top: 1px solid #2a2a2d;
 }
 
 .amountInput {
     padding: 10px 20px;
     font-size: 1.2rem;
-    border-radius: 7px;
-    border: 3px solid rgb(179, 228, 228);
+    border-radius: 6px;
+    border: 2px solid #2a2a2d;
+    background-color: #141416;
+    color: #e8e8eb;
+    transition: border-color 0.15s ease;
 }
 
 .unitSelect {
     padding: 10px 20px;
     font-size: 1.2rem;
-    border-radius: 7px;
-    border: 3px solid rgb(179, 228, 228);
+    border-radius: 6px;
+    border: 2px solid #2a2a2d;
+    background-color: #141416;
+    color: #e8e8eb;
+    transition: border-color 0.15s ease;
 }
 
 .unitSelect > option {
     font-size: 0.8rem;
+    background-color: #141416;
+    color: #e8e8eb;
 }
 
 .unitSelect:focus {
-    border: 3px solid black;
+    border: 2px solid #6ec5c5;
+    outline: none;
 }
 
 .instructionInput {
     padding: 10px 20px;
     font-size: 1.2rem;
-    border-radius: 7px;
-    border: 3px solid rgb(179, 228, 228);
+    border-radius: 6px;
+    border: 2px solid #2a2a2d;
+    background-color: #141416;
+    color: #e8e8eb;
+    transition: border-color 0.15s ease;
 }
 
-.amountInput:focus-visible, 
+.amountInput:focus-visible,
 .instructionInput:focus-visible {
-    border: 3px solid rgb(179, 228, 228);
+    border: 2px solid #6ec5c5;
     outline: none;
 }
 
 .inputLabel {
     font-weight: 700;
     padding-bottom: 5px;
+    color: #9a9a9f;
 }
 
 .amountWrapper,
@@ -78,22 +92,26 @@
 .submitButton {
     font-weight: 700;
     padding: 15px 20px;
-    border-radius: 7px;
-    
-    background-color: rgb(13, 165, 20);
+    border-radius: 6px;
+    background-color: #4aba8a;
     border: none;
-    color: white;
-
+    color: #0a0a0b;
     cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.submitButton:hover {
+    background-color: #3da87a;
 }
 
 .submitButton:disabled {
-    background-color: rgb(32, 41, 41);
+    background-color: #2a2a2d;
     border: none;
+    color: #6a6a6f;
+    cursor: not-allowed;
 }
 
 .submitButtonWrapper {
-
 }
 
 @media only screen and (max-width: 600px) {

@@ -15,15 +15,15 @@
 .nutritionInfo {
     margin-top: 30px;
     padding: 20px;
-    background: #f8f9fa;
+    background: #141416;
     border-radius: 8px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #2a2a2d;
 }
 
 .nutritionInfo h3 {
     margin: 0 0 15px 0;
     font-size: 1.2rem;
-    color: #333;
+    color: #e8e8eb;
 }
 
 .nutritionGrid {
@@ -37,25 +37,26 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    background: white;
-    border-radius: 4px;
+    background: #1c1c1f;
+    border-radius: 6px;
+    border: 1px solid #2a2a2d;
 }
 
 .nutritionLabel {
     font-weight: 500;
-    color: #666;
+    color: #9a9a9f;
 }
 
 .nutritionValue {
     font-weight: 700;
-    color: #3aa46c;
+    color: #6ec5c5;
     font-size: 1.1rem;
 }
 
 .nutritionDisclaimer {
     margin-top: 12px;
     font-size: 0.85rem;
-    color: #999;
+    color: #6a6a6f;
     font-style: italic;
 }
 

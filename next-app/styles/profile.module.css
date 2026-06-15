@@ -13,26 +13,51 @@
   margin-top: 20px;
   font-size: 30px;
   font-weight: 700;
+  color: #e8e8eb;
 }
 
 .profileEmail {
   margin-top: 0px;
+  color: #9a9a9f;
 }
 
 .profileExpiration {
   text-align: center;
   margin-top: 10px;
+  color: #9a9a9f;
 }
 
-.profileLogInButton, .profileLogOutButton {
+.profileLogInButton {
   margin-top: 20px;
   font-weight: 700;
   padding: 15px 20px;
-  border-radius: 7px;
-  background-color: rgb(36, 92, 92);
+  border-radius: 6px;
+  background-color: #6ec5c5;
   border: none;
-  color: white;
+  color: #0a0a0b;
   cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.profileLogInButton:hover {
+  background-color: #5ab3b3;
+}
+
+.profileLogOutButton {
+  margin-top: 20px;
+  font-weight: 700;
+  padding: 15px 20px;
+  border-radius: 6px;
+  background-color: transparent;
+  border: 1px solid #2a2a2d;
+  color: #e8e8eb;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.profileLogOutButton:hover {
+  background-color: #1c1c1f;
+  border-color: #3a3a3f;
 }
 
 .hidden {
@@ -41,4 +66,5 @@
 
 .notSignedIn {
   font-size: 20px;
+  color: #9a9a9f;
 }

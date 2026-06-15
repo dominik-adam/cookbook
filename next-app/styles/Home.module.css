@@ -8,7 +8,7 @@
 }
 
 .title a {
-  color: #0070f3;
+  color: #6ec5c5;
   text-decoration: none;
 }
 
@@ -37,6 +37,7 @@
 .description {
   line-height: 1.5;
   font-size: 1.5rem;
+  color: #9a9a9f;
 }
 
 .grid {
@@ -54,18 +55,20 @@
   flex-basis: 45%;
   padding: 1.5rem;
   text-align: left;
-  color: inherit;
+  color: #e8e8eb;
   text-decoration: none;
-  border: 1px solid #eaeaea;
-  border-radius: 10px;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  border: 1px solid #2a2a2d;
+  border-radius: 8px;
+  background: #141416;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .card:hover,
 .card:focus,
 .card:active {
-  color: #0070f3;
-  border-color: #0070f3;
+  color: #6ec5c5;
+  border-color: #6ec5c5;
+  background-color: #1c1c1f;
 }
 
 .card h3 {

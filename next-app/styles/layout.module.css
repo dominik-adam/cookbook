@@ -21,7 +21,7 @@
 }
 
 .notMenu.shifted {
-  margin-right: 30vw; /* push content when quick bag is open */
+  margin-right: 30vw;
 }
 
 .sidebar {
@@ -30,9 +30,9 @@
   right: 0;
   height: 100vh;
   width: 0;
-  background-color: #fefefe;
-  box-shadow: -2px 0 6px rgba(0,0,0,0.15);
-  /* overflow-x: hidden; <-- remove or override */
+  background-color: #1e1e21;
+  border-left: 1px solid #2a2a2d;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.4);
   transition: width 0.3s ease;
   z-index: 1000;
 }
@@ -44,19 +44,26 @@
 .sidebarToggle {
   position: absolute;
   top: 50%;
-  left: -30px; /* sticks outside sidebar */
+  left: -30px;
   transform: translateY(-50%);
   width: 30px;
   height: 150px;
-  background-color: rgb(41, 41, 41);
-  color: white;
+  background-color: #1e1e21;
+  border: 1px solid #2a2a2d;
+  border-right: none;
+  color: #e8e8eb;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  border-radius: 25px 0 0 25px;
+  border-radius: 8px 0 0 8px;
   font-size: 1.1rem;
   z-index: 1100;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.sidebarToggle:hover {
+  background-color: #2a2a2d;
 }
 
 .sidebarContent {

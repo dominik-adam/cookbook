@@ -7,9 +7,7 @@
 	transform: translateX(-50%);
 	width: 100%;
 	height: 100%;
-	background-color: rgb(0, 0, 0);
-	background-color: rgba(0, 0, 0, 0.4);
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modalWindowOpened {
@@ -17,13 +15,14 @@
 }
 
 .modalWindowContent {
-	background-color: #fefefe;
+	background-color: #141416;
 	margin: 3% auto;
-	border: 1px solid #888;
+	border: 1px solid #2a2a2d;
 	width: 70%;
 	max-width: 1200px;
-	border-radius: 20px;
+	border-radius: 12px;
 	height: 90%;
+	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
 .modalCloseButton {
@@ -33,16 +32,18 @@
 
 .modalWindowTitle {
 	margin-right: auto;
+	color: #e8e8eb;
 }
 
 .modalWindowHeader {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background-color: black;
-	color: white;
+	background-color: #1e1e21;
+	border-bottom: 1px solid #2a2a2d;
+	color: #e8e8eb;
 	padding: 0 20px 0 50px;
-	border-radius: 20px 20px 0 0;
+	border-radius: 12px 12px 0 0;
 	height: 75px;
 }
 
@@ -54,7 +55,7 @@
 
 .modalWindowBody::-webkit-scrollbar {
 	display: none;
-  }
+}
 
 .addToBagWrapper {
 	margin-left: auto;
