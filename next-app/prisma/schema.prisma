@@ -51,6 +51,7 @@ model User {
   exerciseLogs       ExerciseLog[]
   subscriptions      Subscription[]
   car                Car?
+  mealPlanItems      MealPlanItem[]
   accounts           Account[]
   sessions           Session[]
 }
@@ -78,6 +79,7 @@ model Recipe {
   tags Tag[]
   ingredients RecipeIngredient[]
   recipeIngredientStates RecipeIngredientState[]
+  mealPlanItems MealPlanItem[]
 }
 
 model Ingredient {
@@ -154,6 +156,19 @@ model RecipeCategory {
   id      String   @id
   name    String
   recipes Recipe[]
+}
+
+model MealPlanItem {
+  id         String   @id @default(cuid())
+  userId     String
+  recipeSlug String
+  portions   Int      @default(1)
+  addedAt    DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipe Recipe @relation(fields: [recipeSlug], references: [slug], onDelete: Cascade)
+
+  @@unique([userId, recipeSlug])
 }
 
 model DailyPlanSettings {

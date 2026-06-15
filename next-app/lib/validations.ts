@@ -71,6 +71,15 @@ export const RemoveFromBagSchema = z.object({
   unitId: cuidSchema,
 });
 
+export const MealPlanUpsertSchema = z.object({
+  recipeSlug: z.string().min(1),
+  portions: z.number().int().min(1).max(200),
+});
+
+export const MealPlanRemoveSchema = z.object({
+  recipeSlug: z.string().min(1),
+});
+
 // ============================================================================
 // Recipe State Schemas
 // ============================================================================

@@ -1,27 +1,27 @@
 import { Recipe, AggregatedIngredient } from '@/types/recipe';
 
-export function aggregateIngredients(recipes: Recipe[]): AggregatedIngredient[] {
+export function aggregateIngredients(items: { recipe: Recipe; portions: number }[]): AggregatedIngredient[] {
   const aggregateMap = new Map<string, AggregatedIngredient>();
 
-  for (const recipe of recipes) {
+  for (const { recipe, portions } of items) {
+    const scale = recipe.serves > 0 ? portions / recipe.serves : portions;
     const ingredients = recipe.ingredients ?? [];
+
     for (const ing of ingredients) {
       const key = ing.ingredientId;
       const existing = aggregateMap.get(key);
+      const scaledAmount = typeof ing.amount === 'number' ? ing.amount * scale : null;
 
       if (existing) {
-        // Check if this unit already exists for this ingredient
         const existingAmount = existing.amounts.find(a => a.unit === ing.unit.name && a.unitPlural === ing.unit.plural);
 
         if (existingAmount) {
-          // Add to existing amount for this unit
-          if (typeof ing.amount === "number") {
-            existingAmount.amount = (existingAmount.amount ?? 0) + ing.amount;
+          if (scaledAmount !== null) {
+            existingAmount.amount = (existingAmount.amount ?? 0) + scaledAmount;
           }
         } else {
-          // Add new unit entry
           existing.amounts.push({
-            amount: ing.amount ?? 0,
+            amount: scaledAmount ?? 0,
             unit: ing.unit.name,
             unitPlural: ing.unit.plural,
           });
@@ -32,7 +32,7 @@ export function aggregateIngredients(recipes: Recipe[]): AggregatedIngredient[] 
           name: ing.ingredient.name,
           image: ing.ingredient.image,
           amounts: [{
-            amount: ing.amount ?? 0,
+            amount: scaledAmount ?? 0,
             unit: ing.unit.name,
             unitPlural: ing.unit.plural,
           }],

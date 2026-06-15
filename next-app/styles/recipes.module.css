@@ -103,28 +103,78 @@
     font-weight: 600;
 }
 
-.floatingToggle {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #1e1e21;
-    border: 1px solid #2a2a2d;
-    border-radius: 8px;
-    padding: 8px 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    font-size: 14px;
+@keyframes tileShake {
+    0%   { transform: rotate(0deg); }
+    30%  { transform: rotate(-1.5deg); }
+    70%  { transform: rotate(1.5deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.tileSelectMode {
+    animation: tileShake 0.25s ease-in-out 1;
+    border-color: rgba(110, 197, 197, 0.4);
+}
+
+.portionControls {
+    z-index: 4;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 0 0 8px 8px;
+}
+
+.portionBtn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid #6ec5c5;
+    background: rgba(110, 197, 197, 0.15);
+    color: #6ec5c5;
+    font-size: 1.2rem;
+    line-height: 1;
     cursor: pointer;
-    z-index: 1101;
-    color: #e8e8eb;
-    transition: background-color 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
-.floatingToggle:hover {
-    background-color: #2a2a2d;
+.portionBtn:hover {
+    background: rgba(110, 197, 197, 0.3);
 }
 
-.floatingToggle input {
-    margin-right: 6px;
+.portionCount {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    min-width: 20px;
+    text-align: center;
+}
+
+.cancelSelectBtn {
+    display: block;
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e1e21;
+    border: 1px solid #6ec5c5;
+    border-radius: 24px;
+    color: #6ec5c5;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 10px 32px;
+    cursor: pointer;
+    z-index: 1100;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
 }
 
 .tagFilters {
