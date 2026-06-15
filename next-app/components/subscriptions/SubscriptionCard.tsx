@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useState } from 'react';
 import styles from '@/styles/subscriptions.module.css';
 import type { Periodicity } from './SubscriptionModal';
 
@@ -33,7 +34,7 @@ export function toYearly(price: number, periodicity: string): number {
 
 export default function SubscriptionCard({ subscription, onEdit }: SubscriptionCardProps) {
   const { id, title, description, price, periodicity, image } = subscription;
-  const imgSrc = image?.trim() || '/icons/subscriptions.png';
+  const [imgSrc, setImgSrc] = useState(image?.trim() || '/icons/subscriptions.png');
   const monthly = toMonthly(price, periodicity);
 
   return (
@@ -45,6 +46,7 @@ export default function SubscriptionCard({ subscription, onEdit }: SubscriptionC
         width={56}
         height={56}
         alt={title}
+        onError={() => setImgSrc('/icons/subscriptions.png')}
       />
       <div className={styles.cardBody}>
         <p className={styles.cardTitle}>{title}</p>

@@ -40,10 +40,12 @@ export default function SubscriptionModal({
   const [form, setForm] = useState<SubscriptionFormData>(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     if (open) {
       setForm(initialData ?? EMPTY_FORM);
+      setImgError(false);
     }
   }, [open, initialData]);
 
@@ -51,7 +53,10 @@ export default function SubscriptionModal({
 
   const set = (field: keyof SubscriptionFormData) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => setForm(prev => ({ ...prev, [field]: e.target.value }));
+  ) => {
+    if (field === 'image') setImgError(false);
+    setForm(prev => ({ ...prev, [field]: e.target.value }));
+  };
 
   const handleSave = async () => {
     if (!form.title.trim() || !form.price) return;
@@ -75,7 +80,7 @@ export default function SubscriptionModal({
     }
   };
 
-  const imageUrl = form.image.trim() || '/icons/subscriptions.png';
+  const imageUrl = (!imgError && form.image.trim()) ? form.image.trim() : '/icons/subscriptions.png';
   const isEditing = editingId !== null;
   const canSave = form.title.trim() !== '' && form.price !== '' && !isNaN(parseFloat(form.price)) && parseFloat(form.price) > 0;
 
@@ -95,7 +100,7 @@ export default function SubscriptionModal({
               width={60}
               height={60}
               alt="Subscription icon"
-              onError={() => {}}
+              onError={() => setImgError(true)}
             />
             <div className={styles.fieldGroup}>
               <label className={styles.label}>Image URL (optional)</label>
