@@ -3,25 +3,17 @@ import { options } from 'app/api/auth/[...nextauth]/options'
 import { writeFile } from 'fs/promises'
 import { NextResponse } from "next/server";
 import { isAdmin } from '@/utils/auth';
-import fs from 'fs';
+import { randomUUID } from 'crypto';
 import path from 'path';
 
+// Uses a random name rather than the original filename + an existsSync check:
+// pasted clipboard images are almost always named "image.png" by the browser,
+// and existsSync-then-writeFile is a TOCTOU race that let concurrent uploads
+// for different recipes collide on the same filename and overwrite each other.
 function getUniqueFilePath(dir: string, originalName: string) {
   const ext = path.extname(originalName);
-  const baseName = path.basename(originalName, ext);
-
-  let finalName = originalName;
-  let counter = 1;
-
-  let fullPath = path.join(dir, finalName);
-
-  while (fs.existsSync(fullPath)) {
-    finalName = `${baseName}-${counter}${ext}`;
-    fullPath = path.join(dir, finalName);
-    counter++;
-  }
-
-  return { fullPath, finalName };
+  const finalName = `${randomUUID()}${ext}`;
+  return { fullPath: path.join(dir, finalName), finalName };
 }
 
 export async function POST(req: Request) {
