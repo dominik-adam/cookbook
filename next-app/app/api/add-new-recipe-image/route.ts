@@ -42,7 +42,9 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       message: 'File uploaded successfully',
-      filepath: `/images/${finalName}`
+      // Served via the dynamic media route so the upload is visible immediately,
+      // without waiting for a server restart to rebuild the static public manifest.
+      filepath: `/api/media/images/${finalName}`
     });
 
   } catch (error: any) {

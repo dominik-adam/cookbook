@@ -28,7 +28,9 @@ export async function POST(req: Request) {
     const uploadDir = process.cwd() + '/public/images';
     const { fullPath, finalName } = getUniqueFilePath(uploadDir, file.name);
     await writeFile(fullPath, buffer);
-    return NextResponse.json({ filepath: `/images/${finalName}` });
+    // Served via the dynamic media route so the upload is visible immediately,
+    // without waiting for a server restart to rebuild the static public manifest.
+    return NextResponse.json({ filepath: `/api/media/images/${finalName}` });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
