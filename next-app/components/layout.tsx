@@ -48,6 +48,9 @@ export default function Layout({ children, pageTitle, sidebarContent, isAdmin }:
           <div className={styles.sidebarToggle} onClick={toggleSidebar}>
             {isSidebarOpen ? '▶' : '◀'}
           </div>
+          <div className={styles.sidebarCloseMobile} onClick={toggleSidebar}>
+            ▶
+          </div>
           <div className={styles.sidebarContent}>
             {sidebarContent}
           </div>
