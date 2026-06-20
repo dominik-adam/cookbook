@@ -274,24 +274,24 @@ export default function WorkoutPage({
 
       {/* Tab bar + gear */}
       <div className={styles.tabBar}>
-        <button
-          className={activeTab === 'today' ? styles.tabActive : styles.tab}
+        <div
+          className={`${styles.tab} ${activeTab === 'today' ? styles.tabActive : ''}`}
           onClick={() => handleTabChange('today')}
         >
           Today
-        </button>
-        <button
-          className={activeTab === 'calendar' ? styles.tabActive : styles.tab}
+        </div>
+        <div
+          className={`${styles.tab} ${activeTab === 'calendar' ? styles.tabActive : ''}`}
           onClick={() => handleTabChange('calendar')}
         >
           Calendar
-        </button>
-        <button
-          className={activeTab === 'stats' ? styles.tabActive : styles.tab}
+        </div>
+        <div
+          className={`${styles.tab} ${activeTab === 'stats' ? styles.tabActive : ''}`}
           onClick={() => handleTabChange('stats')}
         >
           Stats
-        </button>
+        </div>
         <div className={styles.tabBarSpacer} />
         <button
           className={styles.gearButton}

@@ -1,28 +1,35 @@
 /* ── Tab bar ── */
 .tabBar {
   display: flex;
-  border-bottom: 2px solid #2a2a2d;
-  margin-bottom: 0;
   align-items: center;
+  background-color: #1e1e21;
+  border-radius: 14px;
+  padding: 4px;
+  margin-bottom: 20px;
+  gap: 2px;
 }
 
 .tab {
-  padding: 10px 20px;
+  padding: 8px 18px;
   cursor: pointer;
-  background: none;
-  border: none;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
   color: #9a9a9f;
-  border-bottom: 3px solid transparent;
-  margin-bottom: -2px;
-  transition: color 0.15s ease;
+  border-radius: 10px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  user-select: none;
+}
+
+.tab:hover {
+  color: #e8e8eb;
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .tabActive {
-  border-bottom: 3px solid #6ec5c5;
+  background-color: #2a2a2d;
   color: #6ec5c5;
-  font-weight: 700;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
 .tabBarSpacer {
@@ -99,7 +106,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 /* ── Widget card (shared base) ── */
@@ -1226,7 +1233,7 @@
 /* ── Mobile ── */
 @media only screen and (max-width: 600px) {
   .tab {
-    padding: 8px 12px;
+    padding: 7px 12px;
     font-size: 0.85rem;
   }
 
@@ -1525,4 +1532,12 @@
   letter-spacing: 0.1em;
   color: #9a9a9f;
   padding: 4px 2px 0;
+}
+
+@media only screen and (max-width: 600px) {
+  /* Strength widgets (Pullups / Dips): half-width, side by side */
+  .widgetStrength {
+    flex-basis: unset;
+    min-width: 140px;
+  }
 }

@@ -129,11 +129,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 15px;
+  overflow: hidden;
 }
 
 .wDocImage {
   object-fit: contain;
-  padding: 0% 5%;
 }
 
 .wDocIconEmoji {
