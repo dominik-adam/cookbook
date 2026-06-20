@@ -56,8 +56,11 @@ export default function Recipes({ initRecipes, category, setSidebarContent }: Re
   }, [mealPlan, recipes, showMessage]);
 
   const handleHoldStart = useCallback((slug: string) => {
-    if (!selectMode) enterSelectMode();
-    addToMealPlan(slug);
+    if (selectMode) {
+      addToMealPlan(slug);
+    } else {
+      enterSelectMode();
+    }
   }, [selectMode, enterSelectMode, addToMealPlan]);
 
   const handlePortionChange = useCallback((slug: string, delta: number) => {

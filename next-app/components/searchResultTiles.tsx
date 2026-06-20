@@ -43,7 +43,7 @@ const RecipeTile = memo(function RecipeTile({ recipe, selectMode, portions, onHo
   const handlePointerUp = () => {
     cancelHold();
     // Tap on unselected tile in select mode adds it with default portions
-    if (!didHoldRef.current && selectMode && portions === 0) {
+    if (!didHoldRef.current && selectMode && portions === 0 && !slug.startsWith('add-new')) {
       onHoldStart(slug);
     }
   };
